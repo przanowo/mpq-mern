@@ -7,7 +7,7 @@ import Rating from './Rating';
 // import EditProductModal from '../admin/EditProductModal'; // import the modal component
 
 interface Product {
-  id: string;
+  _id: string;
   category: string;
   createdAt: number;
   currency: string;
@@ -53,10 +53,10 @@ const ProductCard = ({ product }: { product: Product }) => {
 
   return (
     <div
-      key={product.id}
+      key={product._id}
       className='border p-4 rounded-md hover:shadow-lg transition-shadow duration-300'
     >
-      <Link to={`/product/${product.id}`} key={product.id}>
+      <Link to={`/product/${product._id}`} key={product._id}>
         <div className=' bg-gray-200 overflow-hidden rounded-md'>
           <Rating
             value={product.ratings}
