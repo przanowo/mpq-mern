@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import {
   HiMenuAlt1,
   HiOutlineHome,
@@ -8,10 +9,11 @@ import { MdOutlineAccountCircle } from 'react-icons/md';
 import logoblack from '../logoblack.png';
 import logowhite from '../logowhite.png';
 import { Link } from 'react-router-dom';
+import { AppState } from '../types/CartType';
 
 const Navigation = () => {
   const user = null;
-  const cart = [];
+  const { cartItems } = useSelector((state: AppState) => state.cart);
   const [isAtTop, setIsAtTop] = useState(true);
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -19,6 +21,8 @@ const Navigation = () => {
   const fixedLogoClasses = `${logoSrc}`;
   const navbarClasses = isAtTop ? 'text-white' : 'bg-white text-black';
   const fixedNavbarClasses = `lg:fixed z-20 w-screen px-4 transition duration-200 ease-in-out sm:h-18 md:px-8 lg:px-2.5 ${navbarClasses}`;
+
+  console.log(cartItems);
 
   useEffect(() => {
     // Function to handle scroll events
@@ -135,9 +139,9 @@ const Navigation = () => {
             <Link className='px-4 py-2 text-2xl text-center' to='/checkout'>
               <div className='relative block'>
                 <HiOutlineShoppingCart />
-                {cart.length > 0 && (
+                {cartItems.length > 0 && (
                   <span className='absolute -right-2 -bottom-3 text-red-500 text-base font-medium'>
-                    {cart.length}
+                    {cartItems.length}
                   </span>
                 )}
               </div>
@@ -158,9 +162,9 @@ const Navigation = () => {
             <div className='relative block'>
               <Link to='/checkout'>
                 <HiOutlineShoppingCart />
-                {cart.length > 0 && (
+                {cartItems.length > 0 && (
                   <span className='absolute -right-2 -bottom-3 text-red-500 text-base font-medium'>
-                    {cart.length}
+                    {cartItems.length}
                   </span>
                 )}
               </Link>
@@ -282,9 +286,9 @@ const Navigation = () => {
                 <div className='relative block'>
                   <Link to='/checkout' onClick={closeMobileMenu}>
                     <HiOutlineShoppingCart />
-                    {cart.length > 0 && (
+                    {cartItems.length > 0 && (
                       <span className='absolute -right-2 -bottom-3 text-red-500 text-base font-medium'>
-                        {cart.length}
+                        {cartItems.length}
                       </span>
                     )}
                   </Link>

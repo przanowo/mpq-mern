@@ -1,35 +1,12 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 import Rating from './Rating';
+import { Product } from '../types/ProductType';
+import { useDispatch } from 'react-redux';
+import { addToCart } from '../slices/cartSlice';
 // import AuthContext from '../../hooks/AuthContext';
 // import { Link, useNavigate } from 'react-router-dom';
 // import { CartContext } from '../../hooks/CartContext';
 // import EditProductModal from '../admin/EditProductModal'; // import the modal component
-
-interface Product {
-  _id: string;
-  category: string;
-  createdAt: number;
-  currency: string;
-  description: string;
-  discount: string;
-  featured: string;
-  images: string[];
-  liked: string;
-  magazine: string;
-  mainImage: string;
-  nowe: string;
-  price: number;
-  quantity: string;
-  ratings: number;
-  numRatings: number;
-  sex: string;
-  show: string;
-  size: string;
-  title: string;
-  titletolow: string;
-  typ: string;
-}
 
 const ProductCard = ({ product }: { product: Product }) => {
   // const navigate = useNavigate();
@@ -51,6 +28,13 @@ const ProductCard = ({ product }: { product: Product }) => {
   //   setCurrentProduct(editedProduct); // update the displayed product
   // };
 
+  const dispatch = useDispatch();
+  const qty = 1;
+
+  const handleAddToCart = () => {
+    dispatch(addToCart({ ...product, qty }));
+  };
+
   return (
     <div
       key={product._id}
@@ -59,8 +43,8 @@ const ProductCard = ({ product }: { product: Product }) => {
       <Link to={`/product/${product._id}`} key={product._id}>
         <div className=' bg-gray-200 overflow-hidden rounded-md'>
           <Rating
-            value={product.ratings}
-            text={`${product.numRatings} reviews`}
+            value={product.rating}
+            text={`${product.numReviews} reviews`}
           />
           <img
             src={product.mainImage}
@@ -80,7 +64,11 @@ const ProductCard = ({ product }: { product: Product }) => {
         </div>
       </Link>
       <div className='mt-2'>
-        <button className=' bg-orange-100 text-black text-center px-2 py-1 rounded-md hover:bg-orange-200 transition duration-200'>
+        <button
+          className=' bg-orange-100 text-black text-center px-2 py-1 rounded-md hover:bg-orange-200 transition duration-200'
+          disabled={product.quantity === 0}
+          onClick={handleAddToCart}
+        >
           Add to cart
         </button>
         {/* {user ? (

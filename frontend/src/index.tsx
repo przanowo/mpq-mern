@@ -9,14 +9,18 @@ import {
   createBrowserRouter,
   createRoutesFromElements,
 } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import store from './store';
 import Home from './pages/Home';
 import ProductScreen from './pages/ProductScreen';
+import CartScreen from './pages/CartScreen';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path='/' element={<App />}>
       <Route index={true} element={<Home />} />
-      <Route path='/product/:id' element={<ProductScreen />} />
+      <Route path='/product/:productId' element={<ProductScreen />} />
+      <Route path='/cart' element={<CartScreen />} />
     </Route>
   )
 );
@@ -26,7 +30,9 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <Provider store={store}>
+      <RouterProvider router={router} />
+    </Provider>
   </React.StrictMode>
 );
 

@@ -1,48 +1,24 @@
-import axios from 'axios';
-import { useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { useGetProductDetailsQuery } from '../slices/productApiSlice';
+import { useDispatch } from 'react-redux';
+import Loader from '../components/Loader';
+import Message from '../components/Message';
+import { addToCart } from '../slices/cartSlice';
 // import EditProductModal from '../admin/EditProductModal'; // import the modal component
 // import ImageGallery from './ImageGallery';
 
-interface Product {
-  _id: string;
-  category: string;
-  createdAt: number;
-  currency: string;
-  description: string;
-  discount: string;
-  featured: string;
-  images: string[];
-  liked: string;
-  magazine: string;
-  mainImage: string;
-  nowe: string;
-  price: number;
-  quantity: string;
-  ratings: number;
-  numRatings: number;
-  sex: string;
-  show: string;
-  size: string;
-  title: string;
-  titletolow: string;
-  typ: string;
-}
-
 const ProductScreen = () => {
+  const { productId } = useParams<{ productId: string }>();
+  const { data, isLoading, error } = useGetProductDetailsQuery(productId ?? '');
+  const product = data;
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const user = null;
-  const { id } = useParams();
-  const [product, setProduct] = useState<Product | null>(null);
 
-  console.log(product);
+  const [qty, setQty] = useState(1);
 
-  useEffect(() => {
-    const fetchProduct = async () => {
-      const { data } = await axios.get(`/api/products/${id}`);
-      setProduct(data);
-    };
-    fetchProduct();
-  }, [id]);
   // const [isGalleryOpen, setIsGalleryOpen] = useState(false);
 
   // const galleryImages =
@@ -63,6 +39,20 @@ const ProductScreen = () => {
   //   setIsEditModalOpen(false);
   // };
 
+  const quantityOptions =
+    product && product.quantity > 0
+      ? [...Array(product.quantity).keys()].map((x) => (
+          <option key={x + 1} value={x + 1}>
+            {x + 1}
+          </option>
+        ))
+      : null;
+
+  const handleAddToCart = () => {
+    dispatch(addToCart({ ...product, qty }));
+    navigate('/cart');
+  };
+
   return (
     <div className='flex mx-auto mt-24 p-6 bg-white shadow-lg rounded-md items-center justify-center w-4/5 h-3/4'>
       {/* <Link to='/' className='flex'>
@@ -70,7 +60,21 @@ const ProductScreen = () => {
           Go Back
         </button>
       </Link> */}
-      {product ? (
+
+      {isLoading ? (
+        <Loader />
+      ) : error ? (
+        <Message
+          message={
+            (error as any)?.data?.message ||
+            (error as any)?.error ||
+            'An error occurred'
+          }
+          type='error'
+        />
+      ) : !product ? (
+        <Message message='Product not found' type='error' />
+      ) : (
         <div className='flex items-start'>
           <div className='p-4 w-2/5 h-3/4 relative'>
             <img
@@ -103,12 +107,28 @@ const ProductScreen = () => {
             <p className='text-gray-600'>Category: {product.category}</p>
             <p className='text-gray-600'>Type: {product.typ}</p>
             <p className='text-gray-600'>Size: {product.size} ml</p>
+
             <p className='text-xl font-bold my-4'>${product.price}</p>
             {/* <p className="mb-2"><span className="font-semibold">Brand:</span> {product.brand}</p> */}
             {/* <p className="mb-2">{product.ml} ml</p> */}
+
+            {product && product.quantity > 0 && (
+              <div className='flex items-center'>
+                <p className='mr-2'>Quantity:</p>
+                <select
+                  className='border border-gray-300 rounded-md px-2 py-1'
+                  value={qty}
+                  onChange={(e) => setQty(Number(e.target.value))}
+                >
+                  {quantityOptions}
+                </select>
+              </div>
+            )}
+
             <button
               className='bg-orange-100 px-4 py-2 rounded-md hover:bg-orange-200  transition duration-200'
-              // onClick={handleAddToCart}
+              disabled={product && product.quantity === 0}
+              onClick={handleAddToCart}
             >
               Add to cart
             </button>
@@ -122,8 +142,6 @@ const ProductScreen = () => {
             ) : null}
           </div>
         </div>
-      ) : (
-        <div>Product not found</div>
       )}
     </div>
   );
