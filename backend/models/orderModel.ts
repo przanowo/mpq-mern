@@ -1,38 +1,5 @@
-import mongoose, { Document } from 'mongoose';
-
-interface IOrder extends Document {
-  user: string;
-  orderItems: [
-    {
-      name: string;
-      qty: number;
-      image: string;
-      price: number;
-      product: string;
-    }
-  ];
-  shippingAddress: {
-    address: string;
-    city: string;
-    zipCode: string;
-    country: string;
-  };
-  paymentMethod: string;
-  paymentResult: {
-    id: string;
-    status: string;
-    update_time: string;
-    email_address: string;
-  };
-  itemsPrice: number;
-  taxPrice: number;
-  shippingPrice: number;
-  totalPrice: number;
-  isPaid: boolean;
-  paidAt: string;
-  isDelivered: boolean;
-  deliveredAt: string;
-}
+import mongoose from 'mongoose';
+import { IOrder } from '../types/orderType';
 
 const orderSchema = new mongoose.Schema(
   {
@@ -43,9 +10,9 @@ const orderSchema = new mongoose.Schema(
     },
     orderItems: [
       {
-        name: { type: String, required: true },
+        title: { type: String, required: true },
         qty: { type: Number, required: true },
-        image: { type: String, required: true },
+        mainImage: { type: String, required: true },
         price: { type: Number, required: true },
         product: {
           type: mongoose.Schema.Types.ObjectId,
@@ -55,9 +22,13 @@ const orderSchema = new mongoose.Schema(
       },
     ],
     shippingAddress: {
-      address: { type: String, required: true },
+      firstName: { type: String, required: true },
+      lastName: { type: String, required: true },
+      addressLine1: { type: String, required: true },
+      addressLine2: { type: String },
+      county: { type: String },
       city: { type: String, required: true },
-      zipCode: { type: String, required: true },
+      postcode: { type: String, required: true },
       country: { type: String, required: true },
     },
     paymentMethod: {

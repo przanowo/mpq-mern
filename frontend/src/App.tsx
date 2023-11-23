@@ -2,9 +2,9 @@ import React from 'react';
 // import { Route, Routes } from 'react-router-dom';
 import Navigation from './components/Navigation';
 // import Footer from './components/Footer';
-// import Home from './pages/Home';
-// import Home from './pages/Home';
 import { Outlet } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const App = () => {
   return (
@@ -13,6 +13,7 @@ const App = () => {
       {/* <Home /> */}
       <Outlet />
       {/* <Footer /> */}
+      <ToastContainer />
     </div>
   );
 };

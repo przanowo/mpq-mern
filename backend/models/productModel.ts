@@ -1,28 +1,5 @@
-import mongoose, { Document } from 'mongoose';
-
-interface IProduct extends Document {
-  title: string;
-  titletolow: string;
-  description: string;
-  price: number;
-  category: string;
-  mainImage: string;
-  images: string[];
-  typ: string;
-  show: string;
-  sex: string;
-  nowe: string;
-  liked: string;
-  magazine: string;
-  featured: string;
-  currency: string;
-  createdAt: string;
-  size: number;
-  rating: number;
-  quantity: number;
-  discount: number;
-  numReviews: number;
-}
+import mongoose from 'mongoose';
+import { IProduct } from '../types/productType';
 
 const productSchema = new mongoose.Schema(
   {

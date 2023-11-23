@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { logout } from '../slices/authSlice';
+import { useLogoutMutation } from '../slices/usersApiSlice';
 import {
   HiMenuAlt1,
   HiOutlineHome,
@@ -8,12 +10,14 @@ import {
 import { MdOutlineAccountCircle } from 'react-icons/md';
 import logoblack from '../logoblack.png';
 import logowhite from '../logowhite.png';
-import { Link } from 'react-router-dom';
-import { AppState } from '../types/CartType';
+import { Link, useNavigate } from 'react-router-dom';
+import { CartAppState } from '../types/CartType';
+import { toast } from 'react-toastify';
+import { UserAppState } from '../types/UserType';
 
 const Navigation = () => {
-  const user = null;
-  const { cartItems } = useSelector((state: AppState) => state.cart);
+  const { cartItems } = useSelector((state: CartAppState) => state.cart);
+  const { userInfo } = useSelector((state: UserAppState) => state.auth);
   const [isAtTop, setIsAtTop] = useState(true);
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -21,8 +25,6 @@ const Navigation = () => {
   const fixedLogoClasses = `${logoSrc}`;
   const navbarClasses = isAtTop ? 'text-white' : 'bg-white text-black';
   const fixedNavbarClasses = `lg:fixed z-20 w-screen px-4 transition duration-200 ease-in-out sm:h-18 md:px-8 lg:px-2.5 ${navbarClasses}`;
-
-  console.log(cartItems);
 
   useEffect(() => {
     // Function to handle scroll events
@@ -45,6 +47,22 @@ const Navigation = () => {
 
   const closeMobileMenu = () => {
     setMenuOpen(false);
+  };
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const [logoutApiCall] = useLogoutMutation();
+
+  const logoutHandler = async () => {
+    try {
+      await logoutApiCall().unwrap();
+      dispatch(logout());
+      navigate('/');
+      toast.success('Logout successful');
+    } catch (error: any) {
+      console.log(error);
+    }
   };
 
   return (
@@ -106,10 +124,13 @@ const Navigation = () => {
             </Link>
           </div>
           <div className='lg:flex hidden ltr:md:ml-6 rtl:md:mr-6 ltr:xl:ml-10 rtl:xl:mr-10 py-7'>
-            {user ? ( // If user is logged in, show logout button
+            {userInfo ? ( // If user is logged in, show logout button
               <>
                 <Link to='/'>
-                  <button className='px-3 py-2'> Logout </button>
+                  <button className='px-3 py-2' onClick={logoutHandler}>
+                    {' '}
+                    Logout{' '}
+                  </button>
                 </Link>
                 <Link className='px-3 py-2 text-2xl text-center' to='/account'>
                   {' '}
@@ -123,20 +144,27 @@ const Navigation = () => {
                   {' '}
                   Login{' '}
                 </Link>
-                <Link className='px-3 py-2' to='/signup'>
+                <Link className='px-3 py-2' to='/register'>
                   {' '}
                   Register{' '}
                 </Link>
               </>
             )}
-            {user ? (
-              <Link className='px-3 py-2' to='/admin'>
-                {' '}
-                Admin{' '}
-              </Link>
+            {userInfo?.isAdmin ? (
+              <div>
+                <Link className='px-3 py-2' to='/admin/orderlist'>
+                  <button>Orders</button>
+                </Link>{' '}
+                <Link className='px-3 py-2' to='/admin/orderlist'>
+                  <button>Users</button>
+                </Link>{' '}
+                <Link className='px-3 py-2' to='/admin/orderlist'>
+                  <button>Products</button>
+                </Link>{' '}
+              </div>
             ) : null}
             {/* <Link className='px-3 py-2 text-2xl text-center' to='/checkout'> <HiOutlineShoppingCart /> </Link> */}
-            <Link className='px-4 py-2 text-2xl text-center' to='/checkout'>
+            <Link className='px-4 py-2 text-2xl text-center' to='/cart'>
               <div className='relative block'>
                 <HiOutlineShoppingCart />
                 {cartItems.length > 0 && (
@@ -147,6 +175,7 @@ const Navigation = () => {
               </div>
             </Link>
           </div>
+
           {/* //mobile menu */}
           <div className='lg:hidden fixed z-10 bottom-0 flex items-center justify-between text-gray-700 body-font bg-white w-full h-14 sm:h-16 px-6 md:px-8 pb-3'>
             <button
@@ -160,7 +189,7 @@ const Navigation = () => {
               <HiOutlineHome />{' '}
             </Link>
             <div className='relative block'>
-              <Link to='/checkout'>
+              <Link to='/cart'>
                 <HiOutlineShoppingCart />
                 {cartItems.length > 0 && (
                   <span className='absolute -right-2 -bottom-3 text-red-500 text-base font-medium'>
@@ -223,10 +252,13 @@ const Navigation = () => {
                   {' '}
                   Gold{' '}
                 </Link>
-                {user ? (
+                {userInfo ? (
                   <>
                     <Link to='/'>
-                      <button className='px-3 py-4 rounded-lg text-xl'>
+                      <button
+                        className='px-3 py-4 rounded-lg text-xl'
+                        onClick={logoutHandler}
+                      >
                         {' '}
                         Logout{' '}
                       </button>
@@ -252,7 +284,7 @@ const Navigation = () => {
                     </Link>
                     <Link
                       className='px-3 py-4 rounded-lg text-xl'
-                      to='/signup'
+                      to='/register'
                       onClick={closeMobileMenu}
                     >
                       {' '}
@@ -260,7 +292,7 @@ const Navigation = () => {
                     </Link>
                   </>
                 )}
-                {user ? (
+                {userInfo?.isAdmin ? (
                   <Link
                     className='px-3 py-4 rounded-lg text-xl'
                     to='/admin'
@@ -284,7 +316,7 @@ const Navigation = () => {
                   <HiOutlineHome />{' '}
                 </Link>
                 <div className='relative block'>
-                  <Link to='/checkout' onClick={closeMobileMenu}>
+                  <Link to='/cart' onClick={closeMobileMenu}>
                     <HiOutlineShoppingCart />
                     {cartItems.length > 0 && (
                       <span className='absolute -right-2 -bottom-3 text-red-500 text-base font-medium'>

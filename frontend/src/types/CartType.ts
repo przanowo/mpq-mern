@@ -30,8 +30,21 @@ export interface CartState {
   shippingPrice: number; // Changed to number
   taxPrice: number; // Changed to number
   totalPrice: number; // Changed to number
+  shippingAddress: {
+    firstName: string;
+    lastName: string;
+    addressLine1: string;
+    addressLine2: string;
+    county: string;
+    city: string;
+    postcode: string;
+    country: string;
+    phoneNumber: string;
+    email: string;
+  };
+  paymentMethod: string;
 }
 
-export interface AppState {
+export interface CartAppState {
   cart: CartState;
 }
