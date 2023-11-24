@@ -8,7 +8,6 @@ import { useGetOrdersQuery } from '../../slices/ordersApiSlice';
 const OrderScreen = () => {
   const dispatch = useDispatch();
   const { data: orders, error, isLoading } = useGetOrdersQuery({});
-  console.log(orders);
 
   return (
     <div>

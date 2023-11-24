@@ -106,7 +106,7 @@ const ProductScreen = () => {
             <p className='text-gray-600'>Sex: {product.sex}</p>
             <p className='text-gray-600'>Category: {product.category}</p>
             <p className='text-gray-600'>Type: {product.typ}</p>
-            <p className='text-gray-600'>Size: {product.size} ml</p>
+            <p className='text-gray-600'>{`Size: {product.size} ml`}</p>
 
             <p className='text-xl font-bold my-4'>${product.price}</p>
             {/* <p className="mb-2"><span className="font-semibold">Brand:</span> {product.brand}</p> */}

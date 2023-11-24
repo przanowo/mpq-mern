@@ -155,10 +155,10 @@ const Navigation = () => {
                 <Link className='px-3 py-2' to='/admin/orderlist'>
                   <button>Orders</button>
                 </Link>{' '}
-                <Link className='px-3 py-2' to='/admin/orderlist'>
+                <Link className='px-3 py-2' to='/admin/users'>
                   <button>Users</button>
                 </Link>{' '}
-                <Link className='px-3 py-2' to='/admin/orderlist'>
+                <Link className='px-3 py-2' to='/admin/productlist'>
                   <button>Products</button>
                 </Link>{' '}
               </div>

@@ -10,12 +10,12 @@ export interface IProduct extends Document {
   mainImage: string;
   images: string[];
   typ: string;
-  show: string;
+  show: boolean;
   sex: string;
-  nowe: string;
-  liked: string;
+  nowe: boolean;
+  liked: boolean;
   magazine: string;
-  featured: string;
+  featured: boolean;
   currency: string;
   createdAt: string;
   size: number;

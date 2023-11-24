@@ -1,3 +1,4 @@
+import path from 'path';
 import express, { Express, Request, Response } from 'express';
 import { notFound, errorHandler } from './middleware/errorMiddleware';
 import dotenv from 'dotenv';
@@ -7,6 +8,7 @@ connectDB();
 import productRoutes from './routes/productRoutes';
 import userRoutes from './routes/userRoutes';
 import orderRoutes from './routes/orderRoutes';
+import uploadRoutes from './routes/uploadRoutes';
 import cookieParser from 'cookie-parser';
 
 const app: Express = express();
@@ -26,10 +28,14 @@ app.get('/', (req: Request, res: Response) => {
 app.use('/api/products', productRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/orders', orderRoutes);
+app.use('/api/upload', uploadRoutes);
 
 app.get('/api/config/paypal', (req: Request, res: Response) =>
   res.send(process.env.PAYPAL_CLI_ID)
 );
+
+const dirname = path.resolve();
+app.use('/uploads', express.static(path.join(dirname, '/uploads')));
 
 app.use(notFound);
 app.use(errorHandler);
