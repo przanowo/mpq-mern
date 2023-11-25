@@ -1,14 +1,26 @@
+import { Link, useParams } from 'react-router-dom';
 import { SlArrowDown } from 'react-icons/sl';
 import ProductCard from '../components/ProductCard';
 import { useGetProductsQuery } from '../slices/productApiSlice';
 import { Product } from '../types/ProductType';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
+import Paginate from '../components/Paginate';
+import ProductCarousel from '../components/ProductCarousel';
 
 const Home = () => {
-  const { data, isLoading, error } = useGetProductsQuery();
+  const { pageNumber, keyword } = useParams<{
+    pageNumber: string;
+    keyword: string;
+  }>();
+  const pageNumberNum = pageNumber ? parseInt(pageNumber, 10) : 1;
+  const { data, isLoading, error } = useGetProductsQuery({
+    keyword: keyword,
+    pageNumber: pageNumberNum,
+  });
 
-  const products = data as Product[] | undefined;
+  const products = data?.products as Product[];
+  const pages = data?.pages as number;
 
   return (
     <>
@@ -37,6 +49,20 @@ const Home = () => {
                 <SlArrowDown />
               </button>
             </div>
+            {!keyword ? (
+              <ProductCarousel />
+            ) : (
+              <Link
+                to='/'
+                className='text-gray-500 hover:text-gray-900 lg:text-xl m-2'
+              >
+                <button className=' bg-orange-100 text-black text-center px-2 py-1 rounded-md hover:bg-orange-200 transition duration-200'>
+                  Go Back
+                </button>
+              </Link>
+            )}
+
+            <h1>Products</h1>
             <ul className='grid grid-cols-3 lg:grid-cols-6 gap-4 mx-4'>
               {products?.map((product: Product) => (
                 <li key={product._id}>
@@ -44,6 +70,13 @@ const Home = () => {
                 </li>
               ))}
             </ul>
+            <div className='my-4'>
+              <Paginate
+                pages={pages}
+                currentPage={pageNumberNum}
+                keyword={keyword}
+              />
+            </div>
           </div>
         </>
       )}

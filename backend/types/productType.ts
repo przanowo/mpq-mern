@@ -1,6 +1,7 @@
 import { Document } from 'mongoose';
 
 export interface IProduct extends Document {
+  user: string;
   _id: string;
   title: string;
   titletolow: string;
@@ -23,4 +24,12 @@ export interface IProduct extends Document {
   quantity: number;
   discount: number;
   numReviews: number;
+  reviews: IReview[];
+}
+
+export interface IReview {
+  user: string;
+  name: string;
+  rating: number;
+  comment: string;
 }

@@ -1,13 +1,24 @@
 import express, { Request, Response } from 'express';
 import asyncHandler from '../middleware/asyncHandler';
 import Product from '../models/productModel';
+import { RequestWithUser } from '../types/userType';
+import { IReview } from '../types/productType';
 
 // @desc   Fetch all products
 // @route  GET /api/products
 // @access Public
 const getProducts = asyncHandler(async (req: Request, res: Response) => {
-  const products = await Product.find({});
-  res.json(products);
+  const pageSize = 1;
+  const currentPage = Number(req.query.pageNumber) || 1;
+  const keyword = req.query.keyword
+    ? { title: { $regex: req.query.keyword, $options: 'i' } }
+    : {};
+  const count = await Product.countDocuments({ ...keyword });
+  const products = await Product.find({ ...keyword })
+    .limit(pageSize)
+    .skip(pageSize * (currentPage - 1));
+
+  res.json({ products, currentPage, pages: Math.ceil(count / pageSize) });
 });
 
 // @desc   Fetch all products
@@ -27,31 +38,34 @@ const getProductById = asyncHandler(async (req: Request, res: Response) => {
 // @desc   Create a product
 // @route  POST /api/products
 // @access Private/Admin
-const createProduct = asyncHandler(async (req: Request, res: Response) => {
-  const product = new Product({
-    title: 'Empty product',
-    titletolow: 'Empty',
-    description: 'Empty',
-    price: 0,
-    category: 'Empty',
-    mainImage: 'Empty',
-    typ: 'Empty',
-    show: true,
-    sex: 'Empty',
-    nowe: false,
-    liked: false,
-    magazine: 'NL',
-    featured: false,
-    currency: 'EUR',
-    size: 0,
-    rating: 0,
-    quantity: 1,
-    discount: 0,
-    numReviews: 0,
-  });
-  const createdProduct = await product.save();
-  res.status(201).json(createdProduct);
-});
+const createProduct = asyncHandler(
+  async (req: RequestWithUser, res: Response) => {
+    const product = new Product({
+      user: req.user?._id,
+      title: 'Empty product',
+      titletolow: 'Empty',
+      description: 'Empty',
+      price: 0,
+      category: 'Empty',
+      mainImage: 'Empty',
+      typ: 'Empty',
+      show: true,
+      sex: 'Empty',
+      nowe: false,
+      liked: false,
+      magazine: 'NL',
+      featured: false,
+      currency: 'EUR',
+      size: 0,
+      rating: 0,
+      quantity: 1,
+      discount: 0,
+      numReviews: 0,
+    });
+    const createdProduct = await product.save();
+    res.status(201).json(createdProduct);
+  }
+);
 
 // @desc   Update products
 // @route  PUT /api/products/:id
@@ -108,10 +122,64 @@ const deleteProduct = asyncHandler(async (req: Request, res: Response) => {
   }
 });
 
+// @desc Create new review
+// @route POST /api/products/:id/reviews
+// @access Private
+
+const createProductReview = asyncHandler(
+  async (req: RequestWithUser, res: Response) => {
+    const product = await Product.findById(req.params.id);
+
+    if (product) {
+      const alreadyReviewed = product.reviews.find(
+        (review) => review.user.toString() === req.user?._id.toString()
+      );
+
+      if (alreadyReviewed) {
+        res.status(400);
+        throw new Error('Product already reviewed!');
+      }
+
+      const review: IReview = {
+        name: req.user?.name || '',
+        rating: Number(req.body.rating),
+        comment: req.body.comment,
+        user: req.user?._id.toString(),
+      };
+
+      product.reviews.push(review);
+
+      product.numReviews = product.reviews.length;
+
+      product.rating =
+        product.reviews.reduce((acc, item) => item.rating + acc, 0) /
+        product.reviews.length;
+
+      await product.save();
+      res.status(201).json({ message: 'Review added!' });
+    } else {
+      res.status(404);
+      throw new Error('Product not found!');
+    }
+  }
+);
+
+// @desc Get top rated products
+// @route GET /api/products/top
+// @access Public
+
+const getTopProducts = asyncHandler(async (req: Request, res: Response) => {
+  const products = await Product.find({}).sort({ rating: -1 }).limit(3);
+
+  res.status(200).json(products);
+});
+
 export {
   getProducts,
   getProductById,
   createProduct,
   updateProduct,
   deleteProduct,
+  createProductReview,
+  getTopProducts,
 };

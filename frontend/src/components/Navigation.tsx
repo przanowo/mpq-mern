@@ -14,12 +14,14 @@ import { Link, useNavigate } from 'react-router-dom';
 import { CartAppState } from '../types/CartType';
 import { toast } from 'react-toastify';
 import { UserAppState } from '../types/UserType';
+import SearchBox from './SearchBox';
 
 const Navigation = () => {
   const { cartItems } = useSelector((state: CartAppState) => state.cart);
   const { userInfo } = useSelector((state: UserAppState) => state.auth);
   const [isAtTop, setIsAtTop] = useState(true);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [adminDropdownOpen, setAdminDropdownOpen] = useState(false);
 
   const logoSrc = isAtTop ? logowhite : logoblack;
   const fixedLogoClasses = `${logoSrc}`;
@@ -65,6 +67,42 @@ const Navigation = () => {
     }
   };
 
+  const AdminDropdown = () => {
+    return (
+      <div
+        onMouseEnter={() => setAdminDropdownOpen(true)}
+        onMouseLeave={() => setAdminDropdownOpen(false)}
+        className='relative'
+      >
+        <button className='px-3 py-2 rounded-lg hover:bg-white/20'>
+          Admin
+        </button>
+        {adminDropdownOpen && (
+          <div className='absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-lg py-1 z-20'>
+            <Link
+              className='block px-4 py-2 text-sm hover:bg-gray-100'
+              to='/admin/productlist'
+            >
+              Products
+            </Link>
+            <Link
+              className='block px-4 py-2 text-sm hover:bg-gray-100'
+              to='/admin/orderlist'
+            >
+              Orders
+            </Link>
+            <Link
+              className='block px-4 py-2 text-sm hover:bg-gray-100'
+              to='/admin/userlist'
+            >
+              Users
+            </Link>
+          </div>
+        )}
+      </div>
+    );
+  };
+
   return (
     <nav className='lg: absolute z-20 h-26 sm:h-20 lg:h-20 overflow-hidden lg:mb-6'>
       <div className={fixedNavbarClasses}>
@@ -79,6 +117,7 @@ const Navigation = () => {
           </Link>
 
           {/* //desktop menu */}
+
           <div className='lg:flex hidden text-center items-center'>
             <Link
               className='px-3 py-2 rounded-lg hover:bg-white/20 hover:text-lg'
@@ -124,46 +163,65 @@ const Navigation = () => {
             </Link>
           </div>
           <div className='lg:flex hidden ltr:md:ml-6 rtl:md:mr-6 ltr:xl:ml-10 rtl:xl:mr-10 py-7'>
-            {userInfo ? ( // If user is logged in, show logout button
+            <div className='lg:flex hidden text-center items-center rounded-xl px-3'>
+              <SearchBox />
+            </div>
+            {userInfo ? (
               <>
                 <Link to='/'>
                   <button className='px-3 py-2' onClick={logoutHandler}>
-                    {' '}
-                    Logout{' '}
+                    Logout
                   </button>
                 </Link>
                 <Link className='px-3 py-2 text-2xl text-center' to='/account'>
-                  {' '}
-                  <MdOutlineAccountCircle />{' '}
+                  <MdOutlineAccountCircle />
                 </Link>
+
+                {userInfo.isAdmin && (
+                  <div
+                    onMouseEnter={() => setAdminDropdownOpen(true)}
+                    onMouseLeave={() => setAdminDropdownOpen(false)}
+                    className='relative'
+                  >
+                    <button className='px-3 py-2 rounded-lg hover:bg-white/20'>
+                      Admin
+                    </button>
+                    {adminDropdownOpen && (
+                      <div className='absolute right-0 mt-2 w-48 bg-white/50 shadow-lg rounded-lg py-1 z-20'>
+                        <Link
+                          className='block px-4 py-2 text-sm hover:bg-gray-100 w-full'
+                          to='/admin/productlist'
+                        >
+                          Products
+                        </Link>
+                        <Link
+                          className='block px-4 py-2 text-sm hover:bg-gray-100'
+                          to='/admin/orderlist'
+                        >
+                          Orders
+                        </Link>
+                        <Link
+                          className='block px-4 py-2 text-sm hover:bg-gray-100'
+                          to='/admin/userlist'
+                        >
+                          Users
+                        </Link>
+                      </div>
+                    )}
+                  </div>
+                )}
               </>
             ) : (
-              // If user is not logged in, show login and register buttons
               <>
                 <Link className='px-3 py-2' to='/login'>
-                  {' '}
-                  Login{' '}
+                  Login
                 </Link>
                 <Link className='px-3 py-2' to='/register'>
-                  {' '}
-                  Register{' '}
+                  Register
                 </Link>
               </>
             )}
-            {userInfo?.isAdmin ? (
-              <div>
-                <Link className='px-3 py-2' to='/admin/orderlist'>
-                  <button>Orders</button>
-                </Link>{' '}
-                <Link className='px-3 py-2' to='/admin/users'>
-                  <button>Users</button>
-                </Link>{' '}
-                <Link className='px-3 py-2' to='/admin/productlist'>
-                  <button>Products</button>
-                </Link>{' '}
-              </div>
-            ) : null}
-            {/* <Link className='px-3 py-2 text-2xl text-center' to='/checkout'> <HiOutlineShoppingCart /> </Link> */}
+
             <Link className='px-4 py-2 text-2xl text-center' to='/cart'>
               <div className='relative block'>
                 <HiOutlineShoppingCart />

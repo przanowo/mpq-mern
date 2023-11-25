@@ -1,4 +1,5 @@
 export interface Product {
+  user: string;
   _id: string;
   category: string;
   createdAt: string;
@@ -21,4 +22,27 @@ export interface Product {
   title: string;
   titletolow: string;
   typ: string;
+  reviews: Review[];
+}
+
+export interface Review {
+  _id: string;
+  productId: string;
+  comment: string;
+  createdAt: string;
+  name: string;
+  rating: number;
+  user: string;
+}
+
+export interface ReviewData {
+  comment: string;
+  rating: number;
+}
+
+export interface PaginateProps {
+  pages: number;
+  currentPage: number;
+  isAdmin?: boolean;
+  keyword?: string;
 }

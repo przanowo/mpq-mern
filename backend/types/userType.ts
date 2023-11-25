@@ -16,10 +16,3 @@ export interface IUserDocument extends IUser, Document {}
 export interface RequestWithUser extends Request {
   user?: IUserDocument;
 }
-
-// export interface UserType {
-//   _id: string;
-//   name: string;
-//   email: string;
-//   isAdmin: boolean;
-// }

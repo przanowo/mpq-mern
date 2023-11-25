@@ -7,17 +7,24 @@ import {
 import { FaEdit, FaTrash } from 'react-icons/fa';
 import Loader from '../../components/Loader';
 import Message from '../../components/Message';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import Paginate from '../../components/Paginate';
 
 const ProductListScreen = () => {
-  const { data, isLoading, error, refetch } = useGetProductsQuery();
+  const { pageNumber } = useParams<{ pageNumber: string }>();
+  const pageNumberNum = pageNumber ? parseInt(pageNumber, 10) : 1;
+  const { data, isLoading, error, refetch } = useGetProductsQuery({
+    pageNumber: pageNumberNum,
+  });
+
+  const products = data?.products as Product[];
+  const pages = data?.pages as number;
+
   const [
     createProduct,
     { isSuccess, isLoading: loadingCreate, error: errorCreate },
   ] = useCreateProductMutation();
-
-  const products = data as Product[] | undefined;
 
   const [deleteProduct, { isLoading: loadingDelete, error: errorDelete }] =
     useDeleteProductMutation();
@@ -122,6 +129,9 @@ const ProductListScreen = () => {
           </div>
         ))
       )}
+      <div className='my-4'>
+        <Paginate pages={pages} currentPage={pageNumberNum} isAdmin={true} />
+      </div>
     </div>
   );
 };
