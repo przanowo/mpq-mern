@@ -12,6 +12,9 @@ const errorHandler = (
   res: Response,
   next: NextFunction
 ) => {
+  if (res.headersSent) {
+    return next(err);
+  }
   let statusCode = res.statusCode === 200 ? 500 : res.statusCode;
   let message = err.message;
 

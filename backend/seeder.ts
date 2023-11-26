@@ -89,6 +89,7 @@ const importData = async () => {
 
     const modifiedProducts = products.map((product) => {
       console.log(`Modifying product types for: ${product.title}`);
+      const createdAtString = new Date().toISOString(); // Current date and time
       return {
         ...product,
         user: adminUser,
@@ -99,6 +100,7 @@ const importData = async () => {
         liked: product.liked === 'yes',
         nowe: product.nowe === 'yes',
         show: product.show === 'yes',
+        createdAt: createdAtString,
       };
     });
 
