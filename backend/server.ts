@@ -33,6 +33,10 @@ app.get('/api/config/paypal', (req: Request, res: Response) =>
 const dirname = path.resolve();
 app.use('/uploads', express.static(path.join(dirname, '/uploads')));
 
+// Serve images statically
+const dirname2 = path.resolve();
+app.use('/images', express.static(path.join(dirname2, 'localdata', 'images')));
+
 if (process.env.NODE_ENV === 'production') {
   const frontendPath = path.join(dirname, 'frontend', 'build');
   app.use(express.static(frontendPath));
