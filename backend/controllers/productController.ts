@@ -8,7 +8,7 @@ import { IReview } from '../types/productType';
 // @route  GET /api/products
 // @access Public
 const getProducts = asyncHandler(async (req: Request, res: Response) => {
-  const pageSize = 1;
+  const pageSize = Number(process.env.PAGINATION_LIMIT);
   const currentPage = Number(req.query.pageNumber) || 1;
   const keyword = req.query.keyword
     ? { title: { $regex: req.query.keyword, $options: 'i' } }
@@ -19,6 +19,9 @@ const getProducts = asyncHandler(async (req: Request, res: Response) => {
     .skip(pageSize * (currentPage - 1));
 
   res.json({ products, currentPage, pages: Math.ceil(count / pageSize) });
+  console.log(
+    res.json({ products, currentPage, pages: Math.ceil(count / pageSize) })
+  );
 });
 
 // @desc   Fetch all products
