@@ -35,14 +35,11 @@ app.use('/uploads', express.static(path.join(dirname, '/uploads')));
 
 // Serve images statically
 
-if (process.env.NODE_ENV === 'production') {
+if (process.env.RUNNING_ON_SERVER === 'true') {
   app.use('/images', express.static('/data/images'));
 } else {
   const dirname2 = path.resolve();
-  app.use(
-    '/images',
-    express.static(path.join(dirname2, 'localdata', 'images'))
-  );
+  app.use('/images', express.static(path.join(dirname2, 'data', 'images')));
 }
 
 if (process.env.NODE_ENV === 'production') {
