@@ -42,13 +42,6 @@ const downloadImage = async (
   });
 };
 
-const ensureDirectoryExists = (dirPath: string) => {
-  if (!fs.existsSync(dirPath)) {
-    fs.mkdirSync(dirPath, { recursive: true });
-    console.log(`Created directory: ${dirPath}`);
-  }
-};
-
 const importData = async () => {
   try {
     console.log('Starting data import...');
@@ -61,8 +54,6 @@ const importData = async () => {
     const adminUser = createdUsers[0]._id;
     console.log('Users imported.');
 
-    ensureDirectoryExists(imageStoragePath);
-
     for (const product of products) {
       console.log(`Processing product: ${product.title}`);
 
@@ -73,7 +64,7 @@ const importData = async () => {
           Math.random() * 1000
         )}.jpg`;
         await downloadImage(imageUrl, filename);
-        product.images[i] = `/data/images/${filename}`; // Store the path as /images/filename
+        product.images[i] = `/data/images/${filename}`;
       }
 
       // Process main image
@@ -82,15 +73,13 @@ const importData = async () => {
         Math.random() * 1000
       )}.jpg`;
       await downloadImage(mainImageUrl, mainImageFilename);
-      product.mainImage = `/images/${mainImageFilename}`; // Store the path as /images/filename
+      product.mainImage = `/images/${mainImageFilename}`;
 
       console.log(`Processed product: ${product.title}`);
-    }
 
-    const modifiedProducts = products.map((product) => {
-      console.log(`Modifying product types for: ${product.title}`);
-      const createdAtString = new Date().toISOString(); // Current date and time
-      return {
+      // Modify and insert the product
+      const createdAtString = new Date().toISOString();
+      const modifiedProduct = {
         ...product,
         user: adminUser,
         quantity: Number(product.quantity),
@@ -100,11 +89,12 @@ const importData = async () => {
         liked: product.liked === 'yes',
         nowe: product.nowe === 'yes',
         show: product.show === 'yes',
-        createdAt: createdAtString,
+        createdAt: createdAtString, // ... other fields
       };
-    });
+      await Product.create(modifiedProduct);
+      console.log(`Inserted product: ${product.title}`);
+    }
 
-    await Product.insertMany(modifiedProducts);
     console.log('All data imported successfully.');
     process.exit();
   } catch (error) {
