@@ -64,7 +64,7 @@ const importData = async () => {
           Math.random() * 1000
         )}.jpg`;
         await downloadImage(imageUrl, filename);
-        product.images[i] = `/data/images/${filename}`;
+        product.images[i] = `/images/${filename}`;
       }
 
       // Process main image

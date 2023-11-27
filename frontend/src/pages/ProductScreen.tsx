@@ -26,6 +26,10 @@ const ProductScreen = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const handleBack = () => {
+    navigate(-1); // Navigates back to the previous page
+  };
+
   const [qty, setQty] = useState(1);
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState('');
@@ -76,13 +80,15 @@ const ProductScreen = () => {
   };
 
   return (
-    <div className='flex mx-auto mt-24 p-6 bg-white shadow-lg rounded-md items-center justify-center w-4/5 h-3/4'>
-      {/* <Link to='/' className='flex'>
-        <button className='bg-orange-100 mx-2 px-4 py-2 rounded-md hover:bg-orange-200 transition duration-200'>
+    <div className='flex-col mx-auto mt-24 p-6 bg-white shadow-lg rounded-md items-center justify-center w-4/5 h-3/4'>
+      <div className='flex justify-between items-center mb-4'>
+        <button
+          className=' bg-orange-100 px-4 py-2 rounded-md hover:bg-orange-200  transition duration-200'
+          onClick={handleBack}
+        >
           Go Back
         </button>
-      </Link> */}
-
+      </div>
       {isLoading ? (
         <Loader />
       ) : error ? (
@@ -97,9 +103,10 @@ const ProductScreen = () => {
       ) : !product ? (
         <Message message='Product not found' type='error' />
       ) : (
-        <>
+        <div className='flex justify-between'>
           <Meta title={product.title} />
-          <div className='flex items-start'>
+
+          <div className='flex '>
             <div className='p-4 w-2/5 h-3/4 relative'>
               <img
                 src={product.mainImage}
@@ -121,7 +128,9 @@ const ProductScreen = () => {
                   ))}
               </div>
             </div>
-            <div className='w-1/2 pl-4 pt-12'>
+          </div>
+          <div className='flex '>
+            <div className=' w-1/2 pl-4 pt-12'>
               <h2 className='text-2xl font-bold mb-2'>{product.title}</h2>
               <p className='text-gray-600 my-6'>
                 Description: {product.description}
@@ -159,12 +168,12 @@ const ProductScreen = () => {
             </div>
           </div>
 
-          <div className='mt-12'>
-            <h2 className='text-2xl font-bold mb-2'>Reviews</h2>
-            {product.reviews.length === 0 && (
-              <Message message='No Reviews' type='info' />
-            )}
+          <div className='flex mt-12'>
             <div className='flex flex-col'>
+              <h2 className='text-2xl font-bold mb-2'>Reviews</h2>
+              {product.reviews.length === 0 && (
+                <Message message='No Reviews' type='info' />
+              )}
               {product.reviews.map((review) => (
                 <div
                   key={review._id}
@@ -224,7 +233,7 @@ const ProductScreen = () => {
               </div>
             </div>
           </div>
-        </>
+        </div>
       )}
     </div>
   );

@@ -3,6 +3,7 @@ import asyncHandler from '../middleware/asyncHandler';
 import Product from '../models/productModel';
 import { RequestWithUser } from '../types/userType';
 import { IReview } from '../types/productType';
+import fs from 'fs';
 
 // @desc   Fetch all products
 // @route  GET /api/products
@@ -15,13 +16,13 @@ const getProducts = asyncHandler(async (req: Request, res: Response) => {
     : {};
   const count = await Product.countDocuments({ ...keyword });
   const products = await Product.find({ ...keyword })
+    .sort({
+      updatedAt: -1,
+    })
     .limit(pageSize)
     .skip(pageSize * (currentPage - 1));
 
   res.json({ products, currentPage, pages: Math.ceil(count / pageSize) });
-  console.log(
-    res.json({ products, currentPage, pages: Math.ceil(count / pageSize) })
-  );
 });
 
 // @desc   Fetch all products
@@ -117,8 +118,22 @@ const deleteProduct = asyncHandler(async (req: Request, res: Response) => {
   const product = await Product.findById(req.params.id);
 
   if (product) {
+    // Assuming the image path is stored in a field like product.mainImage
+    const imagePath = product.mainImage || '';
+
+    if (imagePath && fs.existsSync(imagePath)) {
+      try {
+        // Delete the image file
+        await fs.promises.unlink(imagePath);
+      } catch (error) {
+        // Handle potential errors during file deletion
+        console.error('Error deleting image file');
+      }
+    }
+
+    // Delete the product from the database
     await Product.deleteOne({ _id: product._id });
-    res.status(200).json({ message: 'Product removed!' });
+    res.status(200).json({ message: 'Product and image removed!' });
   } else {
     res.status(404);
     throw new Error('Product not found!');

@@ -30,8 +30,12 @@ app.get('/api/config/paypal', (req: Request, res: Response) =>
   res.send(process.env.PAYPAL_CLI_ID)
 );
 
-const dirname = path.resolve();
-app.use('/uploads', express.static(path.join(dirname, '/uploads')));
+if (process.env.RUNNING_ON_SERVER === 'true') {
+  app.use('/uploads', express.static('/data/uploads'));
+} else {
+  const dirname3 = path.resolve();
+  app.use('/uploads', express.static(path.join(dirname3, '/data/images')));
+}
 
 // Serve images statically
 
@@ -43,7 +47,7 @@ if (process.env.RUNNING_ON_SERVER === 'true') {
 }
 
 if (process.env.NODE_ENV === 'production') {
-  const frontendPath = path.join(dirname, 'frontend', 'build');
+  const frontendPath = path.join(__dirname, 'frontend', 'build');
   app.use(express.static(frontendPath));
 
   app.get('*', (req, res) =>

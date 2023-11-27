@@ -67,46 +67,10 @@ const Navigation = () => {
     }
   };
 
-  const AdminDropdown = () => {
-    return (
-      <div
-        onMouseEnter={() => setAdminDropdownOpen(true)}
-        onMouseLeave={() => setAdminDropdownOpen(false)}
-        className='relative'
-      >
-        <button className='px-3 py-2 rounded-lg hover:bg-white/20'>
-          Admin
-        </button>
-        {adminDropdownOpen && (
-          <div className='absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-lg py-1 z-20'>
-            <Link
-              className='block px-4 py-2 text-sm hover:bg-gray-100'
-              to='/admin/productlist'
-            >
-              Products
-            </Link>
-            <Link
-              className='block px-4 py-2 text-sm hover:bg-gray-100'
-              to='/admin/orderlist'
-            >
-              Orders
-            </Link>
-            <Link
-              className='block px-4 py-2 text-sm hover:bg-gray-100'
-              to='/admin/userlist'
-            >
-              Users
-            </Link>
-          </div>
-        )}
-      </div>
-    );
-  };
-
   return (
-    <nav className='lg: absolute z-20 h-26 sm:h-20 lg:h-20 overflow-hidden lg:mb-6'>
+    <nav className='lg:absolute z-20 h-26 sm:h-20 lg:h-20 overflow-hidden'>
       <div className={fixedNavbarClasses}>
-        <div className='flex items-center justify-center lg:justify-between max-w-screen h-full w-full'>
+        <div className='flex items-center justify-center lg:justify-between h-full'>
           <Link to='/'>
             {' '}
             <img
@@ -162,8 +126,8 @@ const Navigation = () => {
               Gold{' '}
             </Link>
           </div>
-          <div className='lg:flex hidden ltr:md:ml-6 rtl:md:mr-6 ltr:xl:ml-10 rtl:xl:mr-10 py-7'>
-            <div className='lg:flex hidden text-center items-center rounded-xl px-3'>
+          <div className='lg:flex hidden ltr:md:ml-6 rtl:md:mr- ltr:xl:ml-10 rtl:xl:mr-10 py-7'>
+            <div className='lg:flex hidden text-center items-center rounded-xl px-3]\'>
               <SearchBox />
             </div>
             {userInfo ? (
@@ -183,25 +147,28 @@ const Navigation = () => {
                     onMouseLeave={() => setAdminDropdownOpen(false)}
                     className='relative'
                   >
-                    <button className='px-3 py-2 rounded-lg hover:bg-white/20'>
+                    <button
+                      className='px-3 py-2 rounded-lg hover:bg-white/20'
+                      onClick={() => setAdminDropdownOpen(true)}
+                    >
                       Admin
                     </button>
                     {adminDropdownOpen && (
-                      <div className='absolute right-0 mt-2 w-48 bg-white/50 shadow-lg rounded-lg py-1 z-20'>
+                      <div className='absolute right-0  w-48 bg-white/25 shadow-lg rounded-lg py-1 z-20'>
                         <Link
-                          className='block px-4 py-2 text-sm hover:bg-gray-100 w-full'
+                          className='block px-4 py-2 text-sm hover:bg-gray-100/50 w-full'
                           to='/admin/productlist'
                         >
                           Products
                         </Link>
                         <Link
-                          className='block px-4 py-2 text-sm hover:bg-gray-100'
+                          className='block px-4 py-2 text-sm hover:bg-gray-100/50'
                           to='/admin/orderlist'
                         >
                           Orders
                         </Link>
                         <Link
-                          className='block px-4 py-2 text-sm hover:bg-gray-100'
+                          className='block px-4 py-2 text-sm hover:bg-gray-100/50'
                           to='/admin/userlist'
                         >
                           Users

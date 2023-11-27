@@ -50,7 +50,9 @@ const Home = () => {
               </button>
             </div>
             {!keyword ? (
-              <ProductCarousel />
+              <div className=' '>
+                <ProductCarousel />
+              </div>
             ) : (
               <Link
                 to='/'

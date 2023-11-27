@@ -4,14 +4,16 @@ import {
   useCreateProductMutation,
   useDeleteProductMutation,
 } from '../../slices/productApiSlice';
-import { FaEdit, FaTrash } from 'react-icons/fa';
+import { FaAdjust, FaEdit, FaEye, FaStream, FaTrash } from 'react-icons/fa';
 import Loader from '../../components/Loader';
 import Message from '../../components/Message';
 import { Link, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import Paginate from '../../components/Paginate';
+import { useNavigate } from 'react-router-dom';
 
 const ProductListScreen = () => {
+  const navigate = useNavigate();
   const { pageNumber } = useParams<{ pageNumber: string }>();
   const pageNumberNum = pageNumber ? parseInt(pageNumber, 10) : 1;
   const { data, isLoading, error, refetch } = useGetProductsQuery({
@@ -61,6 +63,7 @@ const ProductListScreen = () => {
         if ('data' in result && result.data) {
           toast.success('Product created successfully');
           refetch();
+          navigate(`/admin/product/${result.data._id}/edit`);
         }
         // Error in creation
         else if ('error' in result) {
@@ -94,10 +97,9 @@ const ProductListScreen = () => {
         products?.map((product: Product) => (
           <div key={product._id} className='flex items-center border-b py-2'>
             <div className='flex-grow'>
-              <p>{product._id}</p>
-            </div>
-            <div className='flex-grow'>
-              <p>{product.title}</p>
+              <Link to={`/product/${product._id}`}>
+                <p>{product.title}</p>
+              </Link>
             </div>
             <div className='flex-grow'>
               <p>{product.price}</p>
@@ -112,12 +114,20 @@ const ProductListScreen = () => {
               <p>{product.magazine}</p>
             </div>
             <div className='flex-grow'>
+              <Link to={`/product/${product._id}`}>
+                <button className='bg-blue-500 hover:bg-blue-600 text-white font-bold py-1 px-3 rounded'>
+                  <FaEye />
+                </button>
+              </Link>
+            </div>
+            <div className='flex-grow'>
               <Link to={`/admin/product/${product._id}/edit`}>
                 <button className='bg-green-500 hover:bg-green-600 text-white font-bold py-1 px-3 rounded'>
                   <FaEdit />
                 </button>
               </Link>
             </div>
+
             <div
               className='flex-grow'
               onClick={() => deleteHandler(product._id)}

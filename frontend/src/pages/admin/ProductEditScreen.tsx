@@ -118,13 +118,16 @@ const ProductEditScreen = () => {
     const formData = new FormData();
     formData.append('mainImage', e.target.files![0]);
     try {
-      const result = await uploadProductImage(formData).unwrap();
+      const result = await uploadProductImage(formData);
+      console.log(result);
       if ('data' in result && result.data) {
-        setMainImage(result.mainImage);
+        // Access the properties inside result.data
+        setMainImage(result.data.mainImage);
         console.log(result);
-        toast.success(result.message);
+        toast.success(result.data.message);
       } else if ('error' in result) {
-        toast.error(result.error);
+        // Ensure the error object is of the correct type for toast.error()
+        toast.error(result.error.toString());
         console.log(result);
       }
     } catch (error: any) {
@@ -132,6 +135,7 @@ const ProductEditScreen = () => {
       console.log(error);
     }
   };
+
   return (
     <div className='flex w-full p-12 bg-white'>
       <Link
