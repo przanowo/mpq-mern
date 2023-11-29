@@ -9,15 +9,12 @@ import User from './models/userModel';
 import Product from './models/productModel';
 import Order from './models/orderModel';
 import connectDB from './config/db';
-
 dotenv.config();
 connectDB();
-
 const isRunningOnServer = process.env.RUNNING_ON_SERVER === 'true';
 const imageStoragePath = isRunningOnServer
   ? '/data/images'
   : path.join(__dirname, '..', 'data', 'images');
-
 const downloadImage = async (
   url: string,
   filename: string
@@ -29,10 +26,8 @@ const downloadImage = async (
     method: 'GET',
     responseType: 'stream',
   });
-
   const writer = fs.createWriteStream(localPath);
   response.data.pipe(writer);
-
   return new Promise((resolve, reject) => {
     writer.on('finish', () => {
       console.log(`Downloaded and saved to: ${localPath}`);
@@ -49,7 +44,6 @@ const importData = async () => {
     await Product.deleteMany({});
     await User.deleteMany({});
     console.log('Existing data cleared.');
-
     const createdUsers = await User.insertMany(users);
     const adminUser = createdUsers[0]._id;
     console.log('Users imported.');
@@ -102,7 +96,6 @@ const importData = async () => {
     process.exit(1);
   }
 };
-
 const destroyData = async () => {
   try {
     console.log('Destroying data...');
@@ -116,7 +109,6 @@ const destroyData = async () => {
     process.exit(1);
   }
 };
-
 if (process.argv[2] === '-d') {
   console.log('Destroy data mode activated.');
   // @ts-ignore

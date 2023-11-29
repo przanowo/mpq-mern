@@ -17,6 +17,7 @@ const Home = () => {
   const { data, isLoading, error } = useGetProductsQuery({
     keyword: keyword,
     pageNumber: pageNumberNum,
+    categoryName : ''
   });
 
   const products = data?.products as Product[];

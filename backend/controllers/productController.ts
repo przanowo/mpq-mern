@@ -14,8 +14,9 @@ const getProducts = asyncHandler(async (req: Request, res: Response) => {
   const keyword = req.query.keyword
     ? { title: { $regex: req.query.keyword, $options: 'i' } }
     : {};
-  const count = await Product.countDocuments({ ...keyword });
-  const products = await Product.find({ ...keyword })
+    const categoryFilter = req.query.category ? { category: req.query.category } : {};
+  const count = await Product.countDocuments({ ...keyword, ...categoryFilter });
+  const products = await Product.find({ ...keyword, ...categoryFilter })
     .sort({
       updatedAt: -1,
     })
@@ -24,6 +25,17 @@ const getProducts = asyncHandler(async (req: Request, res: Response) => {
 
   res.json({ products, currentPage, pages: Math.ceil(count / pageSize) });
 });
+
+// @desc   Fetch all products by category
+// @route  GET /api/products/category/:categoryName
+// @access Public
+// const getProductsByCategory = asyncHandler(async (req: Request, res: Response) => {
+//   const { categoryName } = req.params;
+//   const products = await Product.find({ category: categoryName });
+//   // Add any additional logic here, like sorting or pagination if needed
+//   res.json({products});
+
+// });
 
 // @desc   Fetch all products
 // @route  GET /api/products
@@ -200,4 +212,5 @@ export {
   deleteProduct,
   createProductReview,
   getTopProducts,
+  // getProductsByCategory,
 };

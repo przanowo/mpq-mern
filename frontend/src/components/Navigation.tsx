@@ -15,6 +15,8 @@ import { CartAppState } from '../types/CartType';
 import { toast } from 'react-toastify';
 import { UserAppState } from '../types/UserType';
 import SearchBox from './SearchBox';
+import { useLocation } from 'react-router-dom';
+
 
 const Navigation = () => {
   const { cartItems } = useSelector((state: CartAppState) => state.cart);
@@ -22,6 +24,8 @@ const Navigation = () => {
   const [isAtTop, setIsAtTop] = useState(true);
   const [menuOpen, setMenuOpen] = useState(false);
   const [adminDropdownOpen, setAdminDropdownOpen] = useState(false);
+  const location = useLocation();
+  const isMainPage = location.pathname === '/';
 
   const logoSrc = isAtTop ? logowhite : logoblack;
   const fixedLogoClasses = `${logoSrc}`;
@@ -29,23 +33,21 @@ const Navigation = () => {
   const fixedNavbarClasses = `lg:fixed z-20 w-screen px-4 transition duration-200 ease-in-out sm:h-18 md:px-8 lg:px-2.5 ${navbarClasses}`;
 
   useEffect(() => {
-    // Function to handle scroll events
-    const handleScroll = () => {
-      if (window.scrollY > 0) {
-        // Page is not at the top
-        setIsAtTop(false);
-      } else {
-        // Page is at the top
-        setIsAtTop(true);
-      }
-    };
-    // Add the scroll event listener when the component mounts
-    window.addEventListener('scroll', handleScroll);
-    // Remove the scroll event listener when the component unmounts
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
+    // Only apply scroll logic on the main page
+    if (isMainPage) {
+      const handleScroll = () => {
+        setIsAtTop(window.scrollY === 0);
+      };
+
+      window.addEventListener('scroll', handleScroll);
+      return () => {
+        window.removeEventListener('scroll', handleScroll);
+      };
+    } else {
+      // For other pages, always set isAtTop to false
+      setIsAtTop(false);
+    }
+  }, [isMainPage]);
 
   const closeMobileMenu = () => {
     setMenuOpen(false);
@@ -85,42 +87,42 @@ const Navigation = () => {
           <div className='lg:flex hidden text-center items-center'>
             <Link
               className='px-3 py-2 rounded-lg hover:bg-white/20 hover:text-lg'
-              to='/shop/parfum'
+              to='/category/perfume'
             >
               {' '}
               Perfume{' '}
             </Link>
             <Link
               className='px-3 py-2 rounded-lg hover:bg-white/20 hover:text-lg'
-              to='/shop/miniature'
+              to='/category/miniature'
             >
               {' '}
               Miniature{' '}
             </Link>
             <Link
               className='px-3 py-2 rounded-lg hover:bg-white/20 hover:text-lg'
-              to='/shop/sample'
+              to='/category/sample'
             >
               {' '}
               Sample{' '}
             </Link>
             <Link
               className='px-3 py-2 rounded-lg hover:bg-white/20 hover:text-lg'
-              to='/shop/soapandpowder'
+              to='/category/soapandpowder'
             >
               {' '}
               Soap & Powder{' '}
             </Link>
             <Link
               className='px-3 py-2 rounded-lg hover:bg-white/20 hover:text-lg'
-              to='/shop/gift'
+              to='/category/gift'
             >
               {' '}
               Gifts{' '}
             </Link>
             <Link
               className='px-3 py-2 rounded-lg hover:bg-white/20 hover:text-lg'
-              to='/shop/gold'
+              to='/category/gold'
             >
               {' '}
               Gold{' '}
@@ -231,7 +233,7 @@ const Navigation = () => {
               <div className='flex flex-col text-center '>
                 <Link
                   className='px-3 py-4 rounded-lg text-xl'
-                  to='/shop/parfum'
+                  to='/category/perfume'
                   onClick={closeMobileMenu}
                 >
                   {' '}
@@ -239,7 +241,7 @@ const Navigation = () => {
                 </Link>
                 <Link
                   className='px-3 py-4 rounded-lg text-xl'
-                  to='/shop/miniature'
+                  to='/category/miniature'
                   onClick={closeMobileMenu}
                 >
                   {' '}
@@ -247,7 +249,7 @@ const Navigation = () => {
                 </Link>
                 <Link
                   className='px-3 py-4 rounded-lg text-xl'
-                  to='/shop/sample'
+                  to='/category/sample'
                   onClick={closeMobileMenu}
                 >
                   {' '}
@@ -255,7 +257,7 @@ const Navigation = () => {
                 </Link>
                 <Link
                   className='px-3 py-4 rounded-lg text-xl'
-                  to='/shop/soapandpowder'
+                  to='/category/soapandpowder'
                   onClick={closeMobileMenu}
                 >
                   {' '}
@@ -263,7 +265,7 @@ const Navigation = () => {
                 </Link>
                 <Link
                   className='px-3 py-4 rounded-lg text-xl'
-                  to='/shop/gift'
+                  to='/category/gift'
                   onClick={closeMobileMenu}
                 >
                   {' '}
@@ -271,7 +273,7 @@ const Navigation = () => {
                 </Link>
                 <Link
                   className='px-3 py-4 rounded-lg text-xl'
-                  to='/shop/gold'
+                  to='/category/gold'
                   onClick={closeMobileMenu}
                 >
                   {' '}
@@ -290,7 +292,7 @@ const Navigation = () => {
                     </Link>
                     <Link
                       className='px-3 py-4 rounded-lg text-xl'
-                      to='/account'
+                      to='/profile'
                       onClick={closeMobileMenu}
                     >
                       {' '}

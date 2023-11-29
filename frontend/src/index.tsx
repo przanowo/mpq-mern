@@ -32,6 +32,7 @@ import ProductListScreen from './pages/admin/ProductListScreen';
 import ProductEditScreen from './pages/admin/ProductEditScreen';
 import UserListScreen from './pages/admin/UserListScreen';
 import UserEditScreen from './pages/admin/UserEditScreen';
+import CategoryScreen from './pages/CategoryScreen';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -41,10 +42,18 @@ const router = createBrowserRouter(
       <Route path='/page/:pageNumber' element={<Home />} />
       <Route path='/search/:keyword/page/:pageNumber' element={<Home />} />
       <Route path='/product/:productId' element={<ProductScreen />} />
+      <Route path='/category/:categoryName' element={<CategoryScreen />} />
+      <Route
+        path='/category/:categoryName/search/:keyword'
+        element={<CategoryScreen />} />
+      <Route path='/category/:categoryName/page/:pageNumber' element={<CategoryScreen />} />  
+      <Route
+        path='/category/:categoryName/search/:keyword/page/:pageNumber'
+        element={<CategoryScreen />} />
       <Route path='/cart' element={<CartScreen />} />
       <Route path='/login' element={<Login />} />
       <Route path='/register' element={<Signup />} />
-
+      
       <Route path='' element={<PrivateRoute />}>
         <Route path='/shipping' element={<ShippingPage />} />
         <Route path='/payment' element={<Payment />} />

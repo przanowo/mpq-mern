@@ -3,13 +3,19 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 const SearchBox = () => {
   const navigate = useNavigate();
-  const { keyword: urlKeyword } = useParams<{ keyword: string }>();
+  const { keyword: urlKeyword, categoryName } = useParams<{ keyword: string, categoryName: string }>();
   const [keyword, setKeyword] = useState(urlKeyword || '');
 
   const submitHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (keyword.trim()) {
-      navigate(`/search/${keyword}`);
+ if (keyword.trim()) {
+      if (categoryName) {
+        // If there's a category, include it in the search path
+        navigate(`/category/${categoryName}/search/${keyword}`);
+      } else {
+        // Standard search without category
+        navigate(`/search/${keyword}`);
+      }
     } else {
       navigate(`/`);
     }
