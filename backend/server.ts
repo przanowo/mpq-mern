@@ -47,7 +47,7 @@ if (process.env.RUNNING_ON_SERVER === 'true') {
 }
 
 if (process.env.NODE_ENV === 'production') {
-  const frontendPath = path.join(__dirname, 'frontend', 'build');
+  const frontendPath = path.join(__dirname, '..', 'frontend', 'build');
   app.use(express.static(frontendPath));
 
   app.get('*', (req, res) =>
