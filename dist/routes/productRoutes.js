@@ -9,6 +9,7 @@ const authMiddleware_1 = require("../middleware/authMiddleware");
 const router = express_1.default.Router();
 router.route('/').get(productController_1.getProducts).post(authMiddleware_1.protect, authMiddleware_1.admin, productController_1.createProduct);
 router.get('/top', productController_1.getTopProducts);
+router.route('/category/:categoryName').get(productController_1.getProducts);
 router
     .route('/:id')
     .get(productController_1.getProductById)

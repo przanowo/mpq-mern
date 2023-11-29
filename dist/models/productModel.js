@@ -23,7 +23,7 @@ const productSchema = new mongoose_1.default.Schema({
         required: true,
         ref: 'User',
     },
-    title: { type: String, required: true, unique: true },
+    title: { type: String, required: true },
     titletolow: { type: String, required: true },
     description: { type: String, required: true },
     price: { type: Number, required: true },

@@ -6,22 +6,36 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.getTopProducts = exports.createProductReview = exports.deleteProduct = exports.updateProduct = exports.createProduct = exports.getProductById = exports.getProducts = void 0;
 const asyncHandler_1 = __importDefault(require("../middleware/asyncHandler"));
 const productModel_1 = __importDefault(require("../models/productModel"));
+const fs_1 = __importDefault(require("fs"));
 // @desc   Fetch all products
 // @route  GET /api/products
 // @access Public
 const getProducts = (0, asyncHandler_1.default)(async (req, res) => {
-    const pageSize = 1;
+    const pageSize = Number(process.env.PAGINATION_LIMIT);
     const currentPage = Number(req.query.pageNumber) || 1;
     const keyword = req.query.keyword
         ? { title: { $regex: req.query.keyword, $options: 'i' } }
         : {};
-    const count = await productModel_1.default.countDocuments({ ...keyword });
-    const products = await productModel_1.default.find({ ...keyword })
+    const categoryFilter = req.query.category ? { category: req.query.category } : {};
+    const count = await productModel_1.default.countDocuments({ ...keyword, ...categoryFilter });
+    const products = await productModel_1.default.find({ ...keyword, ...categoryFilter })
+        .sort({
+        updatedAt: -1,
+    })
         .limit(pageSize)
         .skip(pageSize * (currentPage - 1));
     res.json({ products, currentPage, pages: Math.ceil(count / pageSize) });
 });
 exports.getProducts = getProducts;
+// @desc   Fetch all products by category
+// @route  GET /api/products/category/:categoryName
+// @access Public
+// const getProductsByCategory = asyncHandler(async (req: Request, res: Response) => {
+//   const { categoryName } = req.params;
+//   const products = await Product.find({ category: categoryName });
+//   // Add any additional logic here, like sorting or pagination if needed
+//   res.json({products});
+// });
 // @desc   Fetch all products
 // @route  GET /api/products
 // @access Public
@@ -110,8 +124,21 @@ exports.updateProduct = updateProduct;
 const deleteProduct = (0, asyncHandler_1.default)(async (req, res) => {
     const product = await productModel_1.default.findById(req.params.id);
     if (product) {
+        // Assuming the image path is stored in a field like product.mainImage
+        const imagePath = product.mainImage || '';
+        if (imagePath && fs_1.default.existsSync(imagePath)) {
+            try {
+                // Delete the image file
+                await fs_1.default.promises.unlink(imagePath);
+            }
+            catch (error) {
+                // Handle potential errors during file deletion
+                console.error('Error deleting image file');
+            }
+        }
+        // Delete the product from the database
         await productModel_1.default.deleteOne({ _id: product._id });
-        res.status(200).json({ message: 'Product removed!' });
+        res.status(200).json({ message: 'Product and image removed!' });
     }
     else {
         res.status(404);

@@ -8,6 +8,9 @@ const notFound = (req, res, next) => {
 };
 exports.notFound = notFound;
 const errorHandler = (err, req, res, next) => {
+    if (res.headersSent) {
+        return next(err);
+    }
     let statusCode = res.statusCode === 200 ? 500 : res.statusCode;
     let message = err.message;
     //Check mongoose error bad id

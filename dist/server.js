@@ -27,10 +27,23 @@ app.use('/api/users', userRoutes_1.default);
 app.use('/api/orders', orderRoutes_1.default);
 app.use('/api/upload', uploadRoutes_1.default);
 app.get('/api/config/paypal', (req, res) => res.send(process.env.PAYPAL_CLI_ID));
-const dirname = path_1.default.resolve();
-app.use('/uploads', express_1.default.static(path_1.default.join(dirname, '/uploads')));
+if (process.env.RUNNING_ON_SERVER === 'true') {
+    app.use('/uploads', express_1.default.static('/data/uploads'));
+}
+else {
+    const dirname3 = path_1.default.resolve();
+    app.use('/uploads', express_1.default.static(path_1.default.join(dirname3, '/data/images')));
+}
+// Serve images statically
+if (process.env.RUNNING_ON_SERVER === 'true') {
+    app.use('/images', express_1.default.static('/data/images'));
+}
+else {
+    const dirname2 = path_1.default.resolve();
+    app.use('/images', express_1.default.static(path_1.default.join(dirname2, 'data', 'images')));
+}
 if (process.env.NODE_ENV === 'production') {
-    const frontendPath = path_1.default.join(dirname, 'frontend', 'build');
+    const frontendPath = path_1.default.join(__dirname, '..', 'frontend', 'build');
     app.use(express_1.default.static(frontendPath));
     app.get('*', (req, res) => res.sendFile(path_1.default.join(frontendPath, 'index.html')));
 }

@@ -9,7 +9,7 @@ const multer_1 = __importDefault(require("multer"));
 const router = express_1.default.Router();
 const storage = multer_1.default.diskStorage({
     destination(req, file, cb) {
-        cb(null, 'uploads/'); // null is for error
+        cb(null, 'data/images/'); // null is for error
     },
     filename(req, file, cb) {
         cb(null, `${file.fieldname}-${Date.now()}${path_1.default.extname(file.originalname)}`); // null is for error
@@ -42,9 +42,11 @@ router.post('/', upload.single('mainImage'), (req, res) => {
     }
     // Process the uploaded file
     if (req.file) {
+        // Replace 'data/' with an empty string in the file path
+        const mainImagePath = req.file.path.replace('data/', '');
         res.send({
             message: 'Image Uploaded',
-            mainImage: `/${req.file.path}`,
+            mainImage: `/${mainImagePath}`,
         });
     }
     else {
