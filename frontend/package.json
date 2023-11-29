@@ -56,7 +56,6 @@
   "devDependencies": {
     "install": "^0.13.0",
     "npm": "^10.2.3",
-    "tailwindcss": "^3.3.5",
-    "@babel/plugin-proposal-private-property-in-object": "^7.16.7"
+    "tailwindcss": "^3.3.5"
   }
 }
