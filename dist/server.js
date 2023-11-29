@@ -43,7 +43,7 @@ else {
     app.use('/images', express_1.default.static(path_1.default.join(dirname2, 'data', 'images')));
 }
 if (process.env.NODE_ENV === 'production') {
-    const frontendPath = path_1.default.join(__dirname, '..', 'frontend', 'build');
+    const frontendPath = path_1.default.join(__dirname, 'frontend', 'build');
     app.use(express_1.default.static(frontendPath));
     app.get('*', (req, res) => res.sendFile(path_1.default.join(frontendPath, 'index.html')));
 }
