@@ -4,14 +4,6 @@ import { Product } from '../types/ProductType';
 
 export const productApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    // getProducts: builder.query({
-    //   query: ({ keyword, pageNumber }) => ({
-    //     url: PRODUCTS_URL,
-    //     params: { keyword, pageNumber },
-    //   }),
-    //   providesTags: [{ type: 'Product', id: 'LIST' }],
-    //   keepUnusedDataFor: 5,
-    // }),
     getProducts: builder.query({
       query: ({ keyword, pageNumber, category }) => ({
         url: PRODUCTS_URL,
@@ -20,13 +12,7 @@ export const productApiSlice = apiSlice.injectEndpoints({
       providesTags: [{ type: 'Product', id: 'LIST' }],
       keepUnusedDataFor: 5,
     }),
-    // getProductsByCategory: builder.query({
-    //   query: ({ categoryName, pageNumber, keyword }) => ({
-    //     url: `${PRODUCTS_URL}/category/${categoryName}`,
-    //     params: { pageNumber, keyword },
-    //   }),
-    //   providesTags: [{ type: 'Product', id: 'LIST' }],
-    // }),
+
     getProductDetails: builder.query<Product, string>({
       query: (productId: string) => ({ url: `${PRODUCTS_URL}/${productId}` }),
       keepUnusedDataFor: 5,
