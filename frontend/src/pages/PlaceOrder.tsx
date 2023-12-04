@@ -14,15 +14,7 @@ const PlaceOrder = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const cart = useSelector((state: CartAppState) => state.cart);
-  const {
-    cartItems,
-    shippingAddress,
-    paymentMethod,
-    itemsPrice,
-    shippingPrice,
-    taxPrice,
-    totalPrice,
-  } = cart;
+  const { cartItems, shippingAddress, paymentMethod } = cart;
 
   const [createOrder, { isLoading, error }] = useCreateOrderMutation();
 
@@ -41,10 +33,6 @@ const PlaceOrder = () => {
         orderItems: cartItems,
         shippingAddress,
         paymentMethod,
-        itemsPrice: itemsPrice,
-        shippingPrice: shippingPrice,
-        taxPrice: taxPrice,
-        totalPrice: totalPrice,
       }).unwrap();
       dispatch(clearCart());
       navigate(`/order/${res._id}`);

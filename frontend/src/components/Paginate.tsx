@@ -7,6 +7,7 @@ const Paginate: React.FC<PaginateProps> = ({
   currentPage,
   isAdmin,
   keyword,
+  categoryName,
 }) => {
   const maxPageButtons = 10; // Now set to display up to 10 page buttons
 
@@ -28,12 +29,19 @@ const Paginate: React.FC<PaginateProps> = ({
     }
   }
 
-  const path = (page: number) =>
-    !isAdmin
-      ? keyword
-        ? `/search/${keyword}/page/${page}`
-        : `/page/${page}`
-      : `/admin/productlist/${page}`;
+  const path = (page: number) => {
+    if (categoryName) {
+      return keyword
+        ? `/category/${categoryName}/search/${keyword}/page/${page}`
+        : `/category/${categoryName}/page/${page}`;
+    } else {
+      return !isAdmin
+        ? keyword
+          ? `/search/${keyword}/page/${page}`
+          : `/page/${page}`
+        : `/admin/productlist/${page}`;
+    }
+  };
 
   return pages > 1 ? (
     <div className='flex justify-center items-center '>

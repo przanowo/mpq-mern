@@ -33,6 +33,7 @@ import ProductEditScreen from './pages/admin/ProductEditScreen';
 import UserListScreen from './pages/admin/UserListScreen';
 import UserEditScreen from './pages/admin/UserEditScreen';
 import CategoryScreen from './pages/CategoryScreen';
+import DashboardScreen from './pages/admin/DashboardScreen';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -45,15 +46,20 @@ const router = createBrowserRouter(
       <Route path='/category/:categoryName' element={<CategoryScreen />} />
       <Route
         path='/category/:categoryName/search/:keyword'
-        element={<CategoryScreen />} />
-      <Route path='/category/:categoryName/page/:pageNumber' element={<CategoryScreen />} />  
+        element={<CategoryScreen />}
+      />
+      <Route
+        path='/category/:categoryName/page/:pageNumber'
+        element={<CategoryScreen />}
+      />
       <Route
         path='/category/:categoryName/search/:keyword/page/:pageNumber'
-        element={<CategoryScreen />} />
+        element={<CategoryScreen />}
+      />
       <Route path='/cart' element={<CartScreen />} />
       <Route path='/login' element={<Login />} />
       <Route path='/register' element={<Signup />} />
-      
+
       <Route path='' element={<PrivateRoute />}>
         <Route path='/shipping' element={<ShippingPage />} />
         <Route path='/payment' element={<Payment />} />
@@ -64,6 +70,7 @@ const router = createBrowserRouter(
 
       <Route path='' element={<AdminRoute />}>
         <Route path='/admin/orderlist' element={<OrderScreen />} />
+        <Route path='/admin/dashboard' element={<DashboardScreen />} />
         <Route path='/admin/productlist' element={<ProductListScreen />} />
         <Route
           path='/admin/productlist/:pageNumber'
@@ -82,12 +89,11 @@ const root = ReactDOM.createRoot(
 );
 
 const initialOptions = {
-  clientId:
-    'AXjDkPvwnL9xF6rSDnKpf40fI9w6CucYHwZZEPtHRsnc1WHgx9NQCNpT3wpgruno6mrSmuv17jWlVsjW',
-  currency: 'USD',
+  clientId: process.env.REACT_APP_PAYAL_CLI_ID || 'no client id',
+  currency: 'EUR',
 };
 
-console.log(initialOptions, 'initialOptions');
+console.log('cli id', process.env.REACT_APP_PAYPAL_CLI_ID);
 
 root.render(
   <React.StrictMode>

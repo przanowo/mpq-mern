@@ -5,7 +5,7 @@ const Footer = () => {
   const currentYear = new Date().getFullYear();
   return (
     <>
-      <footer className='flex-shrink-0 border-b-4 border-heading mt-9 md:mt-11 lg:mt-16 3xl:mt-20 pt-2.5 lg:pt-0 2xl:pt-2 items-end bg-white/75'>
+      <footer className='w-full flex-shrink-0 border-b-4 border-heading mt-9 md:mt-11 lg:mt-16 3xl:mt-20 pt-2.5 lg:pt-0 2xl:pt-2 items-end bg-white/75'>
         <div className='mx-auto max-w-[1920px] px-4 md:pb-1 lg:pt-6 2xl:pb-8 items-end'>
           <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 md:gap-9 xl:gap-5 pb-9 md:pb-14 lg:pb-6 2xl:pb-6 3xl:pb-16 lg:mb-0.5 2xl:mb-0 3xl:-mb-1 xl:grid-cols-6 '>
             <div className='pb-1 md:pb-0 undefined'>

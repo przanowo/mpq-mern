@@ -74,6 +74,9 @@ export const productApiSlice = apiSlice.injectEndpoints({
         body: data,
       }),
     }),
+    getDashboardData: builder.query({
+      query: () => ({ url: `${PRODUCTS_URL}/dashboard` }),
+    }),
   }),
 });
 
@@ -86,5 +89,6 @@ export const {
   useDeleteProductMutation,
   useCreateReviewMutation,
   useGetTopProductsQuery,
+  useGetDashboardDataQuery,
   // useGetProductsByCategoryQuery,
 } = productApiSlice;

@@ -14,7 +14,9 @@ const getProducts = asyncHandler(async (req: Request, res: Response) => {
   const keyword = req.query.keyword
     ? { title: { $regex: req.query.keyword, $options: 'i' } }
     : {};
-    const categoryFilter = req.query.category ? { category: req.query.category } : {};
+  const categoryFilter = req.query.category
+    ? { category: req.query.category }
+    : {};
   const count = await Product.countDocuments({ ...keyword, ...categoryFilter });
   const products = await Product.find({ ...keyword, ...categoryFilter })
     .sort({
@@ -26,18 +28,7 @@ const getProducts = asyncHandler(async (req: Request, res: Response) => {
   res.json({ products, currentPage, pages: Math.ceil(count / pageSize) });
 });
 
-// @desc   Fetch all products by category
-// @route  GET /api/products/category/:categoryName
-// @access Public
-// const getProductsByCategory = asyncHandler(async (req: Request, res: Response) => {
-//   const { categoryName } = req.params;
-//   const products = await Product.find({ category: categoryName });
-//   // Add any additional logic here, like sorting or pagination if needed
-//   res.json({products});
-
-// });
-
-// @desc   Fetch all products
+// @desc   Fetch products by category
 // @route  GET /api/products
 // @access Public
 const getProductById = asyncHandler(async (req: Request, res: Response) => {
@@ -131,7 +122,7 @@ const deleteProduct = asyncHandler(async (req: Request, res: Response) => {
 
   if (product) {
     // Assuming the image path is stored in a field like product.mainImage
-    const imagePath = product.mainImage || '';
+    const imagePath = `data/${product.mainImage}` || '';
 
     if (imagePath && fs.existsSync(imagePath)) {
       try {
@@ -204,6 +195,78 @@ const getTopProducts = asyncHandler(async (req: Request, res: Response) => {
   res.status(200).json(products);
 });
 
+// @desc Get dashboard data
+// @route GET /api/products/dashboard
+// @access Private/Admin
+
+const getDashboardData = asyncHandler(
+  async (req: RequestWithUser, res: Response) => {
+    const totalProducts = await Product.countDocuments({});
+    const totalPrices = await Product.aggregate([
+      { $group: { _id: null, total: { $sum: '$price' } } },
+    ]);
+    const giftCategoryProducts = await Product.countDocuments({
+      category: 'gift',
+    });
+    const giftCategoryPrices = await Product.aggregate([
+      { $match: { category: 'gift' } },
+      { $group: { _id: null, total: { $sum: '$price' } } },
+    ]);
+    const miniaturesCategoryProducts = await Product.countDocuments({
+      category: 'miniature',
+    });
+    const miniaturesCategoryPrices = await Product.aggregate([
+      { $match: { category: 'miniature' } },
+      { $group: { _id: null, total: { $sum: '$price' } } },
+    ]);
+    const parfumCategoryProducts = await Product.countDocuments({
+      category: 'perfume',
+    });
+    const parfumCategoryPrices = await Product.aggregate([
+      { $match: { category: 'perfume' } },
+      { $group: { _id: null, total: { $sum: '$price' } } },
+    ]);
+    const sampleCategoryProducts = await Product.countDocuments({
+      category: 'sample',
+    });
+    const sampleCategoryPrices = await Product.aggregate([
+      { $match: { category: 'sample' } },
+      { $group: { _id: null, total: { $sum: '$price' } } },
+    ]);
+    const soapandpowderCategoryProducts = await Product.countDocuments({
+      category: 'soapandpowder',
+    });
+    const soapandpowderCategoryPrices = await Product.aggregate([
+      { $match: { category: 'soapandpowder' } },
+      { $group: { _id: null, total: { $sum: '$price' } } },
+    ]);
+    const goldCategoryProducts = await Product.countDocuments({
+      category: 'gold',
+    });
+    const goldCategoryPrices = await Product.aggregate([
+      { $match: { category: 'gold' } },
+      { $group: { _id: null, total: { $sum: '$price' } } },
+    ]);
+
+    res.status(200).json({
+      totalProducts,
+      totalPrices: totalPrices[0]?.total || 0,
+      giftCategoryProducts,
+      giftCategoryPrices: giftCategoryPrices[0]?.total || 0,
+      miniaturesCategoryProducts,
+      miniaturesCategoryPrices: miniaturesCategoryPrices[0]?.total || 0,
+      parfumCategoryProducts,
+      parfumCategoryPrices: parfumCategoryPrices[0]?.total || 0,
+      sampleCategoryProducts,
+      sampleCategoryPrices: sampleCategoryPrices[0]?.total || 0,
+      soapandpowderCategoryProducts,
+      soapandpowderCategoryPrices: soapandpowderCategoryPrices[0]?.total || 0,
+      goldCategoryProducts,
+      goldCategoryPrices: goldCategoryPrices[0]?.total || 0,
+    });
+  }
+);
+
 export {
   getProducts,
   getProductById,
@@ -212,5 +275,6 @@ export {
   deleteProduct,
   createProductReview,
   getTopProducts,
+  getDashboardData,
   // getProductsByCategory,
 };

@@ -88,7 +88,32 @@ const ProductListScreen = () => {
           <FaEdit className='mr-2' /> Create Product
         </button>
       </div>
-
+      <div className='flex items-center border-b py-2'>
+        <div className='w-1/4 min-w-[150px]'>
+          <p className='font-bold'>TITLE</p>
+        </div>
+        <div className='w-1/6 min-w-[100px]'>
+          <p className='font-bold'>PRICE</p>
+        </div>
+        <div className='w-1/6 min-w-[100px]'>
+          <p className='font-bold'>CATEGORY</p>
+        </div>
+        <div className='w-1/6 min-w-[100px]'>
+          <p className='font-bold'>QUANTITY</p>
+        </div>
+        <div className='w-1/6 min-w-[100px]'>
+          <p className='font-bold'>MAGAZINE</p>
+        </div>
+        <div className='w-1/12 min-w-[80px]'>
+          <p className='font-bold'>VIEW</p>
+        </div>
+        <div className='w-1/12 min-w-[80px]'>
+          <p className='font-bold'>EDIT</p>
+        </div>
+        <div className='w-1/12 min-w-[80px]'>
+          <p className='font-bold'>DELETE</p>
+        </div>
+      </div>
       {isLoading ? (
         <Loader />
       ) : error ? (
@@ -96,40 +121,39 @@ const ProductListScreen = () => {
       ) : (
         products?.map((product: Product) => (
           <div key={product._id} className='flex items-center border-b py-2'>
-            <div className='flex-grow'>
+            <div className='w-1/4 min-w-[150px]'>
               <Link to={`/product/${product._id}`}>
                 <p>{product.title}</p>
               </Link>
             </div>
-            <div className='flex-grow'>
+            <div className='w-1/6 min-w-[100px]'>
               <p>{product.price}</p>
             </div>
-            <div className='flex-grow'>
+            <div className='w-1/6 min-w-[100px]'>
               <p>{product.category}</p>
             </div>
-            <div className='flex-grow'>
+            <div className='w-1/6 min-w-[100px]'>
               <p>{product.quantity}</p>
             </div>
-            <div className='flex-grow'>
+            <div className='w-1/6 min-w-[100px]'>
               <p>{product.magazine}</p>
             </div>
-            <div className='flex-grow'>
+            <div className='w-1/12 min-w-[80px]'>
               <Link to={`/product/${product._id}`}>
                 <button className='bg-blue-500 hover:bg-blue-600 text-white font-bold py-1 px-3 rounded'>
                   <FaEye />
                 </button>
               </Link>
             </div>
-            <div className='flex-grow'>
+            <div className='w-1/12 min-w-[80px]'>
               <Link to={`/admin/product/${product._id}/edit`}>
                 <button className='bg-green-500 hover:bg-green-600 text-white font-bold py-1 px-3 rounded'>
                   <FaEdit />
                 </button>
               </Link>
             </div>
-
             <div
-              className='flex-grow'
+              className='w-1/12 min-w-[80px]'
               onClick={() => deleteHandler(product._id)}
             >
               <button className='bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-3 rounded'>

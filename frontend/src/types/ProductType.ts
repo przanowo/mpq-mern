@@ -45,4 +45,5 @@ export interface PaginateProps {
   currentPage: number;
   isAdmin?: boolean;
   keyword?: string;
+  categoryName?: string;
 }

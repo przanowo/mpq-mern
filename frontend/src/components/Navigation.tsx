@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { logout } from '../slices/authSlice';
 import { useLogoutMutation } from '../slices/usersApiSlice';
+import { resetCart } from '../slices/cartSlice';
 import {
   HiMenuAlt1,
   HiOutlineHome,
@@ -16,7 +17,6 @@ import { toast } from 'react-toastify';
 import { UserAppState } from '../types/UserType';
 import SearchBox from './SearchBox';
 import { useLocation } from 'react-router-dom';
-
 
 const Navigation = () => {
   const { cartItems } = useSelector((state: CartAppState) => state.cart);
@@ -62,6 +62,7 @@ const Navigation = () => {
     try {
       await logoutApiCall().unwrap();
       dispatch(logout());
+      dispatch(resetCart());
       navigate('/');
       toast.success('Logout successful');
     } catch (error: any) {

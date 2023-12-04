@@ -1,14 +1,22 @@
 import path from 'path';
-import express from 'express';
-import multer from 'multer';
+import express, { Request, Response } from 'express';
+import multer, { FileFilterCallback } from 'multer';
 
 const router = express.Router();
 
 const storage = multer.diskStorage({
-  destination(req, file, cb) {
+  destination(
+    req: Request,
+    file: Express.Multer.File,
+    cb: (error: Error | null, destination: string) => void
+  ) {
     cb(null, 'data/images/'); // null is for error
   },
-  filename(req, file, cb) {
+  filename(
+    req: Request,
+    file: Express.Multer.File,
+    cb: (error: Error | null, filename: string) => void
+  ) {
     cb(
       null,
       `${file.fieldname}-${Date.now()}${path.extname(file.originalname)}`
@@ -16,47 +24,49 @@ const storage = multer.diskStorage({
   },
 });
 
-// function checkFileType(
-//   file: Express.Multer.File,
-//   cb: multer.FileFilterCallback
-// ) {
-//   const filetypes = /jpg|jpeg|png/;
-//   const extname = filetypes.test(
-//     path.extname(file.originalname).toLocaleLowerCase()
-//   );
-//   const mimetype = filetypes.test(file.mimetype);
+function fileFilter(
+  req: Request,
+  file: Express.Multer.File,
+  cb: FileFilterCallback
+) {
+  const filetypes = /jpe?g|png|webp/;
+  const mimetypes = /image\/jpe?g|image\/png|image\/webp/;
 
-//   if (extname && mimetype) {
-//     return cb(null, true);
-//   } else {
-//     cb(new Error('Invalid file type'));
-//   }
-// }
+  const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
+  const mimetype = mimetypes.test(file.mimetype);
 
-const upload = multer({
-  storage,
-  // fileFilter: function (req, file, cb) {
-  //     checkFileType(file, cb);
-  // },
-});
-
-router.post('/', upload.single('mainImage'), (req, res) => {
-  if (!req.file) {
-    return res.status(400).json({ message: 'No file uploaded' });
-  }
-  // Process the uploaded file
-  if (req.file) {
-    // Replace 'data/' with an empty string in the file path
-    const mainImagePath = req.file.path.replace('data/', '');
-    res.send({
-      message: 'Image Uploaded',
-      mainImage: `/${mainImagePath}`,
-    });
+  if (extname && mimetype) {
+    cb(null, true);
   } else {
-    res.status(400).send({
-      message: 'No file uploaded',
-    });
+    cb('Images only!' as any, false);
   }
+}
+
+const upload = multer({ storage, fileFilter });
+const uploadSingleImage = upload.single('mainImage');
+
+router.post('/', (req: Request, res: Response) => {
+  uploadSingleImage(req, res, function (err: any) {
+    if (err instanceof multer.MulterError) {
+      // A Multer error occurred when uploading.
+      return res.status(400).send({ message: err.message });
+    } else if (err) {
+      // An unknown error occurred when uploading.
+      return res.status(400).send({ message: err.message });
+    }
+
+    // Everything went fine.
+    if (req.file) {
+      res.status(200).send({
+        message: 'Image uploaded successfully',
+        mainImage: `/${req.file.path.replace('data/', '')}`,
+      });
+    } else {
+      res.status(400).send({
+        message: 'No file uploaded',
+      });
+    }
+  });
 });
 
 export default router;
