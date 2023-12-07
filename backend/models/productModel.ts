@@ -30,7 +30,7 @@ const productSchema = new mongoose.Schema(
     description: { type: String, required: true },
     price: { type: Number, required: true },
     category: { type: String, required: true },
-    mainImage: { type: String, required: true },
+    mainImage: { type: String },
     images: [String],
     typ: { type: String, required: true },
     show: { type: Boolean, required: true, default: true },

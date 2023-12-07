@@ -54,7 +54,7 @@ const createProduct = asyncHandler(
       description: 'Empty',
       price: 0,
       category: 'Empty',
-      mainImage: 'Empty',
+      mainImage: '',
       typ: 'Empty',
       show: true,
       sex: 'Empty',
@@ -116,7 +116,6 @@ const updateProduct = asyncHandler(async (req: Request, res: Response) => {
 // @desc   Delete a product
 // @route  DELETE /api/products/:id
 // @access Private/Admin
-
 const deleteProduct = asyncHandler(async (req: Request, res: Response) => {
   const product = await Product.findById(req.params.id);
 
@@ -143,10 +142,38 @@ const deleteProduct = asyncHandler(async (req: Request, res: Response) => {
   }
 });
 
+// @desc Delete product image or images
+// @route DELETE /api/products/:id/images
+// @access Private/Admin
+const deleteProductImage = asyncHandler(async (req: Request, res: Response) => {
+  const { imagePath } = req.body;
+  console.log(imagePath);
+  const product = await Product.findById(req.params.id);
+
+  if (product) {
+    const fullImagePath = `data/${imagePath}`; // adjust path as needed
+
+    if (fs.existsSync(fullImagePath)) {
+      try {
+        await fs.promises.unlink(fullImagePath);
+        res.status(200).json({ message: 'Image removed!' });
+      } catch (error) {
+        res.status(500);
+        throw new Error('Error deleting image');
+      }
+    } else {
+      res.status(404);
+      throw new Error('Image not found!');
+    }
+  } else {
+    res.status(404);
+    throw new Error('Product not found!');
+  }
+});
+
 // @desc Create new review
 // @route POST /api/products/:id/reviews
 // @access Private
-
 const createProductReview = asyncHandler(
   async (req: RequestWithUser, res: Response) => {
     const product = await Product.findById(req.params.id);
@@ -188,7 +215,6 @@ const createProductReview = asyncHandler(
 // @desc Get top rated products
 // @route GET /api/products/top
 // @access Public
-
 const getTopProducts = asyncHandler(async (req: Request, res: Response) => {
   const products = await Product.find({}).sort({ rating: -1 }).limit(3);
 
@@ -276,5 +302,6 @@ export {
   createProductReview,
   getTopProducts,
   getDashboardData,
+  deleteProductImage,
   // getProductsByCategory,
 };

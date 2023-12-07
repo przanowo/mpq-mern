@@ -90,10 +90,8 @@ const root = ReactDOM.createRoot(
 
 const initialOptions = {
   clientId: process.env.REACT_APP_PAYAL_CLI_ID || 'no client id',
-  currency: 'EUR',
+  currency: 'USD',
 };
-
-console.log('cli id', process.env.REACT_APP_PAYPAL_CLI_ID);
 
 root.render(
   <React.StrictMode>

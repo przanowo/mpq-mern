@@ -31,12 +31,11 @@ app.get('/api/config/paypal', (req: Request, res: Response) =>
 );
 
 if (process.env.RUNNING_ON_SERVER === 'true') {
-  app.use('/uploads', express.static('/data/uploads'));
+  app.use('/uploads', express.static('/data/images'));
 } else {
   const dirname3 = path.resolve();
   app.use('/uploads', express.static(path.join(dirname3, '/data/images')));
 }
-
 // Serve images statically
 
 if (process.env.RUNNING_ON_SERVER === 'true') {

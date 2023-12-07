@@ -47,3 +47,7 @@ export interface PaginateProps {
   keyword?: string;
   categoryName?: string;
 }
+
+export interface DeleteResponse {
+  message: string;
+}

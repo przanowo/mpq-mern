@@ -43,9 +43,10 @@ function fileFilter(
 }
 
 const upload = multer({ storage, fileFilter });
+const uploadMultipleImages = upload.array('images', 5); // Allow up to 5 images
 const uploadSingleImage = upload.single('mainImage');
 
-router.post('/', (req: Request, res: Response) => {
+router.post('/single', (req: Request, res: Response) => {
   uploadSingleImage(req, res, function (err: any) {
     if (err instanceof multer.MulterError) {
       // A Multer error occurred when uploading.
@@ -64,6 +65,34 @@ router.post('/', (req: Request, res: Response) => {
     } else {
       res.status(400).send({
         message: 'No file uploaded',
+      });
+    }
+  });
+});
+
+router.post('/multiple', (req: Request, res: Response) => {
+  uploadMultipleImages(req, res, function (err: any) {
+    if (err instanceof multer.MulterError) {
+      // A Multer error occurred when uploading.
+      return res.status(400).send({ message: err.message });
+    } else if (err) {
+      // An unknown error occurred when uploading.
+      return res.status(400).send({ message: err });
+    }
+
+    // Everything went fine.
+    if (req.files) {
+      const filesArray = req.files as Express.Multer.File[];
+      const filePaths = filesArray.map(
+        (file) => `/${file.path.replace('data/', '')}`
+      );
+      res.status(200).send({
+        message: 'Images uploaded successfully',
+        images: filePaths,
+      });
+    } else {
+      res.status(400).send({
+        message: 'No files uploaded',
       });
     }
   });

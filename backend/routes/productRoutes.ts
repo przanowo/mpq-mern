@@ -10,6 +10,7 @@ import {
   createProductReview,
   getTopProducts,
   getDashboardData,
+  deleteProductImage,
   // getProductsByCategory,
 } from '../controllers/productController';
 import { protect, admin } from '../middleware/authMiddleware';
@@ -27,5 +28,6 @@ router
   .put(checkObjectId, protect, admin, updateProduct)
   .delete(checkObjectId, protect, admin, deleteProduct);
 router.route('/:id/reviews').post(checkObjectId, protect, createProductReview);
+router.delete('/:id/images', checkObjectId, protect, admin, deleteProductImage);
 
 export default router;
