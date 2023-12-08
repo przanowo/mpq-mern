@@ -91,6 +91,7 @@ const ProductEditScreen = () => {
 
     if (mainImageFile) {
       const formData = new FormData();
+      console.log(mainImageFile, formData);
       formData.append('mainImage', mainImageFile);
       const uploadResult = await uploadProductImage(formData);
       if ('data' in uploadResult) {
@@ -222,31 +223,7 @@ const ProductEditScreen = () => {
       }
     }
   };
-  // const deleteImage = async (src: string) => {
-  //   if (!id) {
-  //     toast.error('Product ID is undefined');
-  //     return;
-  //   } else {
-  //     console.log('Delete product:', id);
-  //   }
-  //   if (window.confirm('Are you sure you want to delete this image?')) {
-  //     try {
-  //       const result = await deleteProductImage({
-  //         productId: id,
-  //         imagePath: src,
-  //       });
-  //       if ('data' in result && result.data) {
-  //         toast.success('Image deleted successfully');
-  //         // Update the state to reflect the deletion
-  //         setImages(images.filter((image) => image !== src));
-  //       } else if ('error' in result) {
-  //         toast.error('Error deleting image');
-  //       }
-  //     } catch (error) {
-  //       toast.error('Error deleting image2');
-  //     }
-  //   }
-  // };
+
 
   return (
     <div className='flex w-full p-12 mt-24 bg-white'>

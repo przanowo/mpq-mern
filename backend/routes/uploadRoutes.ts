@@ -10,6 +10,7 @@ const storage = multer.diskStorage({
     file: Express.Multer.File,
     cb: (error: Error | null, destination: string) => void
   ) {
+    console.log(`Uploading image to destination: 'data/images/'`);
     cb(null, 'data/images/'); // null is for error
   },
   filename(
@@ -17,10 +18,9 @@ const storage = multer.diskStorage({
     file: Express.Multer.File,
     cb: (error: Error | null, filename: string) => void
   ) {
-    cb(
-      null,
-      `${file.fieldname}-${Date.now()}${path.extname(file.originalname)}`
-    ); // null is for error
+    const filename = `${file.fieldname}-${Date.now()}${path.extname(file.originalname)}`;
+    console.log(`Processing file: ${filename}`);
+    cb(null, filename);
   },
 });
 
@@ -47,6 +47,7 @@ const uploadMultipleImages = upload.array('images', 5); // Allow up to 5 images
 const uploadSingleImage = upload.single('mainImage');
 
 router.post('/single', (req: Request, res: Response) => {
+  console.log('Received request to upload a single image');
   uploadSingleImage(req, res, function (err: any) {
     if (err instanceof multer.MulterError) {
       // A Multer error occurred when uploading.
@@ -71,6 +72,7 @@ router.post('/single', (req: Request, res: Response) => {
 });
 
 router.post('/multiple', (req: Request, res: Response) => {
+  console.log('Received request to upload multiple images');
   uploadMultipleImages(req, res, function (err: any) {
     if (err instanceof multer.MulterError) {
       // A Multer error occurred when uploading.

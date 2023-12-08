@@ -78,11 +78,14 @@ const createProduct = asyncHandler(
 // @route  PUT /api/products/:id
 // @access Private/Admin
 const updateProduct = asyncHandler(async (req: Request, res: Response) => {
+  console.log('Received request to update product:', req.params.id);
+  console.log('Product data:', req.body);
   const editedProduct = req.body;
 
   const product = await Product.findById(req.params.id);
 
   if (product) {
+    console.log('Updating product:', req.params.id);
     product.title = editedProduct.title;
     product.titletolow = editedProduct.titletolow;
     product.description = editedProduct.description;
@@ -108,6 +111,7 @@ const updateProduct = asyncHandler(async (req: Request, res: Response) => {
     const updatedProduct = await product.save();
     res.json(updatedProduct);
   } else {
+    console.log('Product not found:', req.params.id);
     res.status(404);
     throw new Error('Product not found!');
   }
