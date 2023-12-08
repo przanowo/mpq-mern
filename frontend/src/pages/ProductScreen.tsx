@@ -109,7 +109,7 @@ const ProductScreen = () => {
           <div className='flex '>
             <div className='p-4 w-2/5 h-3/4 relative'>
               <img
-                src={product.mainImage}
+                src={product.mainImage }
                 alt={product.title}
                 className='w-full h-full object-cover mb-4 rounded-md cursor-pointer'
                 // onClick={handleImageClick}

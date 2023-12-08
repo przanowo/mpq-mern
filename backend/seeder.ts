@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import axios from 'axios';
-import fs from 'fs';
+import { Storage } from '@google-cloud/storage';
 import path from 'path';
 import users from './data/users';
 import { products } from './data/products';
@@ -9,33 +9,44 @@ import User from './models/userModel';
 import Product from './models/productModel';
 import Order from './models/orderModel';
 import connectDB from './config/db';
+
 dotenv.config();
 connectDB();
-const isRunningOnServer = process.env.RUNNING_ON_SERVER === 'true';
-const imageStoragePath = isRunningOnServer
-  ? '/data/images'
-  : path.join(__dirname, '..', 'data', 'images');
-const downloadImage = async (
-  url: string,
-  filename: string
-): Promise<string> => {
+
+const storage = new Storage({
+  keyFilename: process.env.GOOGLE_APPLICATION_CREDENTIALS,
+  projectId: process.env.GCP_PROJECT_ID,
+});
+const bucket = storage.bucket(process.env.GCS_BUCKET_NAME || '');
+
+const downloadImage = async (url: string): Promise<Buffer> => {
   console.log(`Downloading image from: ${url}`);
-  const localPath = path.join(imageStoragePath, filename);
   const response = await axios({
     url,
     method: 'GET',
-    responseType: 'stream',
+    responseType: 'arraybuffer',
   });
-  const writer = fs.createWriteStream(localPath);
-  response.data.pipe(writer);
+  return Buffer.from(response.data, 'binary');
+};
+
+const uploadToGCS = async (buffer: Buffer, filename: string): Promise<string> => {
+  const blob = bucket.file(`productimg/${filename}`);
+  const blobStream = blob.createWriteStream({
+    resumable: false,
+    gzip: true,
+  });
+
   return new Promise((resolve, reject) => {
-    writer.on('finish', () => {
-      console.log(`Downloaded and saved to: ${localPath}`);
-      resolve(localPath);
+    blobStream.on('error', err => reject(err));
+    blobStream.on('finish', () => {
+      const publicUrl = `https://storage.googleapis.com/${bucket.name}/${blob.name}`;
+      console.log(`Uploaded and saved to GCS: ${publicUrl}`);
+      resolve(publicUrl);
     });
-    writer.on('error', reject);
+    blobStream.end(buffer);
   });
 };
+
 
 const importData = async () => {
   try {
@@ -44,6 +55,7 @@ const importData = async () => {
     await Product.deleteMany({});
     await User.deleteMany({});
     console.log('Existing data cleared.');
+
     const createdUsers = await User.insertMany(users);
     const adminUser = createdUsers[0]._id;
     console.log('Users imported.');
@@ -54,20 +66,17 @@ const importData = async () => {
       // Process images
       for (let i = 0; i < product.images.length; i++) {
         const imageUrl = product.images[i];
-        const filename = `image_${Date.now()}_${Math.floor(
-          Math.random() * 1000
-        )}.jpg`;
-        await downloadImage(imageUrl, filename);
-        product.images[i] = `/images/${filename}`;
+        const buffer = await downloadImage(imageUrl);
+        const filename = `image_${Date.now()}_${Math.floor(Math.random() * 1000)}.jpg`;
+        const gcsUrl = await uploadToGCS(buffer, filename);
+        product.images[i] = gcsUrl;
       }
 
       // Process main image
-      const mainImageUrl = product.mainImage;
-      const mainImageFilename = `mainImage_${Date.now()}_${Math.floor(
-        Math.random() * 1000
-      )}.jpg`;
-      await downloadImage(mainImageUrl, mainImageFilename);
-      product.mainImage = `/images/${mainImageFilename}`;
+      const mainImageBuffer = await downloadImage(product.mainImage);
+      const mainImageFilename = `mainImage_${Date.now()}_${Math.floor(Math.random() * 1000)}.jpg`;
+      const mainImageUrl = await uploadToGCS(mainImageBuffer, mainImageFilename);
+      product.mainImage = mainImageUrl;
 
       console.log(`Processed product: ${product.title}`);
 
@@ -96,6 +105,7 @@ const importData = async () => {
     process.exit(1);
   }
 };
+
 const destroyData = async () => {
   try {
     console.log('Destroying data...');

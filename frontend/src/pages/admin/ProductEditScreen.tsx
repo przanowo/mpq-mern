@@ -91,10 +91,13 @@ const ProductEditScreen = () => {
 
     if (mainImageFile) {
       const formData = new FormData();
-      console.log(mainImageFile, formData);
+      console.log(mainImageFile);
       formData.append('mainImage', mainImageFile);
       const uploadResult = await uploadProductImage(formData);
+      console.log('FormData sent for upload:', formData);
       if ('data' in uploadResult) {
+        console.log('Upload response mainimg:', uploadResult.data.mainImage);
+        console.log('Upload response:', uploadResult.data);
         mainImageUrl = uploadResult.data.mainImage;
       }
     }
@@ -172,6 +175,7 @@ const ProductEditScreen = () => {
           productId: id,
           imagePath: src,
         });
+        console.log('Delete image request sent for:', src);
 
         if ('data' in result && result.data) {
           toast.success('Image deleted successfully');
@@ -506,6 +510,7 @@ const ProductEditScreen = () => {
               />
               <div className='w-full px-3 py-4'>
                 {mainImage ? (
+                  console.log(mainImage),
                   <div className='flex items-center space-x-4'>
                     <img
                       src={mainImage}

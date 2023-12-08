@@ -3,7 +3,13 @@ import asyncHandler from '../middleware/asyncHandler';
 import Product from '../models/productModel';
 import { RequestWithUser } from '../types/userType';
 import { IReview } from '../types/productType';
-import fs from 'fs';
+import { Storage } from '@google-cloud/storage';
+
+const storage = new Storage({
+  keyFilename: process.env.GOOGLE_APPLICATION_CREDENTIALS,
+  projectId: process.env.GCP_PROJECT_ID,
+});
+const bucket = storage.bucket(process.env.GCS_BUCKET_NAME || '');
 
 // @desc   Fetch all products
 // @route  GET /api/products
@@ -124,56 +130,58 @@ const deleteProduct = asyncHandler(async (req: Request, res: Response) => {
   const product = await Product.findById(req.params.id);
 
   if (product) {
-    // Assuming the image path is stored in a field like product.mainImage
-    const imagePath = `data/${product.mainImage}` || '';
-
-    if (imagePath && fs.existsSync(imagePath)) {
+    // Delete the main image from GCS bucket
+    if (product.mainImage) {
+      const mainImageName = product.mainImage.split('/').pop(); // Extract the file name from URL
+      const mainImageFile = bucket.file(`productimg/${mainImageName}`);
       try {
-        // Delete the image file
-        await fs.promises.unlink(imagePath);
+        await mainImageFile.delete();
       } catch (error) {
-        // Handle potential errors during file deletion
-        console.error('Error deleting image file');
+        console.error('Error deleting main image from GCS:', error);
       }
+    }
+
+    // Delete additional images from GCS bucket
+    if (product.images && product.images.length > 0) {
+      await Promise.all(product.images.map(async (image) => {
+        const imageName = image.split('/').pop(); // Extract the file name from URL
+        const imageFile = bucket.file(`productimg/${imageName}`);
+        try {
+          await imageFile.delete();
+        } catch (error) {
+          console.error(`Error deleting image ${imageName} from GCS:`, error);
+        }
+      }));
     }
 
     // Delete the product from the database
     await Product.deleteOne({ _id: product._id });
-    res.status(200).json({ message: 'Product and image removed!' });
+    res.status(200).json({ message: 'Product and all associated images removed!' });
   } else {
     res.status(404);
     throw new Error('Product not found!');
   }
 });
+
+
 
 // @desc Delete product image or images
 // @route DELETE /api/products/:id/images
 // @access Private/Admin
 const deleteProductImage = asyncHandler(async (req: Request, res: Response) => {
-  const { imagePath } = req.body;
-  console.log(imagePath);
-  const product = await Product.findById(req.params.id);
+  const { imagePath } = req.body; // Expecting a URL or a path fragment from the request
+  const fileName = imagePath.split('/').pop(); // Extract the file name from URL or path
+  const file = bucket.file(`productimg/${fileName}`);
 
-  if (product) {
-    const fullImagePath = `data/${imagePath}`; // adjust path as needed
-
-    if (fs.existsSync(fullImagePath)) {
-      try {
-        await fs.promises.unlink(fullImagePath);
-        res.status(200).json({ message: 'Image removed!' });
-      } catch (error) {
-        res.status(500);
-        throw new Error('Error deleting image');
-      }
-    } else {
-      res.status(404);
-      throw new Error('Image not found!');
-    }
-  } else {
-    res.status(404);
-    throw new Error('Product not found!');
+  try {
+    await file.delete();
+    res.status(200).json({ message: 'Image removed!' });
+  } catch (error) {
+    console.error('Error deleting image from GCS:', error);
+    res.status(500).json({ message: 'Error deleting image from GCS' });
   }
 });
+
 
 // @desc Create new review
 // @route POST /api/products/:id/reviews

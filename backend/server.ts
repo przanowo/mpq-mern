@@ -30,20 +30,20 @@ app.get('/api/config/paypal', (req: Request, res: Response) =>
   res.send(process.env.PAYPAL_CLI_ID)
 );
 
-if (process.env.RUNNING_ON_SERVER === 'true') {
-  app.use('/uploads', express.static('/data/images'));
-} else {
-  const dirname3 = path.resolve();
-  app.use('/uploads', express.static(path.join(dirname3, '/data/images')));
-}
-// Serve images statically
+// if (process.env.RUNNING_ON_SERVER === 'true') {
+//   app.use('/uploads', express.static('/data/images'));
+// } else {
+//   const dirname3 = path.resolve();
+//   app.use('/uploads', express.static(path.join(dirname3, '/data/images')));
+// }
+// // Serve images statically
 
-if (process.env.RUNNING_ON_SERVER === 'true') {
-  app.use('/images', express.static('/data/images'));
-} else {
-  const dirname2 = path.resolve();
-  app.use('/images', express.static(path.join(dirname2, 'data', 'images')));
-}
+// if (process.env.RUNNING_ON_SERVER === 'true') {
+//   app.use('/images', express.static('/data/images'));
+// } else {
+//   const dirname2 = path.resolve();
+//   app.use('/images', express.static(path.join(dirname2, 'data', 'images')));
+// }
 
 if (process.env.NODE_ENV === 'production') {
   const frontendPath = path.join(__dirname, '..', 'frontend', 'build');

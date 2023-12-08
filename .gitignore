@@ -15,6 +15,7 @@ node_modules
 # misc
 .DS_Store
 .env
+mpq-mern-6d30599e933f.json
 .env.local
 .env.development.local
 .env.test.local
