@@ -21,7 +21,7 @@ const ProductListScreen = () => {
   const pageNumberNum = pageNumber ? parseInt(pageNumber, 10) : 1;
   const { data, isLoading, error, refetch } = useGetProductsQuery({
     pageNumber: pageNumberNum,
-    keyword: keyword,
+    keyword: keyword || '',
   });
 
   const products = data?.products as Product[];

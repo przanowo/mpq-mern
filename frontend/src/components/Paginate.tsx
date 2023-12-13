@@ -39,7 +39,7 @@ const Paginate: React.FC<PaginateProps> = ({
         ? keyword
           ? `/search/${keyword}/page/${page}`
           : `/page/${page}`
-        : `/admin/productlist/${page}`;
+        : `/admin/productlist/page/${page}`;
     }
   };
 
