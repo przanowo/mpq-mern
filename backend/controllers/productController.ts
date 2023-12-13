@@ -143,27 +143,29 @@ const deleteProduct = asyncHandler(async (req: Request, res: Response) => {
 
     // Delete additional images from GCS bucket
     if (product.images && product.images.length > 0) {
-      await Promise.all(product.images.map(async (image) => {
-        const imageName = image.split('/').pop(); // Extract the file name from URL
-        const imageFile = bucket.file(`productimg/${imageName}`);
-        try {
-          await imageFile.delete();
-        } catch (error) {
-          console.error(`Error deleting image ${imageName} from GCS:`, error);
-        }
-      }));
+      await Promise.all(
+        product.images.map(async (image) => {
+          const imageName = image.split('/').pop(); // Extract the file name from URL
+          const imageFile = bucket.file(`productimg/${imageName}`);
+          try {
+            await imageFile.delete();
+          } catch (error) {
+            console.error(`Error deleting image ${imageName} from GCS:`, error);
+          }
+        })
+      );
     }
 
     // Delete the product from the database
     await Product.deleteOne({ _id: product._id });
-    res.status(200).json({ message: 'Product and all associated images removed!' });
+    res
+      .status(200)
+      .json({ message: 'Product and all associated images removed!' });
   } else {
     res.status(404);
     throw new Error('Product not found!');
   }
 });
-
-
 
 // @desc Delete product image or images
 // @route DELETE /api/products/:id/images
@@ -181,7 +183,6 @@ const deleteProductImage = asyncHandler(async (req: Request, res: Response) => {
     res.status(500).json({ message: 'Error deleting image from GCS' });
   }
 });
-
 
 // @desc Create new review
 // @route POST /api/products/:id/reviews
@@ -234,7 +235,7 @@ const getTopProducts = asyncHandler(async (req: Request, res: Response) => {
 });
 
 // @desc Get dashboard data
-// @route GET /api/products/dashboard
+// @route GET /api/admin/dashboard
 // @access Private/Admin
 
 const getDashboardData = asyncHandler(

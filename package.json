@@ -10,7 +10,8 @@
     "client": "npm start --prefix frontend",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "data:import": "nodemon backend/seeder.ts",
-    "data:destroy": "nodemon backend/seeder.ts -d"
+    "data:destroy": "nodemon backend/seeder.ts -d",
+    "test": "npm run test --prefix frontend"
   },
   "author": "przanowo",
   "license": "ISC",

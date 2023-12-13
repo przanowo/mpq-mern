@@ -14,10 +14,14 @@ import { useNavigate } from 'react-router-dom';
 
 const ProductListScreen = () => {
   const navigate = useNavigate();
-  const { pageNumber } = useParams<{ pageNumber: string }>();
+  const { pageNumber, keyword } = useParams<{
+    pageNumber: string;
+    keyword: string;
+  }>();
   const pageNumberNum = pageNumber ? parseInt(pageNumber, 10) : 1;
   const { data, isLoading, error, refetch } = useGetProductsQuery({
     pageNumber: pageNumberNum,
+    keyword: keyword,
   });
 
   const products = data?.products as Product[];
