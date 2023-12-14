@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
-const SearchBox = () => {
+const SearchBox = ({ isAdmin = false }) => {
   const navigate = useNavigate();
   const { keyword: urlKeyword, categoryName } = useParams<{
     keyword: string;
@@ -12,7 +12,9 @@ const SearchBox = () => {
   const submitHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (keyword.trim()) {
-      if (categoryName) {
+      if (isAdmin) {
+        navigate(`/admin/productlist/search/${keyword}`);
+      } else if (categoryName) {
         // If there's a category, include it in the search path
         navigate(`/category/${categoryName}/search/${keyword}`);
       } else {
@@ -28,7 +30,7 @@ const SearchBox = () => {
     if (categoryName) {
       navigate(`/category/${categoryName}`);
     } else {
-      navigate(`/`);
+      navigate(isAdmin ? `/admin/productlist` : `/`);
     }
   };
 

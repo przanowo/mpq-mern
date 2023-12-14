@@ -228,7 +228,6 @@ const ProductEditScreen = () => {
     }
   };
 
-
   return (
     <div className='flex w-full p-12 mt-24 bg-white'>
       <div className='flex flex-col items-center justify-center w-full'>
@@ -306,7 +305,7 @@ const ProductEditScreen = () => {
                   onChange={(e) => setPrice(Number(e.target.value))}
                   className='appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white'
                   id='price'
-                  type='number'
+                  type='text'
                   placeholder='Enter price'
                 />
               </div>
@@ -324,7 +323,7 @@ const ProductEditScreen = () => {
                   onChange={(e) => setQuantity(Number(e.target.value))}
                   className='appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white'
                   id='quantity'
-                  type='number'
+                  type='text'
                   placeholder='Enter quantity'
                 />
               </div>
@@ -335,7 +334,7 @@ const ProductEditScreen = () => {
                   className='block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2'
                   htmlFor='size'
                 >
-                  Size
+                  Size in ml
                 </label>
                 <input
                   value={size}
@@ -353,16 +352,19 @@ const ProductEditScreen = () => {
                   className='block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2'
                   htmlFor='typ'
                 >
-                  Typ
+                  Type
                 </label>
-                <input
+                <select
                   value={typ}
                   onChange={(e) => setTyp(e.target.value)}
-                  className='appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white'
+                  className='block appearance-none w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white'
                   id='typ'
-                  type='text'
-                  placeholder='Enter typ'
-                />
+                >
+                  <option value='edp'>Eau de parfume</option>
+                  <option value='edt'>Eau de toilette</option>
+                  <option value='edc'>Eau de cologne</option>
+                  <option value='parfume'>Parfume</option>
+                </select>
               </div>
 
               {/* Category */}
@@ -373,14 +375,19 @@ const ProductEditScreen = () => {
                 >
                   Category
                 </label>
-                <input
+                <select
                   value={category}
                   onChange={(e) => setCategory(e.target.value)}
-                  className='appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white'
+                  className='block appearance-none w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white'
                   id='category'
-                  type='text'
-                  placeholder='Enter category'
-                />
+                >
+                  <option value='miniature'>Miniature</option>
+                  <option value='perfume'>Perfume</option>
+                  <option value='sample'>Sample</option>
+                  <option value='soapandpowder'>Soap & Powder</option>
+                  <option value='gift'>Gift</option>
+                  <option value='gold'>Gold</option>
+                </select>
               </div>
 
               {/* Magazine */}
@@ -465,7 +472,7 @@ const ProductEditScreen = () => {
                   className='block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2'
                   htmlFor='nowe'
                 >
-                  Nowe
+                  New
                 </label>
                 <input
                   checked={nowe}
@@ -510,20 +517,22 @@ const ProductEditScreen = () => {
               />
               <div className='w-full px-3 py-4'>
                 {mainImage ? (
-                  console.log(mainImage),
-                  <div className='flex items-center space-x-4'>
-                    <img
-                      src={mainImage}
-                      alt='Main product'
-                      className='w-40 h-40 object-cover rounded-md'
-                    />
-                    <button
-                      className='bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 focus:outline-none'
-                      onClick={() => deleteImage(mainImage)}
-                    >
-                      Remove Image
-                    </button>
-                  </div>
+                  (console.log(mainImage),
+                  (
+                    <div className='flex items-center space-x-4'>
+                      <img
+                        src={mainImage}
+                        alt='Main product'
+                        className='w-40 h-40 object-cover rounded-md'
+                      />
+                      <button
+                        className='bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 focus:outline-none'
+                        onClick={() => deleteImage(mainImage)}
+                      >
+                        Remove Image
+                      </button>
+                    </div>
+                  ))
                 ) : (
                   <p>No main image to display</p>
                 )}

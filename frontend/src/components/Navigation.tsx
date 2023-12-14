@@ -26,6 +26,7 @@ const Navigation = () => {
   const [adminDropdownOpen, setAdminDropdownOpen] = useState(false);
   const location = useLocation();
   const isMainPage = location.pathname === '/';
+  const isAdmin = location.pathname.startsWith('/admin');
 
   const logoSrc = isAtTop ? logowhite : logoblack;
   const fixedLogoClasses = `${logoSrc}`;
@@ -131,7 +132,7 @@ const Navigation = () => {
           </div>
           <div className='lg:flex hidden ltr:md:ml-6 rtl:md:mr- ltr:xl:ml-10 rtl:xl:mr-10 py-7'>
             <div className='lg:flex hidden text-center items-center rounded-xl px-3]\'>
-              <SearchBox />
+              <SearchBox isAdmin={isAdmin} />
             </div>
             {userInfo ? (
               <>

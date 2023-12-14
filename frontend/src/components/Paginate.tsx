@@ -35,11 +35,13 @@ const Paginate: React.FC<PaginateProps> = ({
         ? `/category/${categoryName}/search/${keyword}/page/${page}`
         : `/category/${categoryName}/page/${page}`;
     } else {
-      return !isAdmin
-        ? keyword
-          ? `/search/${keyword}/page/${page}`
-          : `/page/${page}`
-        : `/admin/productlist/page/${page}`;
+      if (isAdmin) {
+        return keyword
+          ? `/admin/productlist/search/${keyword}/page/${page}`
+          : `/admin/productlist/page/${page}`;
+      } else {
+        return keyword ? `/search/${keyword}/page/${page}` : `/page/${page}`;
+      }
     }
   };
 

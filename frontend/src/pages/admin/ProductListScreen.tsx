@@ -168,7 +168,12 @@ const ProductListScreen = () => {
         ))
       )}
       <div className='my-4'>
-        <Paginate pages={pages} currentPage={pageNumberNum} isAdmin={true} />
+        <Paginate
+          pages={pages}
+          currentPage={pageNumberNum}
+          keyword={keyword}
+          isAdmin={true}
+        />
       </div>
     </div>
   );
