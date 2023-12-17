@@ -1,0 +1,3 @@
+In progress...
+Built in MERN Redux typescript.
+Real working ecommerce webshop.
