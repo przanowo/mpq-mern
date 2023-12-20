@@ -1,75 +1,75 @@
-import React, { useState, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { logout } from '../slices/authSlice';
-import { useLogoutMutation } from '../slices/usersApiSlice';
-import { resetCart } from '../slices/cartSlice';
+import React, { useState, useEffect } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import { logout } from '../slices/authSlice'
+import { useLogoutMutation } from '../slices/usersApiSlice'
+import { resetCart } from '../slices/cartSlice'
 import {
   HiMenuAlt1,
   HiOutlineHome,
   HiOutlineShoppingCart,
-} from 'react-icons/hi';
-import { MdOutlineAccountCircle } from 'react-icons/md';
-import logoblack from '../logoblack.png';
-import logowhite from '../logowhite.png';
-import { Link, useNavigate } from 'react-router-dom';
-import { CartAppState } from '../types/CartType';
-import { toast } from 'react-toastify';
-import { UserAppState } from '../types/UserType';
-import SearchBox from './SearchBox';
-import { useLocation } from 'react-router-dom';
+} from 'react-icons/hi'
+import { MdOutlineAccountCircle } from 'react-icons/md'
+import logoblack from '../logoblack.png'
+import logowhite from '../logowhite.png'
+import { Link, useNavigate } from 'react-router-dom'
+import { CartAppState } from '../types/CartType'
+import { toast } from 'react-toastify'
+import { UserAppState } from '../types/UserType'
+import SearchBox from './SearchBox'
+import { useLocation } from 'react-router-dom'
 
 const Navigation = () => {
-  const { cartItems } = useSelector((state: CartAppState) => state.cart);
-  const { userInfo } = useSelector((state: UserAppState) => state.auth);
-  const [isAtTop, setIsAtTop] = useState(true);
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [adminDropdownOpen, setAdminDropdownOpen] = useState(false);
-  const location = useLocation();
-  const isMainPage = location.pathname === '/';
-  const isAdmin = location.pathname.startsWith('/admin');
+  const { cartItems } = useSelector((state: CartAppState) => state.cart)
+  const { userInfo } = useSelector((state: UserAppState) => state.auth)
+  const [isAtTop, setIsAtTop] = useState(true)
+  const [menuOpen, setMenuOpen] = useState(false)
+  const [adminDropdownOpen, setAdminDropdownOpen] = useState(false)
+  const location = useLocation()
+  const isMainPage = location.pathname === '/'
+  const isAdmin = location.pathname.startsWith('/admin')
 
-  const logoSrc = isAtTop ? logowhite : logoblack;
-  const fixedLogoClasses = `${logoSrc}`;
-  const navbarClasses = isAtTop ? 'text-white' : 'bg-white text-black';
-  const fixedNavbarClasses = `lg:fixed z-20 w-screen px-4 transition duration-200 ease-in-out sm:h-18 md:px-8 lg:px-2.5 ${navbarClasses}`;
+  const logoSrc = isAtTop ? logowhite : logoblack
+  const fixedLogoClasses = `${logoSrc}`
+  const navbarClasses = isAtTop ? 'text-white' : 'bg-white text-black'
+  const fixedNavbarClasses = `lg:fixed z-20 w-screen px-4 transition duration-200 ease-in-out sm:h-18 md:px-8 lg:px-2.5 ${navbarClasses}`
 
   useEffect(() => {
     // Only apply scroll logic on the main page
     if (isMainPage) {
       const handleScroll = () => {
-        setIsAtTop(window.scrollY === 0);
-      };
+        setIsAtTop(window.scrollY === 0)
+      }
 
-      window.addEventListener('scroll', handleScroll);
+      window.addEventListener('scroll', handleScroll)
       return () => {
-        window.removeEventListener('scroll', handleScroll);
-      };
+        window.removeEventListener('scroll', handleScroll)
+      }
     } else {
       // For other pages, always set isAtTop to false
-      setIsAtTop(false);
+      setIsAtTop(false)
     }
-  }, [isMainPage]);
+  }, [isMainPage])
 
   const closeMobileMenu = () => {
-    setMenuOpen(false);
-  };
+    setMenuOpen(false)
+  }
 
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
 
-  const [logoutApiCall] = useLogoutMutation();
+  const [logoutApiCall] = useLogoutMutation()
 
   const logoutHandler = async () => {
     try {
-      await logoutApiCall().unwrap();
-      dispatch(logout());
-      dispatch(resetCart());
-      navigate('/');
-      toast.success('Logout successful');
+      await logoutApiCall().unwrap()
+      dispatch(logout())
+      dispatch(resetCart())
+      navigate('/')
+      toast.success('Logout successful')
     } catch (error: any) {
-      console.log(error);
+      console.log(error)
     }
-  };
+  }
 
   return (
     <nav className='lg:absolute z-20 h-26 sm:h-20 lg:h-20 overflow-hidden'>
@@ -176,6 +176,12 @@ const Navigation = () => {
                           to='/admin/userlist'
                         >
                           Users
+                        </Link>
+                        <Link
+                          className='block px-4 py-2 text-sm hover:bg-gray-100/50'
+                          to='/admin/dashboard'
+                        >
+                          Dashboard
                         </Link>
                       </div>
                     )}
@@ -360,7 +366,7 @@ const Navigation = () => {
         </div>
       </div>
     </nav>
-  );
-};
+  )
+}
 
-export default Navigation;
+export default Navigation

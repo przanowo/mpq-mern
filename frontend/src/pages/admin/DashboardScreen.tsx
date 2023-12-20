@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import { useGetDashboardDataQuery } from '../../slices/productApiSlice';
+import React, { useEffect, useState } from 'react'
+import { useGetDashboardDataQuery } from '../../slices/productApiSlice'
 
 const DashboardScreen = () => {
-  const { data, error, isLoading } = useGetDashboardDataQuery({});
+  const { data, error, isLoading } = useGetDashboardDataQuery({})
 
-  console.log(data, 'data');
+  console.log(data, 'data')
 
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error.toString()}</div>;
+  if (isLoading) return <div>Loading...</div>
+  if (error) return <div>Error: {error.toString()}</div>
 
   const {
     totalProducts,
@@ -25,70 +25,80 @@ const DashboardScreen = () => {
     goldCategoryProducts,
     goldCategoryPrices,
   } = data as {
-    totalProducts: number;
-    totalPrices: number;
-    giftCategoryProducts: number;
-    giftCategoryPrices: number;
-    miniaturesCategoryProducts: number;
-    miniaturesCategoryPrices: number;
-    parfumCategoryProducts: number;
-    parfumCategoryPrices: number;
-    sampleCategoryProducts: number;
-    sampleCategoryPrices: number;
-    soapandpowderCategoryProducts: number;
-    soapandpowderCategoryPrices: number;
-    goldCategoryProducts: number;
-    goldCategoryPrices: number;
-  };
+    totalProducts: number
+    totalPrices: number
+    giftCategoryProducts: number
+    giftCategoryPrices: number
+    miniaturesCategoryProducts: number
+    miniaturesCategoryPrices: number
+    parfumCategoryProducts: number
+    parfumCategoryPrices: number
+    sampleCategoryProducts: number
+    sampleCategoryPrices: number
+    soapandpowderCategoryProducts: number
+    soapandpowderCategoryPrices: number
+    goldCategoryProducts: number
+    goldCategoryPrices: number
+  }
 
   return (
-    <table className='mt-24'>
-      <thead>
+    <table className='mt-24 w-full shadow-lg border-collapse'>
+      <thead className='bg-gray-100 text-left'>
         <tr>
-          <th>Dashboard</th>
-          <th>Total Products Number</th>
-          <th>Total Price Value</th>
+          <th className='px-4 py-2 border-b text-sm font-semibold'>
+            Dashboard
+          </th>
+          <th className='px-4 py-2 border-b text-sm font-semibold'>
+            Total Products Number
+          </th>
+          <th className='px-4 py-2 border-b text-sm font-semibold'>
+            Total Price Value
+          </th>
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>All Products</td>
-          <td>{totalProducts}</td>
-          <td>{totalPrices} €</td>
+        <tr className='hover:bg-gray-50'>
+          <td className='px-4 py-2 border-b'>All Products</td>
+          <td className='px-4 py-2 border-b'>{totalProducts}</td>
+          <td className='px-4 py-2 border-b'>{totalPrices} €</td>
         </tr>
-        <tr>
-          <td>Gifts</td>
-          <td>{giftCategoryProducts}</td>
-          <td>{giftCategoryPrices} €</td>
+        <tr className='hover:bg-gray-50'>
+          <td className='px-4 py-2 border-b'>Gifts</td>
+          <td className='px-4 py-2 border-b'>{giftCategoryProducts}</td>
+          <td className='px-4 py-2 border-b'>{giftCategoryPrices} €</td>
         </tr>
-        <tr>
-          <td>Miniatures</td>
-          <td>{miniaturesCategoryProducts}</td>
-          <td>{miniaturesCategoryPrices} €</td>
+        <tr className='hover:bg-gray-50'>
+          <td className='px-4 py-2 border-b'>Miniatures</td>
+          <td className='px-4 py-2 border-b'>{miniaturesCategoryProducts}</td>
+          <td className='px-4 py-2 border-b'>{miniaturesCategoryPrices} €</td>
         </tr>
-        <tr>
-          <td>Parfums</td>
-          <td>{parfumCategoryProducts}</td>
-          <td>{parfumCategoryPrices} €</td>
+        <tr className='hover:bg-gray-50'>
+          <td className='px-4 py-2 border-b'>Parfums</td>
+          <td className='px-4 py-2 border-b'>{parfumCategoryProducts}</td>
+          <td className='px-4 py-2 border-b'>{parfumCategoryPrices} €</td>
         </tr>
-        <tr>
-          <td>Samples</td>
-          <td>{sampleCategoryProducts}</td>
-          <td>{sampleCategoryPrices} €</td>
+        <tr className='hover:bg-gray-50'>
+          <td className='px-4 py-2 border-b'>Samples</td>
+          <td className='px-4 py-2 border-b'>{sampleCategoryProducts}</td>
+          <td className='px-4 py-2 border-b'>{sampleCategoryPrices} €</td>
         </tr>
-        <tr>
-          <td>Soaps & Powders</td>
-          <td>{soapandpowderCategoryProducts}</td>
-          <td>{soapandpowderCategoryPrices} €</td>
+        <tr className='hover:bg-gray-50'>
+          <td className='px-4 py-2 border-b'>Soaps & Powders</td>
+          <td className='px-4 py-2 border-b'>
+            {soapandpowderCategoryProducts}
+          </td>
+          <td className='px-4 py-2 border-b'>
+            {soapandpowderCategoryPrices} €
+          </td>
         </tr>
-        <tr>
-          <td>Gold</td>
-          <td>{goldCategoryProducts}</td>
-          <td>{goldCategoryPrices} €</td>
+        <tr className='hover:bg-gray-50'>
+          <td className='px-4 py-2 border-b'>Gold</td>
+          <td className='px-4 py-2 border-b'>{goldCategoryProducts}</td>
+          <td className='px-4 py-2 border-b'>{goldCategoryPrices} €</td>
         </tr>
       </tbody>
     </table>
-  );
-};
+  )
+}
 
-export default DashboardScreen;
+export default DashboardScreen

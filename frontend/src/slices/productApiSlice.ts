@@ -1,6 +1,6 @@
-import { PRODUCTS_URL, UPLOAD_URL } from '../constants';
-import { apiSlice } from './apiSlice';
-import { DeleteResponse, Product } from '../types/ProductType';
+import { PRODUCTS_URL, UPLOAD_URL } from '../constants'
+import { apiSlice } from './apiSlice'
+import { DeleteResponse, Product } from '../types/ProductType'
 
 export const productApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -85,7 +85,7 @@ export const productApiSlice = apiSlice.injectEndpoints({
       query: () => ({ url: `${PRODUCTS_URL}/dashboard` }),
     }),
   }),
-});
+})
 
 export const {
   useGetProductsQuery,
@@ -100,4 +100,4 @@ export const {
   useGetDashboardDataQuery,
   useDeleteProductImageMutation,
   // useGetProductsByCategoryQuery,
-} = productApiSlice;
+} = productApiSlice

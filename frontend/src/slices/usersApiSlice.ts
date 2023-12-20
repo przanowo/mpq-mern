@@ -1,5 +1,5 @@
-import { USERS_URL } from '../constants';
-import { apiSlice } from './apiSlice';
+import { USERS_URL } from '../constants'
+import { apiSlice } from './apiSlice'
 
 export const usersApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -32,7 +32,7 @@ export const usersApiSlice = apiSlice.injectEndpoints({
     }),
     getUsers: builder.query({
       query: () => ({ url: USERS_URL }),
-      providesTags: [{ type: 'User', id: 'LIST' }],
+      providesTags: ['User'],
       keepUnusedDataFor: 5,
     }),
     deleteUser: builder.mutation({
@@ -55,7 +55,7 @@ export const usersApiSlice = apiSlice.injectEndpoints({
       invalidatesTags: [{ type: 'User', id: 'LIST' }],
     }),
   }),
-});
+})
 
 export const {
   useLoginMutation,
@@ -66,4 +66,4 @@ export const {
   useDeleteUserMutation,
   useGetUserDetailsQuery,
   useUpdateUserMutation,
-} = usersApiSlice;
+} = usersApiSlice
