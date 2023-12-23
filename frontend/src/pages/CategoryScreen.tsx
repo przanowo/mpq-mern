@@ -1,30 +1,30 @@
-import { useParams } from 'react-router-dom';
-import ProductCard from '../components/ProductCard';
-import { useGetProductsQuery } from '../slices/productApiSlice'; // Assuming you have a corresponding slice for category
-import { Product } from '../types/ProductType';
-import Loader from '../components/Loader';
-import Message from '../components/Message';
-import Paginate from '../components/Paginate';
+import { useParams } from 'react-router-dom'
+import ProductCard from '../components/ProductCard'
+import { useGetProductsQuery } from '../slices/productApiSlice' // Assuming you have a corresponding slice for category
+import { Product } from '../types/ProductType'
+import Loader from '../components/Loader'
+import Message from '../components/Message'
+import Paginate from '../components/Paginate'
 
 const CategoryScreen = () => {
   // const { categoryName } = useParams<{ categoryName: string }>();
   const { pageNumber, keyword, categoryName } = useParams<{
-    pageNumber: string;
-    keyword: string;
-    categoryName: string;
-  }>();
-  const pageNumberNum = pageNumber ? parseInt(pageNumber, 10) : 1;
+    pageNumber: string
+    keyword: string
+    categoryName: string
+  }>()
+  const pageNumberNum = pageNumber ? parseInt(pageNumber, 10) : 1
   const { data, isLoading, error } = useGetProductsQuery({
     category: categoryName,
     keyword: keyword,
     pageNumber: pageNumberNum,
-  });
+  })
 
-  console.log(categoryName);
+  console.log(categoryName)
 
-  const products = data?.products as Product[];
-  const pages = data?.pages as number;
-  console.log(products);
+  const products = data?.products as Product[]
+  const pages = data?.pages as number
+  console.log(products)
 
   return (
     <>
@@ -40,7 +40,7 @@ const CategoryScreen = () => {
           type='error'
         />
       ) : (
-        <div className='flex-col mt-24 mx-auto my-8'>
+        <div className='flex-col lg:mt-24 mx-auto mb-12'>
           <h1 className='text-2xl font-bold m-4'>Category: {categoryName}</h1>
           <ul className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4'>
             {products?.map((product: Product) => (
@@ -59,7 +59,7 @@ const CategoryScreen = () => {
         </div>
       )}
     </>
-  );
-};
+  )
+}
 
-export default CategoryScreen;
+export default CategoryScreen

@@ -1,6 +1,6 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { PaginateProps } from '../types/ProductType';
+import React from 'react'
+import { Link } from 'react-router-dom'
+import { PaginateProps } from '../types/ProductType'
 
 const Paginate: React.FC<PaginateProps> = ({
   pages,
@@ -9,23 +9,23 @@ const Paginate: React.FC<PaginateProps> = ({
   keyword,
   categoryName,
 }) => {
-  const maxPageButtons = 10; // Now set to display up to 10 page buttons
+  const maxPageButtons = 10 // Now set to display up to 10 page buttons
 
-  let startPage: number, endPage: number;
+  let startPage: number, endPage: number
   if (pages <= maxPageButtons) {
-    startPage = 1;
-    endPage = pages;
+    startPage = 1
+    endPage = pages
   } else {
-    const halfMaxButtons = Math.floor(maxPageButtons / 2);
+    const halfMaxButtons = Math.floor(maxPageButtons / 2)
     if (currentPage <= halfMaxButtons) {
-      startPage = 1;
-      endPage = maxPageButtons;
+      startPage = 1
+      endPage = maxPageButtons
     } else if (currentPage + halfMaxButtons >= pages) {
-      startPage = pages - maxPageButtons + 1;
-      endPage = pages;
+      startPage = pages - maxPageButtons + 1
+      endPage = pages
     } else {
-      startPage = currentPage - halfMaxButtons;
-      endPage = currentPage + halfMaxButtons - 1;
+      startPage = currentPage - halfMaxButtons
+      endPage = currentPage + halfMaxButtons - 1
     }
   }
 
@@ -33,42 +33,36 @@ const Paginate: React.FC<PaginateProps> = ({
     if (categoryName) {
       return keyword
         ? `/category/${categoryName}/search/${keyword}/page/${page}`
-        : `/category/${categoryName}/page/${page}`;
+        : `/category/${categoryName}/page/${page}`
     } else {
       if (isAdmin) {
         return keyword
           ? `/admin/productlist/search/${keyword}/page/${page}`
-          : `/admin/productlist/page/${page}`;
+          : `/admin/productlist/page/${page}`
       } else {
-        return keyword ? `/search/${keyword}/page/${page}` : `/page/${page}`;
+        return keyword ? `/search/${keyword}/page/${page}` : `/page/${page}`
       }
     }
-  };
+  }
 
   return pages > 1 ? (
-    <div className='flex justify-center items-center '>
+    <div className='flex justify-center items-center flex-wrap mt-4'>
       {currentPage > 1 && (
         <>
-          <Link to={path(1)} className='px-3 py-1 rounded-full bg-gray-200'>
+          <Link
+            to={path(1)}
+            className='px-2 py-1 mx-1 rounded-full bg-gray-200 text-gray-700 text-sm'
+          >
             First
           </Link>
           <Link
             to={path(currentPage - 1)}
-            className='px-3 py-1 rounded-full bg-gray-200'
+            className='px-2 py-1 mx-1 rounded-full bg-gray-200 text-gray-700 text-sm'
           >
             Previous
           </Link>
         </>
       )}
-
-      {/* {startPage > 1 && (
-        <>
-          <Link to={path(1)} className='px-3 py-1 rounded-full bg-gray-200'>
-            1
-          </Link>
-          {startPage > 2 && <span className='px-3 py-1'>...</span>}
-        </>
-      )} */}
 
       {Array.from(
         { length: endPage - startPage + 1 },
@@ -78,8 +72,10 @@ const Paginate: React.FC<PaginateProps> = ({
           key={page}
           to={path(page)}
           className={`${
-            page === currentPage ? 'bg-gray-900 text-white' : 'bg-gray-200'
-          } px-3 py-1 rounded-full`}
+            page === currentPage
+              ? 'bg-blue-500 text-white'
+              : 'bg-gray-200 text-gray-700'
+          } px-2 py-1 mx-1 rounded-full text-sm`}
         >
           {page}
         </Link>
@@ -87,8 +83,13 @@ const Paginate: React.FC<PaginateProps> = ({
 
       {endPage < pages && (
         <>
-          {endPage < pages - 1 && <span className='px-3 py-1'>...</span>}
-          <Link to={path(pages)} className='px-3 py-1 rounded-full bg-gray-200'>
+          {endPage < pages - 1 && (
+            <span className='px-1 py-1 text-gray-500 text-sm mx-1'>...</span>
+          )}
+          <Link
+            to={path(pages)}
+            className='px-2 py-1 mx-1 rounded-full bg-gray-200 text-gray-700 text-sm'
+          >
             {pages}
           </Link>
         </>
@@ -98,17 +99,20 @@ const Paginate: React.FC<PaginateProps> = ({
         <>
           <Link
             to={path(currentPage + 1)}
-            className='px-3 py-1 rounded-full bg-gray-200'
+            className='px-2 py-1 mx-1 rounded-full bg-gray-200 text-gray-700 text-sm'
           >
             Next
           </Link>
-          <Link to={path(pages)} className='px-3 py-1 rounded-full bg-gray-200'>
+          <Link
+            to={path(pages)}
+            className='px-2 py-1 mx-1 rounded-full bg-gray-200 text-gray-700 text-sm'
+          >
             Last
           </Link>
         </>
       )}
     </div>
-  ) : null;
-};
+  ) : null
+}
 
-export default Paginate;
+export default Paginate

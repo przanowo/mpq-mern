@@ -74,7 +74,7 @@ const Navigation = () => {
   return (
     <nav className='lg:absolute z-20 h-26 sm:h-20 lg:h-20 overflow-hidden'>
       <div className={fixedNavbarClasses}>
-        <div className='flex items-center justify-center lg:justify-between h-full'>
+        <div className='flex items-center justify-center lg:justify-between max-w-screen w-full h-full'>
           <Link to='/'>
             {' '}
             <img
@@ -328,14 +328,36 @@ const Navigation = () => {
                   </>
                 )}
                 {userInfo?.isAdmin ? (
-                  <Link
-                    className='px-3 py-4 rounded-lg text-xl'
-                    to='/admin'
-                    onClick={closeMobileMenu}
-                  >
-                    {' '}
-                    Admin{' '}
-                  </Link>
+                  <>
+                    <Link
+                      className='px-3 py-4 rounded-lg text-xl'
+                      to='/admin/dashboard'
+                      onClick={closeMobileMenu}
+                    >
+                      Admin Dashboard
+                    </Link>
+                    <Link
+                      className='px-3 py-4 rounded-lg text-xl'
+                      to='/admin/productlist'
+                      onClick={closeMobileMenu}
+                    >
+                      Admin Products list
+                    </Link>
+                    <Link
+                      className='px-3 py-4 rounded-lg text-xl'
+                      to='/admin/orderlist'
+                      onClick={closeMobileMenu}
+                    >
+                      Admin Orders list
+                    </Link>
+                    <Link
+                      className='px-3 py-4 rounded-lg text-xl'
+                      to='/admin/userlist'
+                      onClick={closeMobileMenu}
+                    >
+                      Admin Users list
+                    </Link>
+                  </>
                 ) : null}
               </div>
 

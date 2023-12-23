@@ -1,41 +1,41 @@
-import { useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useState } from 'react'
+import { useParams, useNavigate } from 'react-router-dom'
 import {
   useCreateReviewMutation,
   useGetProductDetailsQuery,
-} from '../slices/productApiSlice';
-import { useDispatch } from 'react-redux';
-import Loader from '../components/Loader';
-import Message from '../components/Message';
-import { addToCart } from '../slices/cartSlice';
-import { useSelector } from 'react-redux';
-import { UserAppState } from '../types/UserType';
-import { toast } from 'react-toastify';
-import { Review, ReviewData } from '../types/ProductType';
+} from '../slices/productApiSlice'
+import { useDispatch } from 'react-redux'
+import Loader from '../components/Loader'
+import Message from '../components/Message'
+import { addToCart } from '../slices/cartSlice'
+import { useSelector } from 'react-redux'
+import { UserAppState } from '../types/UserType'
+import { toast } from 'react-toastify'
+import { Review, ReviewData } from '../types/ProductType'
 // import EditProductModal from '../admin/EditProductModal'; // import the modal component
 // import ImageGallery from './ImageGallery';
-import Meta from '../components/Meta';
+import Meta from '../components/Meta'
 
 const ProductScreen = () => {
-  const { productId } = useParams<{ productId: string }>();
-  const { userInfo } = useSelector((state: UserAppState) => state.auth);
+  const { productId } = useParams<{ productId: string }>()
+  const { userInfo } = useSelector((state: UserAppState) => state.auth)
   const { data, isLoading, error, refetch } = useGetProductDetailsQuery(
     productId ?? ''
-  );
-  const product = data;
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
+  )
+  const product = data
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
 
   const handleBack = () => {
-    navigate(-1); // Navigates back to the previous page
-  };
+    navigate(-1) // Navigates back to the previous page
+  }
 
-  const [qty, setQty] = useState(1);
-  const [rating, setRating] = useState(0);
-  const [comment, setComment] = useState('');
+  const [qty, setQty] = useState(1)
+  const [rating, setRating] = useState(0)
+  const [comment, setComment] = useState('')
 
   const [createReview, { isLoading: loadingProductReview }] =
-    useCreateReviewMutation();
+    useCreateReviewMutation()
 
   const quantityOptions =
     product && product.quantity > 0
@@ -44,51 +44,53 @@ const ProductScreen = () => {
             {x + 1}
           </option>
         ))
-      : null;
+      : null
 
   const handleAddToCart = () => {
-    dispatch(addToCart({ ...product, qty }));
-    navigate('/cart');
-  };
+    dispatch(addToCart({ ...product, qty }))
+    navigate('/cart')
+  }
 
   const submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+    e.preventDefault()
     try {
       const reviewData: ReviewData = {
         rating,
         comment,
-      };
+      }
 
       const result = await createReview({
         productId: product?._id,
         reviewData,
-      });
+      })
 
       if ('data' in result && result.data) {
-        toast.success('Review submitted successfully');
-        setRating(0);
-        setComment('');
-        refetch();
+        toast.success('Review submitted successfully')
+        setRating(0)
+        setComment('')
+        refetch()
       } else if ('error' in result) {
-        toast.error('Error submitting review');
-        console.log(result);
+        toast.error('Error submitting review')
+        console.log(result)
       }
     } catch (error) {
-      toast.error('Error submitting review');
-      console.log(error);
+      toast.error('Error submitting review')
+      console.log(error)
     }
-  };
+  }
 
   return (
-    <div className='flex-col mx-auto mt-24 p-6 bg-white shadow-lg rounded-md items-center justify-center w-4/5 h-3/4'>
+    <div className='flex-col mx-auto lg:mt-24 mb-12 p-6 bg-white shadow-lg rounded-md items-center justify-center w-full sm:w-4/5'>
+      <Meta title={product ? product.title : 'Product Details'} />
       <div className='flex justify-between items-center mb-4'>
         <button
-          className=' bg-orange-100 px-4 py-2 rounded-md hover:bg-orange-200  transition duration-200'
+          className='bg-orange-100 px-3 py-2 rounded-md hover:bg-orange-200 transition duration-200 text-sm'
           onClick={handleBack}
         >
           Go Back
         </button>
       </div>
+
       {isLoading ? (
         <Loader />
       ) : error ? (
@@ -103,140 +105,279 @@ const ProductScreen = () => {
       ) : !product ? (
         <Message message='Product not found' type='error' />
       ) : (
-        <div className='flex justify-between'>
-          <Meta title={product.title} />
-
-          <div className='flex '>
-            <div className='p-4 w-2/5 h-3/4 relative'>
-              <img
-                src={product.mainImage }
-                alt={product.title}
-                className='w-full h-full object-cover mb-4 rounded-md cursor-pointer'
-                // onClick={handleImageClick}
-              />
-              <div className='grid grid-cols-3 gap-2 cursor-pointer w-2/3'>
-                {product.images &&
-                  product.images.length > 0 &&
-                  product.images.map((url, idx) => (
-                    <img
-                      key={idx}
-                      src={url}
-                      alt={`Product ${idx}`}
-                      className='w-full h-24 object-cover rounded-md'
-                      // onClick={handleImageClick}
-                    />
-                  ))}
-              </div>
-            </div>
-          </div>
-          <div className='flex '>
-            <div className=' w-1/2 pl-4 pt-12'>
-              <h2 className='text-2xl font-bold mb-2'>{product.title}</h2>
-              <p className='text-gray-600 my-6'>
-                Description: {product.description}
-              </p>
-              <p className='text-gray-600'>Stock: {product.quantity}</p>
-              <p className='text-gray-600'>Sex: {product.sex}</p>
-              <p className='text-gray-600'>Category: {product.category}</p>
-              <p className='text-gray-600'>Type: {product.typ}</p>
-              <p className='text-gray-600'>{`Size: {product.size} ml`}</p>
-
-              <p className='text-xl font-bold my-4'>${product.price}</p>
-              {/* <p className="mb-2"><span className="font-semibold">Brand:</span> {product.brand}</p> */}
-              {/* <p className="mb-2">{product.ml} ml</p> */}
-
-              {product && product.quantity > 0 && (
-                <div className='flex items-center'>
-                  <p className='mr-2'>Quantity:</p>
-                  <select
-                    className='border border-gray-300 rounded-md px-2 py-1'
-                    value={qty}
-                    onChange={(e) => setQty(Number(e.target.value))}
-                  >
-                    {quantityOptions}
-                  </select>
-                </div>
-              )}
-
-              <button
-                className='bg-orange-100 px-4 py-2 rounded-md hover:bg-orange-200  transition duration-200'
-                disabled={product && product.quantity === 0}
-                onClick={handleAddToCart}
-              >
-                Add to cart
-              </button>
+        <div className='flex flex-col md:flex-row'>
+          <div className='p-4 w-full md:w-2/5'>
+            <img
+              src={product.mainImage}
+              alt={product.title}
+              className='w-full h-auto object-cover mb-4 rounded-md'
+            />
+            <div className='grid grid-cols-3 gap-2'>
+              {product.images &&
+                product.images.length > 0 &&
+                product.images.map((url, idx) => (
+                  <img
+                    key={idx}
+                    src={url}
+                    alt={`Product ${idx}`}
+                    className='w-full h-24 object-cover rounded-md'
+                  />
+                ))}
             </div>
           </div>
 
-          <div className='flex mt-12'>
-            <div className='flex flex-col'>
-              <h2 className='text-2xl font-bold mb-2'>Reviews</h2>
-              {product.reviews.length === 0 && (
-                <Message message='No Reviews' type='info' />
-              )}
-              {product.reviews.map((review) => (
-                <div
-                  key={review._id}
-                  className='flex flex-col border border-gray-300 rounded-md p-4 my-4'
+          <div className='w-full md:w-3/5 pl-4'>
+            <h2 className='text-2xl font-bold mb-2'>{product.title}</h2>
+            <p className='text-gray-600 my-6'>
+              Description: {product.description}
+            </p>
+            {/* ... other product details ... */}
+            <p className='text-xl font-bold my-4'>${product.price}</p>
+
+            {/* ... Quantity and Add to Cart ... */}
+            {product && product.quantity > 0 && (
+              <div className='flex items-center mb-4'>
+                <p className='mr-2'>Quantity:</p>
+                <select
+                  className='border border-gray-300 rounded-md px-2 py-1 text-sm'
+                  value={qty}
+                  onChange={(e) => setQty(Number(e.target.value))}
                 >
-                  <div className='flex items-center'>
-                    <p className='font-semibold mr-2'>{review.name}</p>
-                    <p className='text-gray-600'>{review.createdAt}</p>
-                  </div>
-                  <p className='text-gray-600'>{review.comment}</p>
+                  {quantityOptions}
+                </select>
+              </div>
+            )}
+
+            <button
+              className='bg-orange-100 px-4 py-2 rounded-md hover:bg-orange-200 transition duration-200 text-sm'
+              disabled={product && product.quantity === 0}
+              onClick={handleAddToCart}
+            >
+              Add to cart
+            </button>
+          </div>
+
+          <div className='w-full mt-12'>
+            <h2 className='text-2xl font-bold mb-2'>Reviews</h2>
+            {product.reviews.length === 0 && (
+              <Message message='No Reviews' type='info' />
+            )}
+            {product.reviews.map((review) => (
+              <div
+                key={review._id}
+                className='flex flex-col border border-gray-300 rounded-md p-4 my-4'
+              >
+                <div className='flex items-center'>
+                  <p className='font-semibold mr-2'>{review.name}</p>
+                  <p className='text-gray-600'>{review.createdAt}</p>
                 </div>
-              ))}
-              <div className='flex flex-col'>
+                <p className='text-gray-600'>{review.comment}</p>
+              </div>
+            ))}
+            {userInfo ? (
+              <div className='mt-4'>
                 <h2 className='text-2xl font-bold mb-2'>
                   Write a customer review
                 </h2>
                 {loadingProductReview && <Loader />}
-                {userInfo ? (
-                  <form className='flex flex-col' onSubmit={submitHandler}>
-                    <div className='flex items-center'>
-                      <label className='mr-2'>Rating</label>
-                      <select
-                        className='border border-gray-300 rounded-md px-2 py-1'
-                        value={rating}
-                        onChange={(e) => setRating(Number(e.target.value))}
-                      >
-                        <option value=''>Select...</option>
-                        <option value='1'>1 - Poor</option>
-                        <option value='2'>2 - Fair</option>
-                        <option value='3'>3 - Good</option>
-                        <option value='4'>4 - Very Good</option>
-                        <option value='5'>5 - Excellent</option>
-                      </select>
-                    </div>
-                    <div className='flex flex-col'>
-                      <label className='mt-4'>Comment</label>
-                      <textarea
-                        className='border border-gray-300 rounded-md px-2 py-1'
-                        value={comment}
-                        onChange={(e) => setComment(e.target.value)}
-                      ></textarea>
-                    </div>
-                    <button
-                      className='bg-orange-100 px-4 py-2 rounded-md hover:bg-orange-200  transition duration-200'
-                      type='submit'
-                      disabled={loadingProductReview}
+                <form className='flex flex-col' onSubmit={submitHandler}>
+                  <div className='flex items-center mb-4'>
+                    <label className='mr-2'>Rating</label>
+                    <select
+                      className='border border-gray-300 rounded-md px-2 py-1 text-sm'
+                      value={rating}
+                      onChange={(e) => setRating(Number(e.target.value))}
                     >
-                      Submit
-                    </button>
-                  </form>
-                ) : (
-                  <Message
-                    message='Please login to write a review'
-                    type='info'
-                  />
-                )}
+                      <option value=''>Select...</option>
+                      <option value='1'>1 - Poor</option>
+                      <option value='2'>2 - Fair</option>
+                      <option value='3'>3 - Good</option>
+                      <option value='4'>4 - Very Good</option>
+                      <option value='5'>5 - Excellent</option>
+                    </select>
+                  </div>
+                  <div className='mb-4'>
+                    <label className='mb-2'>Comment</label>
+                    <textarea
+                      className='border border-gray-300 rounded-md w-full px-2 py-1 text-sm'
+                      value={comment}
+                      onChange={(e) => setComment(e.target.value)}
+                    ></textarea>
+                  </div>
+                  <button
+                    className='bg-orange-100 px-4 py-2 rounded-md hover:bg-orange-200 transition duration-200'
+                    type='submit'
+                    disabled={loadingProductReview}
+                  >
+                    Submit
+                  </button>
+                </form>
               </div>
-            </div>
+            ) : (
+              <Message message='Please login to write a review' type='info' />
+            )}
           </div>
         </div>
       )}
     </div>
-  );
-};
+  )
 
-export default ProductScreen;
+  // return (
+  //   <div className='mx-auto p-4 bg-white shadow-lg rounded-md w-full sm:w-4/5'>
+  //     <button
+  //       className='bg-orange-100 px-3 py-2 rounded-md hover:bg-orange-200 transition duration-200 text-sm mb-4'
+  //       onClick={handleBack}
+  //     >
+  //       Go Back
+  //     </button>
+  //     {isLoading ? (
+  //       <Loader />
+  //     ) : error ? (
+  //       <Message
+  //         message={
+  //           (error as any)?.data?.message ||
+  //           (error as any)?.error ||
+  //           'An error occurred'
+  //         }
+  //         type='error'
+  //       />
+  //     ) : !product ? (
+  //       <Message message='Product not found' type='error' />
+  //     ) : (
+  //       <div className='flex justify-between'>
+  //         <Meta title={product.title} />
+
+  //         <div className='flex '>
+  //           <div className='p-4 w-2/5 h-3/4 relative'>
+  //             <img
+  //               src={product.mainImage}
+  //               alt={product.title}
+  //               className='w-full h-full object-cover mb-4 rounded-md cursor-pointer'
+  //               // onClick={handleImageClick}
+  //             />
+  //             <div className='grid grid-cols-3 gap-2 cursor-pointer w-2/3'>
+  //               {product.images &&
+  //                 product.images.length > 0 &&
+  //                 product.images.map((url, idx) => (
+  //                   <img
+  //                     key={idx}
+  //                     src={url}
+  //                     alt={`Product ${idx}`}
+  //                     className='w-full h-24 object-cover rounded-md'
+  //                     // onClick={handleImageClick}
+  //                   />
+  //                 ))}
+  //             </div>
+  //           </div>
+  //         </div>
+  //         <div className='flex '>
+  //           <div className=' w-1/2 pl-4 pt-12'>
+  //             <h2 className='text-2xl font-bold mb-2'>{product.title}</h2>
+  //             <p className='text-gray-600 my-6'>
+  //               Description: {product.description}
+  //             </p>
+  //             <p className='text-gray-600'>Stock: {product.quantity}</p>
+  //             <p className='text-gray-600'>Sex: {product.sex}</p>
+  //             <p className='text-gray-600'>Category: {product.category}</p>
+  //             <p className='text-gray-600'>Type: {product.typ}</p>
+  //             <p className='text-gray-600'>{`Size: {product.size} ml`}</p>
+
+  //             <p className='text-xl font-bold my-4'>${product.price}</p>
+  //             {/* <p className="mb-2"><span className="font-semibold">Brand:</span> {product.brand}</p> */}
+  //             {/* <p className="mb-2">{product.ml} ml</p> */}
+
+  //             {product && product.quantity > 0 && (
+  //               <div className='flex items-center'>
+  //                 <p className='mr-2'>Quantity:</p>
+  //                 <select
+  //                   className='border border-gray-300 rounded-md px-2 py-1'
+  //                   value={qty}
+  //                   onChange={(e) => setQty(Number(e.target.value))}
+  //                 >
+  //                   {quantityOptions}
+  //                 </select>
+  //               </div>
+  //             )}
+
+  //             <button
+  //               className='bg-orange-100 px-4 py-2 rounded-md hover:bg-orange-200  transition duration-200'
+  //               disabled={product && product.quantity === 0}
+  //               onClick={handleAddToCart}
+  //             >
+  //               Add to cart
+  //             </button>
+  //           </div>
+  //         </div>
+
+  //         <div className='flex mt-12'>
+  //           <div className='flex flex-col'>
+  //             <h2 className='text-2xl font-bold mb-2'>Reviews</h2>
+  //             {product.reviews.length === 0 && (
+  //               <Message message='No Reviews' type='info' />
+  //             )}
+  //             {product.reviews.map((review) => (
+  //               <div
+  //                 key={review._id}
+  //                 className='flex flex-col border border-gray-300 rounded-md p-4 my-4'
+  //               >
+  //                 <div className='flex items-center'>
+  //                   <p className='font-semibold mr-2'>{review.name}</p>
+  //                   <p className='text-gray-600'>{review.createdAt}</p>
+  //                 </div>
+  //                 <p className='text-gray-600'>{review.comment}</p>
+  //               </div>
+  //             ))}
+  //             <div className='flex flex-col'>
+  //               <h2 className='text-2xl font-bold mb-2'>
+  //                 Write a customer review
+  //               </h2>
+  //               {loadingProductReview && <Loader />}
+  //               {userInfo ? (
+  //                 <form className='flex flex-col' onSubmit={submitHandler}>
+  //                   <div className='flex items-center'>
+  //                     <label className='mr-2'>Rating</label>
+  //                     <select
+  //                       className='border border-gray-300 rounded-md px-2 py-1'
+  //                       value={rating}
+  //                       onChange={(e) => setRating(Number(e.target.value))}
+  //                     >
+  //                       <option value=''>Select...</option>
+  //                       <option value='1'>1 - Poor</option>
+  //                       <option value='2'>2 - Fair</option>
+  //                       <option value='3'>3 - Good</option>
+  //                       <option value='4'>4 - Very Good</option>
+  //                       <option value='5'>5 - Excellent</option>
+  //                     </select>
+  //                   </div>
+  //                   <div className='flex flex-col'>
+  //                     <label className='mt-4'>Comment</label>
+  //                     <textarea
+  //                       className='border border-gray-300 rounded-md px-2 py-1'
+  //                       value={comment}
+  //                       onChange={(e) => setComment(e.target.value)}
+  //                     ></textarea>
+  //                   </div>
+  //                   <button
+  //                     className='bg-orange-100 px-4 py-2 rounded-md hover:bg-orange-200  transition duration-200'
+  //                     type='submit'
+  //                     disabled={loadingProductReview}
+  //                   >
+  //                     Submit
+  //                   </button>
+  //                 </form>
+  //               ) : (
+  //                 <Message
+  //                   message='Please login to write a review'
+  //                   type='info'
+  //                 />
+  //               )}
+  //             </div>
+  //           </div>
+  //         </div>
+  //       </div>
+  //     )}
+  //   </div>
+  // )
+}
+
+export default ProductScreen

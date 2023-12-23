@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from 'react'
 import { useGetDashboardDataQuery } from '../../slices/productApiSlice'
 
 const DashboardScreen = () => {

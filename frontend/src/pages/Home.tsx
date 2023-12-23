@@ -1,30 +1,29 @@
-import { Link, useParams } from 'react-router-dom';
-import { SlArrowDown } from 'react-icons/sl';
-import ProductCard from '../components/ProductCard';
-import { useGetProductsQuery } from '../slices/productApiSlice';
-import { Product } from '../types/ProductType';
-import Loader from '../components/Loader';
-import Message from '../components/Message';
-import Paginate from '../components/Paginate';
-import ProductCarousel from '../components/ProductCarousel';
-import CategoryCarousel from '../components/CategoryCarousel';
-import Footer from '../components/Footer';
+import { Link, useParams } from 'react-router-dom'
+import { SlArrowDown } from 'react-icons/sl'
+import ProductCard from '../components/ProductCard'
+import { useGetProductsQuery } from '../slices/productApiSlice'
+import { Product } from '../types/ProductType'
+import Loader from '../components/Loader'
+import Message from '../components/Message'
+import Paginate from '../components/Paginate'
+import CategoryCarousel from '../components/CategoryCarousel'
+import Footer from '../components/Footer'
 
 const Home = () => {
   const { pageNumber, keyword } = useParams<{
-    pageNumber: string;
-    keyword: string;
-  }>();
-  const pageNumberNum = pageNumber ? parseInt(pageNumber, 10) : 1;
+    pageNumber: string
+    keyword: string
+  }>()
+  const pageNumberNum = pageNumber ? parseInt(pageNumber, 10) : 1
   const { data, isLoading, error } = useGetProductsQuery({
     keyword: keyword,
     pageNumber: pageNumberNum,
     categoryName: '',
-  });
+  })
 
-  const isBaseHomePage = !pageNumber && !keyword;
-  const products = data?.products as Product[];
-  const pages = data?.pages as number;
+  const isBaseHomePage = !pageNumber && !keyword
+  const products = data?.products as Product[]
+  const pages = data?.pages as number
 
   return (
     <>
@@ -44,14 +43,14 @@ const Home = () => {
           {' '}
           <div className='flex-col h-screen '>
             {isBaseHomePage && (
-              <div className='flex justify-center items-end bg-cover bg-center h-screen lg:bg-[url(https://firebasestorage.googleapis.com/v0/b/miniparfumqueen.appspot.com/o/images%2Fbg%2Fmpq-bg.jpg?alt=media&token=68c2375b-3f6c-4bae-9cab-536a93e035f4)]'>
+              <div className='flex justify-center items-end bg-cover bg-center h-screen bg-[url(https://firebasestorage.googleapis.com/v0/b/miniparfumqueen.appspot.com/o/images%2Fbg%2FMobBgText.jpg?alt=media&token=f9de62bd-43e2-4082-a155-adc79eb050d9)] lg:bg-[url(https://firebasestorage.googleapis.com/v0/b/miniparfumqueen.appspot.com/o/images%2Fbg%2Fmpq-bg.jpg?alt=media&token=68c2375b-3f6c-4bae-9cab-536a93e035f4)]'>
                 <button className='cursor-pointer rounded-full bg-white text-white bg-opacity-30 px-28  text-5xl mb-16 lg:mb-6 flex'>
                   <SlArrowDown />
                 </button>
               </div>
             )}
             {!keyword && isBaseHomePage ? (
-              <div className='flex items-center justify-center mt-24'>
+              <div className='hidden lg:flex items-center justify-center mt-24'>
                 {/* <ProductCarousel /> */}
                 <CategoryCarousel />
               </div>
@@ -89,7 +88,7 @@ const Home = () => {
         </>
       )}
     </>
-  );
-};
+  )
+}
 
-export default Home;
+export default Home
