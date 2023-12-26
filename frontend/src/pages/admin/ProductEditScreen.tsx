@@ -229,23 +229,17 @@ const ProductEditScreen = () => {
   }
 
   return (
-    <div className='mt-24 mx-4 bg-white p-6 rounded shadow-md'>
-      <div className='flex flex-col items-center justify-center'>
-        <div className='w-full flex flex-col md:flex-row justify-between items-center mb-6'>
+    <div className='mt-24 p-4 w-full bg-white shadow-md'>
+      <div className='flex flex-col items-center justify-center w-full'>
+        <div className='w-full flex flex-col sm:flex-row justify-start items-center mb-6'>
           <Link
             to='/admin/productlist'
-            className='text-blue-500 hover:text-blue-600 text-lg font-bold mb-2 md:mb-0'
+            className='text-blue-500 hover:text-blue-600 text-lg font-bold mb-2 sm:mb-0'
           >
             Go Back
           </Link>
-          <h1 className='text-2xl font-bold mb-2 md:mb-0'>Edit Product</h1>
-          <button
-            type='submit'
-            className='bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded'
-          >
-            Update Product
-          </button>
         </div>
+        <h1 className='text-2xl font-bold mb-2 sm:mb-0'>Edit Product</h1>
         {loadingUpdate && <Loader />}
         {errorUpdate && (
           <Message type='error' message={errorUpdate.toString()} />
@@ -257,30 +251,304 @@ const ProductEditScreen = () => {
           <Message type='error' message={error.toString()} />
         ) : (
           <form className='w-full' onSubmit={submitHandler}>
-            {/* Title and Description */}
-            <div className='mb-6'>{/* ... Title and Description ... */}</div>
+            <div className='mb-6'>
+              <label
+                className='block text-gray-700 text-sm font-bold mb-2'
+                htmlFor='title'
+              >
+                Title
+              </label>
+              <textarea
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
+                id='title'
+                rows={1}
+                placeholder='Enter title'
+              ></textarea>
 
-            {/* Options Row */}
-            <div className='flex flex-col mb-6 space-y-4'>
-              {/* ... Price, Quantity, Size, Typ, Category, Magazine, Sex ... */}
+              <label
+                className='block text-gray-700 text-sm font-bold mb-2 mt-4'
+                htmlFor='description'
+              >
+                Description
+              </label>
+              <textarea
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
+                id='description'
+                rows={3}
+                placeholder='Enter description'
+              ></textarea>
             </div>
 
-            {/* Checkboxes Row */}
-            <div className='flex flex-col mb-6 space-y-4'>
-              {/* ... Featured, Liked, Nowe, Show checkboxes ... */}
+            <div className='flex flex-wrap mb-6 -mx-3'>
+              <div className='w-full px-3 mb-6 md:mb-0 md:w-1/7'>
+                <label
+                  className='block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2'
+                  htmlFor='price'
+                >
+                  Price
+                </label>
+                <input
+                  value={price}
+                  onChange={(e) => setPrice(Number(e.target.value))}
+                  className='appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white'
+                  id='price'
+                  type='text'
+                  placeholder='Enter price'
+                />
+              </div>
+              <div className='w-full px-3 mb-6 md:mb-0 md:w-1/7'>
+                <label
+                  className='block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2'
+                  htmlFor='quantity'
+                >
+                  Quantity
+                </label>
+                <input
+                  value={quantity}
+                  onChange={(e) => setQuantity(Number(e.target.value))}
+                  className='appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white'
+                  id='quantity'
+                  type='text'
+                  placeholder='Enter quantity'
+                />
+              </div>
+              <div className='w-full px-3 mb-6 md:mb-0 md:w-1/7'>
+                <label
+                  className='block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2'
+                  htmlFor='size'
+                >
+                  Size in ml
+                </label>
+                <input
+                  value={size}
+                  onChange={(e) => setSize(Number(e.target.value))}
+                  className='appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white'
+                  id='size'
+                  type='text'
+                  placeholder='Enter size'
+                />
+              </div>
+              <div className='w-full px-3 mb-6 md:mb-0 md:w-1/7'>
+                <label
+                  className='block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2'
+                  htmlFor='typ'
+                >
+                  Type
+                </label>
+                <select
+                  value={typ}
+                  onChange={(e) => setTyp(e.target.value)}
+                  className='block appearance-none w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white'
+                  id='typ'
+                >
+                  <option value='edp'>Eau de parfume</option>
+                  <option value='edt'>Eau de toilette</option>
+                  <option value='edc'>Eau de cologne</option>
+                  <option value='parfume'>Parfume</option>
+                </select>
+              </div>
+              <div className='w-full px-3 mb-6 md:mb-0 md:w-1/7'>
+                <label
+                  className='block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2'
+                  htmlFor='category'
+                >
+                  Category
+                </label>
+                <select
+                  value={category}
+                  onChange={(e) => setCategory(e.target.value)}
+                  className='block appearance-none w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white'
+                  id='category'
+                >
+                  <option value='miniature'>Miniature</option>
+                  <option value='perfume'>Perfume</option>
+                  <option value='sample'>Sample</option>
+                  <option value='soapandpowder'>Soap & Powder</option>
+                  <option value='gift'>Gift</option>
+                  <option value='gold'>Gold</option>
+                </select>
+              </div>
+              <div className='w-full px-3 mb-6 md:mb-0 md:w-1/7'>
+                <label
+                  className='block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2'
+                  htmlFor='magazine'
+                >
+                  Magazine
+                </label>
+                <select
+                  value={magazine}
+                  onChange={(e) => setMagazine(e.target.value)}
+                  className='block appearance-none w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white'
+                  id='magazine'
+                >
+                  <option value='NL'>NL</option>
+                  <option value='OSK'>OSK</option>
+                </select>
+              </div>
+              <div className='w-full px-3 mb-6 md:mb-0 md:w-1/7'>
+                <label
+                  className='block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2'
+                  htmlFor='sex'
+                >
+                  Sex
+                </label>
+                <select
+                  value={sex}
+                  onChange={(e) => setSex(e.target.value)}
+                  className='block appearance-none w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white'
+                  id='sex'
+                >
+                  <option value='men'>Men</option>
+                  <option value='women'>Women</option>
+                  <option value='unisex'>Unisex</option>
+                </select>
+              </div>
             </div>
 
-            {/* Main Image */}
-            <div className='mb-6'>{/* ... Main Image ... */}</div>
+            <div className='flex flex-wrap mb-6 -mx-3'>
+              <div className='w-full px-3 mb-6 md:mb-0 md:w-1/4'>
+                <label
+                  className='block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2'
+                  htmlFor='featured'
+                >
+                  Featured
+                </label>
+                <input
+                  checked={featured}
+                  onChange={(e) => setFeatured(e.target.checked)}
+                  className='form-checkbox h-5 w-5 text-blue-600 rounded focus:ring-blue-500 border-gray-300'
+                  id='featured'
+                  type='checkbox'
+                />
+              </div>
+              <div className='w-full px-3 mb-6 md:mb-0 md:w-1/4'>
+                <label
+                  className='block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2'
+                  htmlFor='liked'
+                >
+                  Liked
+                </label>
+                <input
+                  checked={liked}
+                  onChange={(e) => setLiked(e.target.checked)}
+                  className='form-checkbox h-5 w-5 text-blue-600 rounded focus:ring-blue-500 border-gray-300'
+                  id='liked'
+                  type='checkbox'
+                />
+              </div>
+              <div className='w-full px-3 mb-6 md:mb-0 md:w-1/4'>
+                <label
+                  className='block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2'
+                  htmlFor='nowe'
+                >
+                  New
+                </label>
+                <input
+                  checked={nowe}
+                  onChange={(e) => setNowe(e.target.checked)}
+                  className='form-checkbox h-5 w-5 text-blue-600 rounded focus:ring-blue-500 border-gray-300'
+                  id='nowe'
+                  type='checkbox'
+                />
+              </div>
+              <div className='w-full px-3 mb-6 md:mb-0 md:w-1/4'>
+                <label
+                  className='block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2'
+                  htmlFor='show'
+                >
+                  Show
+                </label>
+                <input
+                  checked={show}
+                  onChange={(e) => setShow(e.target.checked)}
+                  className='form-checkbox h-5 w-5 text-blue-600 rounded focus:ring-blue-500 border-gray-300'
+                  id='show'
+                  type='checkbox'
+                />
+              </div>
+            </div>
 
-            {/* Additional Images */}
-            <div className='mb-6'>{/* ... Additional Images ... */}</div>
+            <div className='mb-6'>
+              <label
+                className='block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2'
+                htmlFor='mainImage'
+              >
+                Main Image
+              </label>
+              <input
+                onChange={uploadFileHandler}
+                className='appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white'
+                id='mainImage'
+                type='file'
+              />
+              <div className='w-full px-3 py-4'>
+                {mainImage ? (
+                  <div className='flex items-center space-x-4'>
+                    <img
+                      src={mainImage}
+                      alt='Main product'
+                      className='w-40 h-40 object-cover rounded-md'
+                    />
+                    <button
+                      className='bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 focus:outline-none'
+                      onClick={() => deleteImage(mainImage)}
+                    >
+                      Remove Image
+                    </button>
+                  </div>
+                ) : (
+                  <p>No main image to display</p>
+                )}
+              </div>
+            </div>
 
-            {/* Submit Button */}
+            <div className='mb-6'>
+              <label
+                className='block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2'
+                htmlFor='images'
+              >
+                Images
+              </label>
+              <input
+                onChange={uploadFilesHandler}
+                className='appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white'
+                id='images'
+                type='file'
+                multiple
+              />
+              <div className='w-full px-3 py-4'>
+                {images && images.length > 0 ? (
+                  <div className='flex flex-wrap gap-4'>
+                    {images.map((src, index) => (
+                      <div key={index} className='flex flex-col items-center'>
+                        <img
+                          src={src}
+                          alt={`Product ${index}`}
+                          className='w-40 h-40 object-cover rounded-md'
+                        />
+                        <button
+                          className='bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 focus:outline-none mt-2'
+                          onClick={() => deleteImage(src)}
+                        >
+                          Remove Image
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <p>No additional images to display</p>
+                )}
+              </div>
+            </div>
+
             <div className='flex justify-center'>
               <button
                 type='submit'
-                className='bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded'
+                className='bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline'
               >
                 Update Product
               </button>
