@@ -72,7 +72,7 @@ const Navigation = () => {
   }
 
   return (
-    <nav className='lg:absolute z-20 h-26 lg:h-20 overflow-hidden'>
+    <nav className='lg:absolute z-20 h-26 lg:h-20 sm:h-0 overflow-hidden'>
       <div className={fixedNavbarClasses}>
         <div className='flex items-center justify-center lg:justify-between max-w-screen w-full h-full'>
           <Link to='/'>
