@@ -80,7 +80,7 @@ const ProductListScreen = () => {
   }
 
   return (
-    <div className='w-full mx-auto p-4 bg-white shadow-md rounded lg:mt-24'>
+    <div className='w-full mx-auto p-4 mb-16 bg-white shadow-md rounded lg:mt-24'>
       <div className='flex flex-col md:flex-row justify-between items-center mb-4'>
         <h1 className='text-xl md:text-2xl font-bold mb-2 md:mb-0'>
           Product List

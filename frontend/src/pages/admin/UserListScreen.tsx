@@ -42,7 +42,7 @@ const UserListScreen = () => {
   }
 
   return (
-    <div className='mt-24'>
+    <div className='lg:mt-24 p-6 mb-16'>
       <h1 className='text-2xl font-bold mb-4'>Users</h1>
       {loadingDelete && <Loader />}
       {loadingDelete && <Loader />}

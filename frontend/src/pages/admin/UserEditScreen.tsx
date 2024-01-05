@@ -1,64 +1,64 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react'
 import {
   useUpdateProductMutation,
   useGetProductDetailsQuery,
   useUploadProductImageMutation,
-} from '../../slices/productApiSlice';
-import Loader from '../../components/Loader';
-import Message from '../../components/Message';
-import { Link, useNavigate, useParams } from 'react-router-dom';
-import { toast } from 'react-toastify';
+} from '../../slices/productApiSlice'
+import Loader from '../../components/Loader'
+import Message from '../../components/Message'
+import { Link, useNavigate, useParams } from 'react-router-dom'
+import { toast } from 'react-toastify'
 import {
   useGetUserDetailsQuery,
   useUpdateUserMutation,
-} from '../../slices/usersApiSlice';
+} from '../../slices/usersApiSlice'
 
 const UserEditScreen = () => {
-  const { id } = useParams();
-  const navigate = useNavigate();
-  const { data: user, isLoading, error } = useGetUserDetailsQuery(id ?? '');
+  const { id } = useParams()
+  const navigate = useNavigate()
+  const { data: user, isLoading, error } = useGetUserDetailsQuery(id ?? '')
 
   const [updateUser, { isLoading: loadingUpdate, error: errorUpdate }] =
-    useUpdateUserMutation();
+    useUpdateUserMutation()
 
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [isAdmin, setIsAdmin] = useState(false);
+  const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
+  const [isAdmin, setIsAdmin] = useState(false)
 
   useEffect(() => {
     if (user) {
-      setName(user.name);
-      setEmail(user.email);
-      setIsAdmin(user.isAdmin);
+      setName(user.name)
+      setEmail(user.email)
+      setIsAdmin(user.isAdmin)
     }
-  }, [user]);
+  }, [user])
 
   const submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+    e.preventDefault()
     const updatedUser = {
       _id: id,
       name,
       email,
       isAdmin,
-    };
+    }
 
-    const result = await updateUser(updatedUser);
+    const result = await updateUser(updatedUser)
     try {
       if ('data' in result && result.data) {
-        toast.success('Product updated successfully');
-        navigate('/admin/userlist');
+        toast.success('Product updated successfully')
+        navigate('/admin/userlist')
       } else if ('error' in result) {
-        toast.error('Error updating product');
-        console.log(result.error);
+        toast.error('Error updating product')
+        console.log(result.error)
       }
     } catch (error: any) {
-      toast.error('Error updating product catch');
-      console.log(error);
+      toast.error('Error updating product catch')
+      console.log(error)
     }
-  };
+  }
 
   return (
-    <div className='flex w-full p-12 bg-white'>
+    <div className='flex w-full p-12 mb-16 bg-white'>
       <Link
         to='/admin/userlist'
         className='flex mt-24 text-blue-500 hover:text-blue-600 text-2xl font-bold'
@@ -127,7 +127,7 @@ const UserEditScreen = () => {
         )}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default UserEditScreen;
+export default UserEditScreen
