@@ -229,7 +229,7 @@ const ProductEditScreen = () => {
   }
 
   return (
-    <div className='mt-24 p-4 w-full bg-white shadow-md'>
+    <div className='mt-24 mb-16 p-4 w-full bg-white shadow-md'>
       <div className='flex flex-col items-center justify-center w-full'>
         <div className='w-full flex flex-col sm:flex-row justify-start items-center mb-6'>
           <Link
