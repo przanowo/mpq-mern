@@ -7,10 +7,11 @@ import {
 import { FaEdit, FaEye, FaTrash } from 'react-icons/fa'
 import Loader from '../../components/Loader'
 import Message from '../../components/Message'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useLocation, useParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import Paginate from '../../components/Paginate'
 import { useNavigate } from 'react-router-dom'
+import SearchBox from '../../components/SearchBox'
 
 const ProductListScreen = () => {
   const navigate = useNavigate()
@@ -26,6 +27,9 @@ const ProductListScreen = () => {
 
   const products = data?.products as Product[]
   const pages = data?.pages as number
+
+  const location = useLocation()
+  const isAdmin = location.pathname.startsWith('/admin')
 
   const [
     createProduct,
@@ -85,6 +89,9 @@ const ProductListScreen = () => {
         <h1 className='text-xl md:text-2xl font-bold mb-2 md:mb-0'>
           Product List
         </h1>
+        <div className='lg:hidden'>
+          <SearchBox isAdmin={isAdmin} />
+        </div>
         <div>
           {loadingCreate && <Loader />}
           {loadingDelete && <Loader />}
