@@ -1,17 +1,17 @@
-import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
-import { saveShippingAddress } from '../slices/cartSlice';
-import { CartAppState } from '../types/CartType';
-import CheckoutSteps from '../components/CheckoutSteps';
+import React from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { Link, useNavigate } from 'react-router-dom'
+import { saveShippingAddress } from '../slices/cartSlice'
+import { CartAppState } from '../types/CartType'
+import CheckoutSteps from '../components/CheckoutSteps'
 
 const ShippingPage = () => {
-  const cart = useSelector((state: CartAppState) => state.cart);
-  const { shippingAddress } = cart;
+  const cart = useSelector((state: CartAppState) => state.cart)
+  const { shippingAddress } = cart
 
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const formRef = React.useRef<HTMLFormElement>(null);
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
+  const formRef = React.useRef<HTMLFormElement>(null)
   const [formData, setFormData] = React.useState({
     firstName: shippingAddress?.firstName || '',
     lastName: shippingAddress?.lastName || '',
@@ -23,18 +23,18 @@ const ShippingPage = () => {
     country: shippingAddress?.country || '',
     // phoneNumber: shippingAddress.phoneNumber || '',
     // email: shippingAddress.email || '',
-  });
+  })
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
+    setFormData({ ...formData, [e.target.name]: e.target.value })
+  }
 
   const submitHandler = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    dispatch(saveShippingAddress(formData));
-    navigate('/payment');
-    console.log(formData);
-  };
+    e.preventDefault()
+    dispatch(saveShippingAddress(formData))
+    navigate('/payment')
+    console.log(formData)
+  }
 
   return (
     <div className='flex flex-col mt-28 w-2/4 mx-auto bg-gray-200/90 my-4 rounded shadow-lg'>
@@ -138,7 +138,18 @@ const ShippingPage = () => {
             </div>
 
             <div className='flex justify-center pt-4'>
+              {/* <button
+                type='submit'
+                className='bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded shadow'
+              >
+                Continue to Payment
+              </button> */}
+              <p className='text-xl text-red-600'>
+                The website is currently under development. Payment is not
+                possible.
+              </p>
               <button
+                disabled
                 type='submit'
                 className='bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded shadow'
               >
@@ -149,7 +160,7 @@ const ShippingPage = () => {
         </form>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default ShippingPage;
+export default ShippingPage

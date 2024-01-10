@@ -44,7 +44,7 @@ const CartScreen = () => {
   }
 
   return (
-    <div className='mt-6 mx-auto w-full px-4'>
+    <div className='mt-24 mx-auto w-full px-4'>
       <div className='bg-gray-200 p-4 rounded-md shadow-md text-center'>
         <h2 className='text-2xl font-bold mb-4'>Your Cart</h2>
         <ul>
@@ -122,11 +122,14 @@ const CartScreen = () => {
           <span className='text-lg font-semibold'>
             Total: €{cart.totalPrice.toFixed(2)}
           </span>
-          <Link to='/shipping'>
+          {/* <Link to='/shipping'>
             <button className='bg-orange-400 hover:bg-orange-500 text-white px-3 py-1 rounded text-sm'>
               Add Shipping Details
             </button>
-          </Link>
+          </Link> */}
+          <p className='text-xl text-red-600'>
+            The website is currently under development. Payment is not possible.
+          </p>
         </div>
       </div>
     </div>

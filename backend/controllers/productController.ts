@@ -241,68 +241,60 @@ const getTopProducts = asyncHandler(async (req: Request, res: Response) => {
 const getDashboardData = asyncHandler(
   async (req: RequestWithUser, res: Response) => {
     console.log('Received request to get dashboard data')
-    const totalProducts = await Product.countDocuments({})
-    const totalPrices = await Product.aggregate([
-      { $group: { _id: null, total: { $sum: '$price' } } },
+
+    // Aggregate total quantity of all products
+    const totalQuantityAggregation = await Product.aggregate([
+      { $group: { _id: null, totalQuantity: { $sum: '$quantity' } } },
     ])
-    const giftCategoryProducts = await Product.countDocuments({
-      category: 'gift',
-    })
-    const giftCategoryPrices = await Product.aggregate([
-      { $match: { category: 'gift' } },
-      { $group: { _id: null, total: { $sum: '$price' } } },
+    const totalQuantity = totalQuantityAggregation[0]?.totalQuantity || 0
+
+    // Aggregate total price of all products (price multiplied by quantity)
+    const totalPriceAggregation = await Product.aggregate([
+      {
+        $group: {
+          _id: null,
+          totalPrice: { $sum: { $multiply: ['$price', '$quantity'] } },
+        },
+      },
     ])
-    const miniaturesCategoryProducts = await Product.countDocuments({
-      category: 'miniature',
-    })
-    const miniaturesCategoryPrices = await Product.aggregate([
-      { $match: { category: 'miniature' } },
-      { $group: { _id: null, total: { $sum: '$price' } } },
-    ])
-    const parfumCategoryProducts = await Product.countDocuments({
-      category: 'perfume',
-    })
-    const parfumCategoryPrices = await Product.aggregate([
-      { $match: { category: 'perfume' } },
-      { $group: { _id: null, total: { $sum: '$price' } } },
-    ])
-    const sampleCategoryProducts = await Product.countDocuments({
-      category: 'sample',
-    })
-    const sampleCategoryPrices = await Product.aggregate([
-      { $match: { category: 'sample' } },
-      { $group: { _id: null, total: { $sum: '$price' } } },
-    ])
-    const soapandpowderCategoryProducts = await Product.countDocuments({
-      category: 'soapandpowder',
-    })
-    const soapandpowderCategoryPrices = await Product.aggregate([
-      { $match: { category: 'soapandpowder' } },
-      { $group: { _id: null, total: { $sum: '$price' } } },
-    ])
-    const goldCategoryProducts = await Product.countDocuments({
-      category: 'gold',
-    })
-    const goldCategoryPrices = await Product.aggregate([
-      { $match: { category: 'gold' } },
-      { $group: { _id: null, total: { $sum: '$price' } } },
-    ])
+    const totalPrice = totalPriceAggregation[0]?.totalPrice || 0
+
+    // Function to aggregate total quantity and price by category
+    const aggregateCategoryData = async (category: string) => {
+      const result = await Product.aggregate([
+        { $match: { category } },
+        {
+          $group: {
+            _id: null,
+            totalQuantity: { $sum: '$quantity' },
+            totalPrice: { $sum: { $multiply: ['$price', '$quantity'] } },
+          },
+        },
+      ])
+      return {
+        totalQuantity: result[0]?.totalQuantity || 0,
+        totalPrice: result[0]?.totalPrice || 0,
+      }
+    }
+
+    const giftCategoryData = await aggregateCategoryData('gift')
+    const miniaturesCategoryData = await aggregateCategoryData('miniature')
+    const parfumCategoryData = await aggregateCategoryData('perfume')
+    const sampleCategoryData = await aggregateCategoryData('sample')
+    const soapandpowderCategoryData = await aggregateCategoryData(
+      'soapandpowder'
+    )
+    const goldCategoryData = await aggregateCategoryData('gold')
 
     res.status(200).json({
-      totalProducts,
-      totalPrices: totalPrices[0]?.total || 0,
-      giftCategoryProducts,
-      giftCategoryPrices: giftCategoryPrices[0]?.total || 0,
-      miniaturesCategoryProducts,
-      miniaturesCategoryPrices: miniaturesCategoryPrices[0]?.total || 0,
-      parfumCategoryProducts,
-      parfumCategoryPrices: parfumCategoryPrices[0]?.total || 0,
-      sampleCategoryProducts,
-      sampleCategoryPrices: sampleCategoryPrices[0]?.total || 0,
-      soapandpowderCategoryProducts,
-      soapandpowderCategoryPrices: soapandpowderCategoryPrices[0]?.total || 0,
-      goldCategoryProducts,
-      goldCategoryPrices: goldCategoryPrices[0]?.total || 0,
+      totalQuantity,
+      totalPrice,
+      giftCategoryData,
+      miniaturesCategoryData,
+      parfumCategoryData,
+      sampleCategoryData,
+      soapandpowderCategoryData,
+      goldCategoryData,
     })
   }
 )
