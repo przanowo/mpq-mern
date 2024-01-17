@@ -8,6 +8,7 @@ import Message from '../components/Message'
 import Paginate from '../components/Paginate'
 import CategoryCarousel from '../components/CategoryCarousel'
 import Footer from '../components/Footer'
+import SearchBox from '../components/SearchBox'
 
 const Home = () => {
   const { pageNumber, keyword } = useParams<{
@@ -66,6 +67,9 @@ const Home = () => {
             )}
             <div className='flex-col mt-16 justify-center items-center'>
               <h1 className='text-2xl text-center p-4'>All Products</h1>
+              <div className='flex p-2 items-center justify-center lg:hidden'>
+                <SearchBox isAdmin={false} />
+              </div>
               <ul className='grid grid-cols-3 lg:grid-cols-6 gap-4 lg:mx-48'>
                 {products?.map((product: Product) => (
                   <li key={product._id}>

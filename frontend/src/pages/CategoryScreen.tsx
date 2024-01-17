@@ -5,6 +5,7 @@ import { Product } from '../types/ProductType'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
 import Paginate from '../components/Paginate'
+import SearchBox from '../components/SearchBox'
 
 const CategoryScreen = () => {
   // const { categoryName } = useParams<{ categoryName: string }>();
@@ -20,11 +21,23 @@ const CategoryScreen = () => {
     pageNumber: pageNumberNum,
   })
 
-  console.log(categoryName)
-
   const products = data?.products as Product[]
   const pages = data?.pages as number
-  console.log(products)
+
+  const catName =
+    categoryName === 'soapandpowder'
+      ? 'Soap & Powder'
+      : categoryName === 'gift'
+      ? 'Gift'
+      : categoryName === 'perfume'
+      ? 'Perfume'
+      : categoryName === 'miniature'
+      ? 'Miniature'
+      : categoryName === 'sample'
+      ? 'Sample'
+      : categoryName === 'gold'
+      ? 'Gold'
+      : null
 
   return (
     <>
@@ -41,7 +54,12 @@ const CategoryScreen = () => {
         />
       ) : (
         <div className='flex-col lg:mt-24 mx-auto mb-12'>
-          <h1 className='text-2xl font-bold m-4'>Category: {categoryName}</h1>
+          <h1 className='text-2xl text-center uppercase font-bold m-4'>
+            {catName}
+          </h1>
+          <div className='flex p-2 items-center justify-center lg:hidden'>
+            <SearchBox isAdmin={false} />
+          </div>
           <ul className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4'>
             {products?.map((product: Product) => (
               <li key={product._id}>
