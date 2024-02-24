@@ -128,7 +128,7 @@ const CartScreen = () => {
             </button>
           </Link> */}
           <p className='text-xl text-red-600'>
-            The website is currently under development. Payment is not possible.
+            The website is currently under development. Payment is not possible. Please contact us: info@miniparfumqueen.com
           </p>
         </div>
       </div>

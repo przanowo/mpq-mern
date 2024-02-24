@@ -1,8 +1,9 @@
-import { IoLogoInstagram } from 'react-icons/io5';
-import { FaFacebook } from 'react-icons/fa';
-import { IoLogoYoutube } from 'react-icons/io';
+import { IoLogoInstagram } from 'react-icons/io5'
+import { FaFacebook } from 'react-icons/fa'
+import { IoLogoYoutube } from 'react-icons/io'
+import { Link } from 'react-router-dom'
 const Footer = () => {
-  const currentYear = new Date().getFullYear();
+  const currentYear = new Date().getFullYear()
   return (
     <>
       <footer className='w-full flex-shrink-0 border-b-4 border-heading mt-9 md:mt-11 lg:mt-16 3xl:mt-20 pt-2.5 lg:pt-0 2xl:pt-2 items-end bg-white/75'>
@@ -17,20 +18,22 @@ const Footer = () => {
                   <span className='ltr:mr-3 rtl:ml-3 relative top-0.5 lg:top-1 text-sm lg:text-base'>
                     <IoLogoInstagram />
                   </span>
-                  <div>Instagram</div>
+                  <Link to='https://www.instagram.com/gyongyikonyves_miniparfumqueen/'>
+                    Instagram
+                  </Link>
                 </li>
-                <li className='flex items-baseline'>
+                {/* <li className='flex items-baseline'>
                   <span className='ltr:mr-3 rtl:ml-3 relative top-0.5 lg:top-1 text-sm lg:text-base'>
                     <FaFacebook />
                   </span>
                   <div>Facebook</div>
-                </li>
-                <li className='flex items-baseline'>
+                </li> */}
+                {/* <li className='flex items-baseline'>
                   <span className='ltr:mr-3 rtl:ml-3 relative top-0.5 lg:top-1 text-sm lg:text-base'>
                     <IoLogoYoutube />
                   </span>
                   <div>Youtube</div>
-                </li>
+                </li> */}
                 {/* <li className="flex items-baseline">
                             <span className='ltr:mr-3 rtl:ml-3 relative top-0.5 lg:top-1 text-sm lg:text-base'><AiFillTwitterCircle/></span> 
                             <Link to='www.Instagram.com'>Twitter</Link>
@@ -43,15 +46,15 @@ const Footer = () => {
                 Contact
               </h4>
               <ul className='text-xs lg:text-sm text-body flex flex-col space-y-3 lg:space-y-3.5'>
-                <li className='flex items-baseline'>
+                {/* <li className='flex items-baseline'>
                   <div>Contact</div>
-                </li>
+                </li> */}
                 <li className='flex items-baseline'>
-                  <p>yourexample@email.com</p>
+                  <p>info@miniparfumqueen.com</p>
                 </li>
-                <li className='flex items-baseline'>
+                {/* <li className='flex items-baseline'>
                   <p>+1 234 567 89 00</p>
-                </li>
+                </li> */}
               </ul>
             </div>
 
@@ -61,10 +64,10 @@ const Footer = () => {
               </h4>
               <ul className='text-xs lg:text-sm text-body flex flex-col space-y-3 lg:space-y-3.5'>
                 <li className='flex items-baseline'>
-                  <div>About Us</div>
+                  <Link to='/about'>About</Link>
                 </li>
                 <li className='flex items-baseline'>
-                  <div>Support</div>
+                  {/* <Link to='/contact'>Contact us</Link> */}
                 </li>
                 {/* <li className="flex items-baseline">
                             <Link to='/about'>Copyright</Link>
@@ -78,13 +81,13 @@ const Footer = () => {
               </h4>
               <ul className='text-xs lg:text-sm text-body flex flex-col space-y-3 lg:space-y-3.5'>
                 <li className='flex items-baseline'>
-                  <div>FAQ & Help</div>
+                  <Link to='/faq'>FAQ & Help</Link>
                 </li>
                 <li className='flex items-baseline'>
-                  <div>Shipping & Delivery</div>
+                  <Link to='/faq'>Shipping & Delivery</Link>
                 </li>
                 <li className='flex items-baseline'>
-                  <div>Return & Exchanges</div>
+                  <Link to='/faq'>Return & Exchanges</Link>
                 </li>
               </ul>
             </div>
@@ -95,10 +98,10 @@ const Footer = () => {
               </h4>
               <ul className='text-xs lg:text-sm text-body flex flex-col space-y-3 lg:space-y-3.5'>
                 <li className='flex items-baseline'>
-                  <div>Privacy policy</div>
+                  <Link to='/terms'>Privacy policy</Link>
                 </li>
                 <li className='flex items-baseline'>
-                  <div>Terms & conditions</div>
+                  <Link to='/terms'>Terms & conditions</Link>
                 </li>
               </ul>
             </div>
@@ -109,13 +112,13 @@ const Footer = () => {
               </h4>
               <ul className='text-xs lg:text-sm text-body flex flex-col space-y-3 lg:space-y-3.5'>
                 <li className='flex items-baseline'>
-                  <div>Ebay</div>
+                  <div>Ebay please contact us.</div>
                 </li>
                 <li className='flex items-baseline'>
-                  <div>Etsy</div>
+                  <div>Etsy please contact us.</div>
                 </li>
                 <li className='flex items-baseline'>
-                  <div>Amazon</div>
+                  <div>Amazon please contact us.</div>
                 </li>
               </ul>
             </div>
@@ -126,7 +129,7 @@ const Footer = () => {
         </div>
       </footer>
     </>
-  );
-};
+  )
+}
 
-export default Footer;
+export default Footer

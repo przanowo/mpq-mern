@@ -70,7 +70,7 @@ const Home = () => {
               <div className='flex p-2 items-center justify-center lg:hidden'>
                 <SearchBox isAdmin={false} />
               </div>
-              <ul className='grid grid-cols-3 lg:grid-cols-6 gap-4 lg:mx-48'>
+              <ul className='grid grid-cols-3 lg:grid-cols-6 gap-4 '>
                 {products?.map((product: Product) => (
                   <li key={product._id}>
                     <ProductCard key={product._id} product={product} />

@@ -34,11 +34,19 @@ import UserListScreen from './pages/admin/UserListScreen'
 import UserEditScreen from './pages/admin/UserEditScreen'
 import CategoryScreen from './pages/CategoryScreen'
 import DashboardScreen from './pages/admin/DashboardScreen'
+import About from './pages/About'
+import Faq from './pages/Faq'
+import Terms from './pages/Terms'
+// import Contact from './pages/Contact'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path='/' element={<App />}>
       <Route index={true} element={<Home />} />
+      <Route path='/about/' element={<About />} />
+      <Route path='/faq/' element={<Faq />} />
+      <Route path='/terms/' element={<Terms />} />
+      {/* <Route path='/contact/' element={<Contact />} /> */}
       <Route path='/search/:keyword' element={<Home />} />
       <Route path='/page/:pageNumber' element={<Home />} />
       <Route path='/search/:keyword/page/:pageNumber' element={<Home />} />

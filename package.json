@@ -28,7 +28,8 @@
     "jsonwebtoken": "^9.0.2",
     "mongodb": "^6.2.0",
     "mongoose": "^8.0.0",
-    "multer": "^1.4.5-lts.1"
+    "multer": "^1.4.5-lts.1",
+    "nodemailer": "^6.9.9"
   },
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "",
@@ -38,6 +39,7 @@
     "@types/jsonwebtoken": "^9.0.5",
     "@types/multer": "^1.4.11",
     "@types/node": "^20.9.0",
+    "@types/nodemailer": "^6.4.14",
     "concurrently": "^8.2.2",
     "nodemon": "^3.0.1",
     "ts-node": "^10.9.1",
