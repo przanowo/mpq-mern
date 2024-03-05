@@ -127,8 +127,14 @@ const CartScreen = () => {
               Add Shipping Details
             </button>
           </Link> */}
-          <p className='text-xl text-red-600'>
-            The website is currently under development. Payment is not possible. Please contact us: info@miniparfumqueen.com
+          <p>
+            <span style={{ color: 'black' }}>
+              The website is currently under development. Payment is not
+              possible.
+            </span>
+            <span style={{ color: 'red' }}>
+              Please contact us: info@miniparfumqueen.com
+            </span>
           </p>
         </div>
       </div>

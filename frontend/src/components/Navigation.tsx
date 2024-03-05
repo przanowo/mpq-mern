@@ -31,7 +31,8 @@ const Navigation = () => {
   const logoSrc = isAtTop ? logowhite : logoblack
   const fixedLogoClasses = `${logoSrc}`
   const navbarClasses = isAtTop ? 'text-white' : 'bg-white text-black'
-  const fixedNavbarClasses = `lg:fixed z-20 w-screen px-4 transition duration-200 ease-in-out sm:h-18 md:px-8 lg:px-2.5 ${navbarClasses}`
+  const fixedNavbarClasses = `lg:fixed md:fixed z-20 w-screen px-4 transition duration-200 ease-in-out sm:h-18 md:px-8 lg:px-2.5 ${navbarClasses}`
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false)
 
   useEffect(() => {
     // Only apply scroll logic on the main page
@@ -72,13 +73,13 @@ const Navigation = () => {
   }
 
   return (
-    <nav className='lg:absolute z-20 h-26 lg:h-20 overflow-hidden'>
+    <nav className='lg:absolute md:absolute z-20 h-26 lg:h-20 overflow-hidden'>
       <div className={fixedNavbarClasses}>
-        <div className='flex items-center justify-center lg:justify-between max-w-screen w-full h-full'>
+        <div className='flex items-center justify-center max-w-screen w-full h-full xl:justify-between'>
           <Link to='/'>
             {' '}
             <img
-              className='hidden max-h-24 md:max-h-24 lg:max-h-16 lg:inline-flex focus:outline-none lg:pr-10 '
+              className='hidden max-h-24 lg:max-h-16 lg:inline-flex focus:outline-none lg:pr-10 md:max-h-16 md:inline-flex md:pr-10 md:mt-2 '
               alt='Logo'
               src={fixedLogoClasses}
             />{' '}
@@ -86,52 +87,107 @@ const Navigation = () => {
 
           {/* //desktop menu */}
 
-          <div className='lg:flex hidden text-center items-center'>
+          <div className='lg:flex uppercase md:flex md:px-6 hidden text-center items-center'>
             <Link
-              className='px-3 py-2 rounded-lg hover:bg-white/20 hover:text-lg'
+              className='hidden xl:flex px-3 py-2 rounded-lg hover:bg-white/20 hover:text-lg'
               to='/category/perfume'
             >
               {' '}
               Perfume{' '}
             </Link>
             <Link
-              className='px-3 py-2 rounded-lg hover:bg-white/20 hover:text-lg'
+              className='hidden xl:flex px-3 py-2 rounded-lg hover:bg-white/20 hover:text-lg'
               to='/category/miniature'
             >
               {' '}
               Miniature{' '}
             </Link>
             <Link
-              className='px-3 py-2 rounded-lg hover:bg-white/20 hover:text-lg'
+              className='hidden xl:flex px-3 py-2 rounded-lg hover:bg-white/20 hover:text-lg'
               to='/category/sample'
             >
               {' '}
               Sample{' '}
             </Link>
             <Link
-              className='px-3 py-2 rounded-lg hover:bg-white/20 hover:text-lg'
+              className='hidden xl:flex px-3 py-2 rounded-lg hover:bg-white/20 hover:text-lg'
               to='/category/soapandpowder'
             >
               {' '}
               Soap & Powder{' '}
             </Link>
             <Link
-              className='px-3 py-2 rounded-lg hover:bg-white/20 hover:text-lg'
+              className='hidden xl:flex px-3 py-2 rounded-lg hover:bg-white/20 hover:text-lg'
               to='/category/gift'
             >
               {' '}
               Gifts{' '}
             </Link>
             <Link
-              className='px-3 py-2 rounded-lg hover:bg-white/20 hover:text-lg'
+              className='hidden xl:flex px-3 py-2 rounded-lg hover:bg-white/20 hover:text-lg'
               to='/category/gold'
             >
               {' '}
               Gold{' '}
             </Link>
+            {/* Dropdown Toggle Button */}
+            <button
+              className='lg:flex xl:hidden text-center items-center px-3 py-2 rounded-lg hover:bg-white/20'
+              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+            >
+              Categories
+            </button>
+
+            {/* Dropdown Links */}
+            {isDropdownOpen && (
+              <div className='md:flex absolute top-16 bg-white/25 rounded-lg flex-col text-center items-center xl:hidden'>
+                <Link
+                  className='px-3 py-2 rounded-lg hover:bg-white/20 hover:text-lg'
+                  to='/category/perfume'
+                  onClick={() => setIsDropdownOpen(false)}
+                >
+                  Perfume
+                </Link>
+                <Link
+                  className='px-3 py-2 rounded-lg hover:bg-white/20 hover:text-lg'
+                  to='/category/miniature'
+                  onClick={() => setIsDropdownOpen(false)}
+                >
+                  Miniature
+                </Link>
+                <Link
+                  className='px-3 py-2 rounded-lg hover:bg-white/20 hover:text-lg'
+                  to='/category/sample'
+                  onClick={() => setIsDropdownOpen(false)}
+                >
+                  Sample
+                </Link>
+                <Link
+                  className='px-3 py-2 rounded-lg hover:bg-white/20 hover:text-lg'
+                  to='/category/soapandpowder'
+                  onClick={() => setIsDropdownOpen(false)}
+                >
+                  Soap & Powder
+                </Link>
+                <Link
+                  className='px-3 py-2 rounded-lg hover:bg-white/20 hover:text-lg'
+                  to='/category/gift'
+                  onClick={() => setIsDropdownOpen(false)}
+                >
+                  Gifts
+                </Link>
+                <Link
+                  className='px-3 py-2 rounded-lg hover:bg-white/20 hover:text-lg'
+                  to='/category/gold'
+                  onClick={() => setIsDropdownOpen(false)}
+                >
+                  Gold
+                </Link>
+              </div>
+            )}
           </div>
-          <div className='lg:flex hidden ltr:md:ml-6 rtl:md:mr- ltr:xl:ml-10 rtl:xl:mr-10 py-7'>
-            <div className='lg:flex hidden text-center items-center rounded-xl px-3]\'>
+          <div className='lg:flex md:flex sm:hidden ltr:md:ml-6 rtl:md:mr- ltr:xl:ml-10 rtl:xl:mr-10 lg:py-7'>
+            <div className='lg:flex sm:hidden md:px-16 text-center items-center rounded-xl px-3]\'>
               <SearchBox isAdmin={isAdmin} />
             </div>
             {userInfo ? (
@@ -190,10 +246,10 @@ const Navigation = () => {
               </>
             ) : (
               <>
-                <Link className='px-3 py-2' to='/login'>
+                <Link className='px-3 py-2 uppercase' to='/login'>
                   Login
                 </Link>
-                <Link className='px-3 py-2' to='/register'>
+                <Link className='px-3 py-2 uppercase' to='/register'>
                   Register
                 </Link>
               </>
@@ -212,7 +268,7 @@ const Navigation = () => {
           </div>
 
           {/* //mobile menu */}
-          <div className='lg:hidden fixed z-10 bottom-0 flex items-center justify-between text-gray-700 body-font bg-white w-full h-14 sm:h-16 px-6 md:px-8 pb-3'>
+          <div className='lg:hidden md:hidden fixed z-10 bottom-0 flex items-center justify-between text-gray-700 body-font bg-white w-full h-14 sm:h-16 px-6 md:px-8 pb-3'>
             <button
               className='flex flex-col items-center justify-center flex-shrink-0 outline-none focus:outline-none'
               onClick={() => setMenuOpen(!menuOpen)}
@@ -237,7 +293,7 @@ const Navigation = () => {
 
           {/* //mobile menu Open */}
           {menuOpen && (
-            <div className='flex lg:hidden fixed z-10 top-0 w-full h-full bg-white text-black justify-center items-center'>
+            <div className='flex lg:hidden md:hidden fixed z-10 top-0 w-full h-full bg-white text-black justify-center items-center'>
               <div className='flex flex-col text-center '>
                 <Link
                   className='px-3 py-4 rounded-lg text-xl'

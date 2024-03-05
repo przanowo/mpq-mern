@@ -9,6 +9,7 @@ import Paginate from '../components/Paginate'
 import CategoryCarousel from '../components/CategoryCarousel'
 import Footer from '../components/Footer'
 import SearchBox from '../components/SearchBox'
+import { useEffect } from 'react'
 
 const Home = () => {
   const { pageNumber, keyword } = useParams<{
@@ -25,6 +26,10 @@ const Home = () => {
   const isBaseHomePage = !pageNumber && !keyword
   const products = data?.products as Product[]
   const pages = data?.pages as number
+
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [pageNumber])
 
   return (
     <>
@@ -66,7 +71,7 @@ const Home = () => {
               </Link>
             )}
             <div className='flex-col mt-16 justify-center items-center'>
-              <h1 className='text-2xl text-center p-4'>All Products</h1>
+              <h1 className='text-4xl text-center mb-14'>All Products</h1>
               <div className='flex p-2 items-center justify-center lg:hidden'>
                 <SearchBox isAdmin={false} />
               </div>
