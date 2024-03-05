@@ -6,6 +6,7 @@ import Loader from '../components/Loader'
 import Message from '../components/Message'
 import Paginate from '../components/Paginate'
 import SearchBox from '../components/SearchBox'
+import { useEffect } from 'react'
 
 const CategoryScreen = () => {
   // const { categoryName } = useParams<{ categoryName: string }>();
@@ -72,6 +73,7 @@ const CategoryScreen = () => {
               pages={pages}
               currentPage={pageNumberNum}
               keyword={keyword}
+              categoryName={categoryName}
             />
           </div>
         </div>
