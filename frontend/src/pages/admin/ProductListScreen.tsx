@@ -12,17 +12,22 @@ import { toast } from 'react-toastify'
 import Paginate from '../../components/Paginate'
 import { useNavigate } from 'react-router-dom'
 import SearchBox from '../../components/SearchBox'
+import SearchSort from '../../components/SearchSort'
 
 const ProductListScreen = () => {
   const navigate = useNavigate()
-  const { pageNumber, keyword } = useParams<{
+  const { pageNumber, keyword, categoryName, sortBy } = useParams<{
     pageNumber: string
     keyword: string
+    categoryName: string
+    sortBy: string
   }>()
   const pageNumberNum = pageNumber ? parseInt(pageNumber, 10) : 1
   const { data, isLoading, error, refetch } = useGetProductsQuery({
+    category: categoryName,
     pageNumber: pageNumberNum,
     keyword: keyword || '',
+    sortBy: sortBy,
   })
 
   const products = data?.products as Product[]
@@ -89,9 +94,7 @@ const ProductListScreen = () => {
         <h1 className='text-xl md:text-2xl font-bold mb-2 md:mb-0'>
           Product List
         </h1>
-        <div className='lg:hidden'>
-          <SearchBox isAdmin={isAdmin} />
-        </div>
+        <SearchSort isAdmin={isAdmin} />
         <div>
           {loadingCreate && <Loader />}
           {loadingDelete && <Loader />}
@@ -130,7 +133,7 @@ const ProductListScreen = () => {
                   <Message type='error' message='Error loading product list' />
                 </td>
               </tr>
-            ) : (
+            ) : products && products.length > 0 ? (
               products?.map((product: Product) => (
                 <tr key={product._id} className='border-b'>
                   <td className='p-2'>{product.title}</td>
@@ -138,6 +141,7 @@ const ProductListScreen = () => {
                   <td className='p-2'>{product.category}</td>
                   <td className='p-2'>{product.quantity}</td>
                   <td className='p-2 hidden'>{product.magazine}</td>
+
                   <td className='p-2'>
                     <Link to={`/product/${product._id}`}>
                       <button className='bg-blue-500 hover:bg-blue-600 text-white font-bold py-1 px-3 rounded'>
@@ -162,16 +166,24 @@ const ProductListScreen = () => {
                   </td>
                 </tr>
               ))
+            ) : (
+              <tr>
+                <td colSpan={8} className='text-center p-4'>
+                  <Message type='info' message='No products found' />
+                </td>
+              </tr>
             )}
           </tbody>
         </table>
       </div>
-      <div className='my-4'>
+      <div className='mt-4 mb-16 md:mb-4'>
         <Paginate
           pages={pages}
           currentPage={pageNumberNum}
           keyword={keyword}
+          sortBy={sortBy}
           isAdmin={true}
+          categoryName={categoryName}
         />
       </div>
     </div>

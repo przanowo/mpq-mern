@@ -1,8 +1,8 @@
-import { Link } from 'react-router-dom';
-import Rating from './Rating';
-import { Product } from '../types/ProductType';
-import { useDispatch } from 'react-redux';
-import { addToCart } from '../slices/cartSlice';
+import { Link } from 'react-router-dom'
+import Rating from './Rating'
+import { Product } from '../types/ProductType'
+import { useDispatch } from 'react-redux'
+import { addToCart } from '../slices/cartSlice'
 // import AuthContext from '../../hooks/AuthContext';
 // import { Link, useNavigate } from 'react-router-dom';
 // import { CartContext } from '../../hooks/CartContext';
@@ -28,12 +28,12 @@ const ProductCard = ({ product }: { product: Product }) => {
   //   setCurrentProduct(editedProduct); // update the displayed product
   // };
 
-  const dispatch = useDispatch();
-  const qty = 1;
+  const dispatch = useDispatch()
+  const qty = 1
 
   const handleAddToCart = () => {
-    dispatch(addToCart({ ...product, qty }));
-  };
+    dispatch(addToCart({ ...product, qty }))
+  }
 
   return (
     <div
@@ -92,7 +92,7 @@ const ProductCard = ({ product }: { product: Product }) => {
           />
         ))} */}
     </div>
-  );
-};
+  )
+}
 
-export default ProductCard;
+export default ProductCard

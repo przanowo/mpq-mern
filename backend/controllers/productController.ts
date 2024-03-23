@@ -5,6 +5,11 @@ import { RequestWithUser } from '../types/userType'
 import { IReview } from '../types/productType'
 import { Storage } from '@google-cloud/storage'
 
+type SortOrder = 1 | -1
+interface SortDefinition {
+  [key: string]: SortOrder
+}
+
 const storage = new Storage({
   keyFilename: process.env.GOOGLE_APPLICATION_CREDENTIALS,
   projectId: process.env.GCP_PROJECT_ID,
@@ -15,7 +20,7 @@ const bucket = storage.bucket(process.env.GCS_BUCKET_NAME || '')
 // @route  GET /api/products
 // @access Public
 const getProducts = asyncHandler(async (req: Request, res: Response) => {
-  const pageSize = Number(process.env.PAGINATION_LIMIT)
+  const pageSize = Number(process.env.PAGINATION_LIMIT) || 10
   const currentPage = Number(req.query.pageNumber) || 1
   const keyword = req.query.keyword
     ? { title: { $regex: req.query.keyword, $options: 'i' } }
@@ -23,11 +28,24 @@ const getProducts = asyncHandler(async (req: Request, res: Response) => {
   const categoryFilter = req.query.category
     ? { category: req.query.category }
     : {}
+  const sortBy = req.query.sortBy
+  let sort: SortDefinition = { updatedAt: -1 } // Correctly typed default sort
+  if (sortBy === 'priceAsc') {
+    sort = { price: 1 }
+  } else if (sortBy === 'priceDesc') {
+    sort = { price: -1 }
+  } else if (sortBy === 'titleAsc') {
+    sort = { title: 1 }
+  } else if (sortBy === 'titleDesc') {
+    sort = { title: -1 }
+  } else if (sortBy === 'quantityAsc') {
+    sort = { quantity: 1 }
+  } else if (sortBy === 'quantityDesc') {
+    sort = { quantity: -1 }
+  }
   const count = await Product.countDocuments({ ...keyword, ...categoryFilter })
   const products = await Product.find({ ...keyword, ...categoryFilter })
-    .sort({
-      updatedAt: -1,
-    })
+    .sort(sort)
     .limit(pageSize)
     .skip(pageSize * (currentPage - 1))
 

@@ -5,9 +5,9 @@ import { DeleteResponse, Product } from '../types/ProductType'
 export const productApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getProducts: builder.query({
-      query: ({ keyword, pageNumber, category }) => ({
+      query: ({ keyword, pageNumber, category, sortBy }) => ({
         url: PRODUCTS_URL,
-        params: { keyword, pageNumber, category },
+        params: { keyword, pageNumber, category, sortBy },
       }),
       providesTags: ['Product'],
       keepUnusedDataFor: 5,

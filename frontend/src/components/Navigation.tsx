@@ -27,6 +27,7 @@ const Navigation = () => {
   const location = useLocation()
   const isMainPage = location.pathname === '/'
   const isAdmin = location.pathname.startsWith('/admin')
+  const isAdminProductList = location.pathname.startsWith('/admin/productlist')
 
   const logoSrc = isAtTop ? logowhite : logoblack
   const fixedLogoClasses = `${logoSrc}`
@@ -86,118 +87,131 @@ const Navigation = () => {
           </Link>
 
           {/* //desktop menu */}
+          {!isAdminProductList ? (
+            <div className='lg:flex uppercase md:flex md:px-6 hidden text-center items-center'>
+              <Link
+                className='hidden xl:flex px-3 py-2 rounded-lg hover:bg-white/20 hover:text-lg'
+                to='/category/perfume'
+              >
+                {' '}
+                Perfume{' '}
+              </Link>
+              <Link
+                className='hidden xl:flex px-3 py-2 rounded-lg hover:bg-white/20 hover:text-lg'
+                to='/category/miniature'
+              >
+                {' '}
+                Miniature{' '}
+              </Link>
+              <Link
+                className='hidden xl:flex px-3 py-2 rounded-lg hover:bg-white/20 hover:text-lg'
+                to='/category/sample'
+              >
+                {' '}
+                Sample{' '}
+              </Link>
+              <Link
+                className='hidden xl:flex px-3 py-2 rounded-lg hover:bg-white/20 hover:text-lg'
+                to='/category/soapandpowder'
+              >
+                {' '}
+                Soap & Powder{' '}
+              </Link>
+              <Link
+                className='hidden xl:flex px-3 py-2 rounded-lg hover:bg-white/20 hover:text-lg'
+                to='/category/gift'
+              >
+                {' '}
+                Gifts{' '}
+              </Link>
+              <Link
+                className='hidden xl:flex px-3 py-2 rounded-lg hover:bg-white/20 hover:text-lg'
+                to='/category/gold'
+              >
+                {' '}
+                Gold{' '}
+              </Link>
+              {/* Dropdown Toggle Button */}
+              <button
+                className='lg:flex xl:hidden text-center items-center px-3 py-2 rounded-lg hover:bg-white/20'
+                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+              >
+                Categories
+              </button>
 
-          <div className='lg:flex uppercase md:flex md:px-6 hidden text-center items-center'>
-            <Link
-              className='hidden xl:flex px-3 py-2 rounded-lg hover:bg-white/20 hover:text-lg'
-              to='/category/perfume'
-            >
-              {' '}
-              Perfume{' '}
-            </Link>
-            <Link
-              className='hidden xl:flex px-3 py-2 rounded-lg hover:bg-white/20 hover:text-lg'
-              to='/category/miniature'
-            >
-              {' '}
-              Miniature{' '}
-            </Link>
-            <Link
-              className='hidden xl:flex px-3 py-2 rounded-lg hover:bg-white/20 hover:text-lg'
-              to='/category/sample'
-            >
-              {' '}
-              Sample{' '}
-            </Link>
-            <Link
-              className='hidden xl:flex px-3 py-2 rounded-lg hover:bg-white/20 hover:text-lg'
-              to='/category/soapandpowder'
-            >
-              {' '}
-              Soap & Powder{' '}
-            </Link>
-            <Link
-              className='hidden xl:flex px-3 py-2 rounded-lg hover:bg-white/20 hover:text-lg'
-              to='/category/gift'
-            >
-              {' '}
-              Gifts{' '}
-            </Link>
-            <Link
-              className='hidden xl:flex px-3 py-2 rounded-lg hover:bg-white/20 hover:text-lg'
-              to='/category/gold'
-            >
-              {' '}
-              Gold{' '}
-            </Link>
-            {/* Dropdown Toggle Button */}
-            <button
-              className='lg:flex xl:hidden text-center items-center px-3 py-2 rounded-lg hover:bg-white/20'
-              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-            >
-              Categories
-            </button>
-
-            {/* Dropdown Links */}
-            {isDropdownOpen && (
-              <div className='md:flex absolute top-16 bg-white/25 rounded-lg flex-col text-center items-center xl:hidden'>
-                <Link
-                  className='px-3 py-2 rounded-lg hover:bg-white/20 hover:text-lg'
-                  to='/category/perfume'
-                  onClick={() => setIsDropdownOpen(false)}
-                >
-                  Perfume
-                </Link>
-                <Link
-                  className='px-3 py-2 rounded-lg hover:bg-white/20 hover:text-lg'
-                  to='/category/miniature'
-                  onClick={() => setIsDropdownOpen(false)}
-                >
-                  Miniature
-                </Link>
-                <Link
-                  className='px-3 py-2 rounded-lg hover:bg-white/20 hover:text-lg'
-                  to='/category/sample'
-                  onClick={() => setIsDropdownOpen(false)}
-                >
-                  Sample
-                </Link>
-                <Link
-                  className='px-3 py-2 rounded-lg hover:bg-white/20 hover:text-lg'
-                  to='/category/soapandpowder'
-                  onClick={() => setIsDropdownOpen(false)}
-                >
-                  Soap & Powder
-                </Link>
-                <Link
-                  className='px-3 py-2 rounded-lg hover:bg-white/20 hover:text-lg'
-                  to='/category/gift'
-                  onClick={() => setIsDropdownOpen(false)}
-                >
-                  Gifts
-                </Link>
-                <Link
-                  className='px-3 py-2 rounded-lg hover:bg-white/20 hover:text-lg'
-                  to='/category/gold'
-                  onClick={() => setIsDropdownOpen(false)}
-                >
-                  Gold
-                </Link>
+              {/* Dropdown Links */}
+              {isDropdownOpen && (
+                <div className='md:flex absolute top-16 bg-white/25 rounded-lg flex-col text-center items-center xl:hidden'>
+                  <Link
+                    className='px-3 py-2 rounded-lg hover:bg-white/20 hover:text-lg'
+                    to='/category/perfume'
+                    onClick={() => setIsDropdownOpen(false)}
+                  >
+                    Perfume
+                  </Link>
+                  <Link
+                    className='px-3 py-2 rounded-lg hover:bg-white/20 hover:text-lg'
+                    to='/category/miniature'
+                    onClick={() => setIsDropdownOpen(false)}
+                  >
+                    Miniature
+                  </Link>
+                  <Link
+                    className='px-3 py-2 rounded-lg hover:bg-white/20 hover:text-lg'
+                    to='/category/sample'
+                    onClick={() => setIsDropdownOpen(false)}
+                  >
+                    Sample
+                  </Link>
+                  <Link
+                    className='px-3 py-2 rounded-lg hover:bg-white/20 hover:text-lg'
+                    to='/category/soapandpowder'
+                    onClick={() => setIsDropdownOpen(false)}
+                  >
+                    Soap & Powder
+                  </Link>
+                  <Link
+                    className='px-3 py-2 rounded-lg hover:bg-white/20 hover:text-lg'
+                    to='/category/gift'
+                    onClick={() => setIsDropdownOpen(false)}
+                  >
+                    Gifts
+                  </Link>
+                  <Link
+                    className='px-3 py-2 rounded-lg hover:bg-white/20 hover:text-lg'
+                    to='/category/gold'
+                    onClick={() => setIsDropdownOpen(false)}
+                  >
+                    Gold
+                  </Link>
+                </div>
+              )}
+            </div>
+          ) : (
+            <div>
+              <h1 className='text-2xl'>Admin Panel Productlist</h1>
+            </div>
+          )}
+          <div className='lg:flex md:flex sm:hidden ltr:md:ml-6 rtl:md:mr- ltr:xl:ml-10 rtl:xl:mr-10 lg:py-7'>
+            {!isAdminProductList && (
+              <div className='lg:flex sm:hidden hidden md:px-16 text-center items-center rounded-xl px-3]\'>
+                <SearchBox isAdmin={isAdmin} />
               </div>
             )}
-          </div>
-          <div className='lg:flex md:flex sm:hidden ltr:md:ml-6 rtl:md:mr- ltr:xl:ml-10 rtl:xl:mr-10 lg:py-7'>
-            <div className='lg:flex sm:hidden md:px-16 text-center items-center rounded-xl px-3]\'>
-              <SearchBox isAdmin={isAdmin} />
-            </div>
             {userInfo ? (
               <>
                 <Link to='/'>
-                  <button className='px-3 py-2' onClick={logoutHandler}>
+                  <button
+                    className='hidden md:flex px-3 py-2'
+                    onClick={logoutHandler}
+                  >
                     Logout
                   </button>
                 </Link>
-                <Link className='px-3 py-2 text-2xl text-center' to='/account'>
+                <Link
+                  className='hidden md:flex px-3 py-2 text-2xl text-center'
+                  to='/account'
+                >
                   <MdOutlineAccountCircle />
                 </Link>
 
@@ -208,7 +222,7 @@ const Navigation = () => {
                     className='relative'
                   >
                     <button
-                      className='px-3 py-2 rounded-lg hover:bg-white/20'
+                      className='hidden md:flex px-3 py-2 rounded-lg hover:bg-white/20'
                       onClick={() => setAdminDropdownOpen(true)}
                     >
                       Admin
@@ -256,7 +270,7 @@ const Navigation = () => {
             )}
 
             <Link className='px-4 py-2 text-2xl text-center' to='/cart'>
-              <div className='relative block'>
+              <div className='hidden md:flex relative '>
                 <HiOutlineShoppingCart />
                 {cartItems.length > 0 && (
                   <span className='absolute -right-2 -bottom-3 text-red-500 text-base font-medium'>

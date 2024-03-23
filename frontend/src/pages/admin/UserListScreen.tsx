@@ -51,53 +51,64 @@ const UserListScreen = () => {
       ) : error ? (
         <Message type='error' message='Failed to loading users' />
       ) : (
-        <table className='min-w-full bg-white shadow-md rounded-lg'>
-          <thead className='bg-gray-200'>
-            <tr>
-              <th className='py-2 px-4 text-left'>ID</th>
-              <th className='py-2 px-4 text-left'>NAME</th>
-              <th className='py-2 px-4 text-left'>EMAIL</th>
-              <th className='py-2 px-4 text-left'>ADMIN</th>
-              <th className='py-2 px-4 text-left'>ACTIONS</th>
-            </tr>
-          </thead>
-          <tbody>
-            {users?.map((user: any) => (
-              <tr key={user._id} className='border-b'>
-                <td className='py-2 px-4'>{user._id}</td>
-                <td className='py-2 px-4'>{user.name}</td>
-                <td className='py-2 px-4'>
-                  <a
-                    href={`mailto:${user.email}`}
-                    className='text-blue-500 hover:text-blue-600'
-                  >
-                    {user.email}
-                  </a>
-                </td>
-                <td className='py-2 px-4'>
-                  {user.isAdmin ? (
-                    <FaCheck style={{ color: 'green' }} />
-                  ) : (
-                    <FaTimes style={{ color: 'red' }} />
-                  )}
-                </td>
-                <td className='py-2 px-4'>
-                  <Link to={`/admin/user/${user._id}/edit`}>
-                    <button className='text-sm bg-blue-500 hover:bg-blue-600 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline'>
-                      Edit
-                    </button>
-                  </Link>
-                  <button
-                    className='text-sm bg-red-500 hover:bg-red-600 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline ml-2'
-                    onClick={() => deleteHandler(user._id)}
-                  >
-                    Delete
-                  </button>
-                </td>
+        <div className='overflow-x-auto'>
+          <table className='min-w-full bg-white shadow-md rounded-lg'>
+            <thead className='bg-gray-200 text-gray-600 uppercase text-sm leading-normal'>
+              <tr>
+                <th className='py-3 px-6 text-left'>ID</th>
+                <th className='py-3 px-6 text-left'>NAME</th>
+                <th className='py-3 px-6 text-left'>EMAIL</th>
+                <th className='py-3 px-6 text-left'>ADMIN</th>
+                <th className='py-3 px-6 text-left'>ACTIONS</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody className='text-gray-600 text-sm'>
+              {users?.map((user: any) => (
+                <tr
+                  key={user._id}
+                  className='border-b border-gray-200 hover:bg-gray-100'
+                >
+                  <td className='py-3 px-6 text-left whitespace-nowrap'>
+                    {user._id}
+                  </td>
+                  <td className='py-3 px-6 text-left'>{user.name}</td>
+                  <td className='py-3 px-6 text-left'>
+                    <a
+                      href={`mailto:${user.email}`}
+                      className='text-blue-500 hover:text-blue-600 transition duration-300 ease-in-out'
+                    >
+                      {user.email}
+                    </a>
+                  </td>
+                  <td className='py-3 px-6 text-center'>
+                    {user.isAdmin ? (
+                      <span className='bg-green-200 text-green-600 py-1 px-3 rounded-full text-xs'>
+                        Yes
+                      </span>
+                    ) : (
+                      <span className='bg-red-200 text-red-600 py-1 px-3 rounded-full text-xs'>
+                        No
+                      </span>
+                    )}
+                  </td>
+                  <td className='py-3 px-6 text-center'>
+                    <Link to={`/admin/user/${user._id}/edit`}>
+                      <button className='text-sm bg-blue-500 hover:bg-blue-600 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline transition duration-300 ease-in-out'>
+                        Edit
+                      </button>
+                    </Link>
+                    <button
+                      className='text-sm bg-red-500 hover:bg-red-600 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline ml-2 transition duration-300 ease-in-out'
+                      onClick={() => deleteHandler(user._id)}
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       )}
     </div>
   )

@@ -145,6 +145,7 @@ const ProductScreen = () => {
               <p className='text-gray-600 my-6'>
                 Description: {product.description}
               </p>
+              <p>Size: {product.size} ml</p>
               {/* ... other product details ... */}
               <p className='text-xl font-bold my-4'>${product.price}</p>
 

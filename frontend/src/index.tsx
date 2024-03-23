@@ -81,17 +81,75 @@ const router = createBrowserRouter(
         <Route path='/admin/dashboard' element={<DashboardScreen />} />
         <Route path='/admin/productlist' element={<ProductListScreen />} />
         <Route
-          path='/admin/productlist/search/:keyword'
+          path='/admin/productlist/page/:pageNumber'
           element={<ProductListScreen />}
         />
         <Route
-          path='/admin/productlist/page/:pageNumber'
+          path='/admin/productlist/sort/:sortBy'
+          element={<ProductListScreen />}
+        />
+        <Route
+          path='/admin/productlist/sort/:sortBy/page/:pageNumber'
+          element={<ProductListScreen />}
+        />
+        <Route
+          path='/admin/productlist/sort/:sortBy/search/:keyword'
+          element={<ProductListScreen />}
+        />
+        <Route
+          path='/admin/productlist/sort/:sortBy/search/:keyword/page/:pageNumber'
+          element={<ProductListScreen />}
+        />
+
+        <Route
+          path='/admin/productlist/search/:keyword'
           element={<ProductListScreen />}
         />
         <Route
           path='/admin/productlist/search/:keyword/page/:pageNumber'
           element={<ProductListScreen />}
         />
+        <Route
+          path='/admin/productlist/search/:keyword/sort/:sortBy'
+          element={<ProductListScreen />}
+        />
+        <Route
+          path='/admin/productlist/search/:keyword/sort/:sortBy/page/:pageNumber'
+          element={<ProductListScreen />}
+        />
+        <Route
+          path='/admin/productlist/category/:categoryName'
+          element={<ProductListScreen />}
+        />
+        <Route
+          path='/admin/productlist/category/:categoryName/page/:pageNumber'
+          element={<ProductListScreen />}
+        />
+        <Route
+          path='/admin/productlist/category/:categoryName/search/:keyword'
+          element={<ProductListScreen />}
+        />
+        <Route
+          path='/admin/productlist/category/:categoryName/search/:keyword/page/:pageNumber'
+          element={<ProductListScreen />}
+        />
+        <Route
+          path='/admin/productlist/category/:categoryName/sort/:sortBy'
+          element={<ProductListScreen />}
+        />
+        <Route
+          path='/admin/productlist/category/:categoryName/sort/:sortBy/page/:pageNumber'
+          element={<ProductListScreen />}
+        />
+        <Route
+          path='/admin/productlist/category/:categoryName/search/:keyword/sort/:sortBy'
+          element={<ProductListScreen />}
+        />
+        <Route
+          path='/admin/productlist/category/:categoryName/search/:keyword/sort/:sortBy/page/:pageNumber'
+          element={<ProductListScreen />}
+        />
+
         <Route path='/admin/product/:id/edit' element={<ProductEditScreen />} />
         <Route path='/admin/userlist' element={<UserListScreen />} />
         <Route path='/admin/user/:id/edit' element={<UserEditScreen />} />

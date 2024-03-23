@@ -56,6 +56,9 @@ const ProductEditScreen = () => {
   const [discount, setDiscount] = useState(0)
   const [numReviews, setNumReviews] = useState(0)
 
+  const notParfum =
+    category === 'gold' || category === 'gift' || category === 'soapandpowder'
+
   useEffect(() => {
     if (product) {
       setTitle(product.title)
@@ -287,6 +290,28 @@ const ProductEditScreen = () => {
               <div className='w-full px-3 mb-6 md:mb-0 md:w-1/7'>
                 <label
                   className='block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2'
+                  htmlFor='category'
+                >
+                  Category
+                </label>
+                <select
+                  value={category}
+                  onChange={(e) => setCategory(e.target.value)}
+                  className='block appearance-none w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white'
+                  id='category'
+                >
+                  <option value=''>Please Choose</option>
+                  <option value='miniature'>Miniature</option>
+                  <option value='perfume'>Perfume</option>
+                  <option value='sample'>Sample</option>
+                  <option value='soapandpowder'>Soap & Powder</option>
+                  <option value='gift'>Gift</option>
+                  <option value='gold'>Gold</option>
+                </select>
+              </div>
+              <div className='w-full px-3 mb-6 md:mb-0 md:w-1/7'>
+                <label
+                  className='block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2'
                   htmlFor='price'
                 >
                   Price
@@ -316,63 +341,48 @@ const ProductEditScreen = () => {
                   placeholder='Enter quantity'
                 />
               </div>
-              <div className='w-full px-3 mb-6 md:mb-0 md:w-1/7'>
-                <label
-                  className='block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2'
-                  htmlFor='size'
-                >
-                  Size in ml
-                </label>
-                <input
-                  value={size}
-                  onChange={(e) => setSize(Number(e.target.value))}
-                  className='appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white'
-                  id='size'
-                  type='text'
-                  placeholder='Enter size'
-                />
-              </div>
-              <div className='w-full px-3 mb-6 md:mb-0 md:w-1/7'>
-                <label
-                  className='block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2'
-                  htmlFor='typ'
-                >
-                  Type
-                </label>
-                <select
-                  value={typ}
-                  onChange={(e) => setTyp(e.target.value)}
-                  className='block appearance-none w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white'
-                  id='typ'
-                >
-                  <option value='edp'>Eau de parfume</option>
-                  <option value='edt'>Eau de toilette</option>
-                  <option value='edc'>Eau de cologne</option>
-                  <option value='parfume'>Parfume</option>
-                </select>
-              </div>
-              <div className='w-full px-3 mb-6 md:mb-0 md:w-1/7'>
-                <label
-                  className='block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2'
-                  htmlFor='category'
-                >
-                  Category
-                </label>
-                <select
-                  value={category}
-                  onChange={(e) => setCategory(e.target.value)}
-                  className='block appearance-none w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white'
-                  id='category'
-                >
-                  <option value='miniature'>Miniature</option>
-                  <option value='perfume'>Perfume</option>
-                  <option value='sample'>Sample</option>
-                  <option value='soapandpowder'>Soap & Powder</option>
-                  <option value='gift'>Gift</option>
-                  <option value='gold'>Gold</option>
-                </select>
-              </div>
-              <div className='w-full px-3 mb-6 md:mb-0 md:w-1/7'>
+
+              {!notParfum && (
+                <div className='w-full px-3 mb-6 md:mb-0 md:w-1/7'>
+                  <label
+                    className='block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2'
+                    htmlFor='size'
+                  >
+                    Size in ml
+                  </label>
+                  <input
+                    value={size}
+                    onChange={(e) => setSize(Number(e.target.value))}
+                    className='appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white'
+                    id='size'
+                    type='text'
+                    placeholder='Enter size'
+                  />
+                </div>
+              )}
+              {!notParfum && (
+                <div className='w-full px-3 mb-6 md:mb-0 md:w-1/7'>
+                  <label
+                    className='block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2'
+                    htmlFor='typ'
+                  >
+                    Type
+                  </label>
+                  <select
+                    value={typ}
+                    onChange={(e) => setTyp(e.target.value)}
+                    className='block appearance-none w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white'
+                    id='typ'
+                  >
+                    <option value=''>Please Choose</option>
+                    <option value='edp'>Eau de parfume</option>
+                    <option value='edt'>Eau de toilette</option>
+                    <option value='edc'>Eau de cologne</option>
+                    <option value='parfume'>Parfume</option>
+                  </select>
+                </div>
+              )}
+              <div className='hidden w-full px-3 mb-6 md:mb-0 md:w-1/7'>
                 <label
                   className='block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2'
                   htmlFor='magazine'
@@ -389,24 +399,27 @@ const ProductEditScreen = () => {
                   <option value='OSK'>OSK</option>
                 </select>
               </div>
-              <div className='w-full px-3 mb-6 md:mb-0 md:w-1/7'>
-                <label
-                  className='block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2'
-                  htmlFor='sex'
-                >
-                  Sex
-                </label>
-                <select
-                  value={sex}
-                  onChange={(e) => setSex(e.target.value)}
-                  className='block appearance-none w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white'
-                  id='sex'
-                >
-                  <option value='men'>Men</option>
-                  <option value='women'>Women</option>
-                  <option value='unisex'>Unisex</option>
-                </select>
-              </div>
+              {!notParfum && (
+                <div className='w-full px-3 mb-6 md:mb-0 md:w-1/7'>
+                  <label
+                    className='block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2'
+                    htmlFor='sex'
+                  >
+                    Sex
+                  </label>
+                  <select
+                    value={sex}
+                    onChange={(e) => setSex(e.target.value)}
+                    className='block appearance-none w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white'
+                    id='sex'
+                  >
+                    <option value=''>Please Choose</option>
+                    <option value='men'>Men</option>
+                    <option value='women'>Women</option>
+                    <option value='unisex'>Unisex</option>
+                  </select>
+                </div>
+              )}
             </div>
 
             <div className='flex flex-wrap mb-6 -mx-3'>
@@ -548,7 +561,7 @@ const ProductEditScreen = () => {
             <div className='flex justify-center'>
               <button
                 type='submit'
-                className='bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline'
+                className='bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mb-20'
               >
                 Update Product
               </button>
