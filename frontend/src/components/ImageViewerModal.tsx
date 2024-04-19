@@ -35,8 +35,8 @@ const ImageViewerModal: React.FC<ImageViewerModalProps> = ({
       <div className='relative'>
         <img
           src={images[currentIndex]}
-          alt='Product Image'
-          className='w-auto h-[90vh] max-w-full'
+          alt='Product'
+          className='lg:w-auto lg:h-[90vh] lg:max-w-full'
         />
         <button
           onClick={onClose}

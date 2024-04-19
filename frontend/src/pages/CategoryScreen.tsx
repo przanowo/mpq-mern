@@ -7,6 +7,7 @@ import Message from '../components/Message'
 import Paginate from '../components/Paginate'
 import SearchBox from '../components/SearchBox'
 import { useEffect } from 'react'
+import Footer from '../components/Footer'
 
 const CategoryScreen = () => {
   // const { categoryName } = useParams<{ categoryName: string }>();
@@ -54,7 +55,7 @@ const CategoryScreen = () => {
           type='error'
         />
       ) : (
-        <div className='flex-col lg:mt-24 mx-auto mb-12'>
+        <div className='flex-col lg:mt-24 mx-auto'>
           <h1 className='text-2xl text-center uppercase font-bold m-4'>
             {catName}
           </h1>
@@ -68,13 +69,16 @@ const CategoryScreen = () => {
               </li>
             ))}
           </ul>
-          <div className='my-4'>
+          <div className='mt-4 mb-24 lg:mb-4'>
             <Paginate
               pages={pages}
               currentPage={pageNumberNum}
               keyword={keyword}
               categoryName={categoryName}
             />
+          </div>
+          <div className='flex items-center w-full justify-center my-4'>
+            <Footer />
           </div>
         </div>
       )}

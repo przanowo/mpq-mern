@@ -22,12 +22,14 @@ const Footer = () => {
                     Instagram
                   </Link>
                 </li>
-                {/* <li className='flex items-baseline'>
+                <li className='flex items-baseline'>
                   <span className='ltr:mr-3 rtl:ml-3 relative top-0.5 lg:top-1 text-sm lg:text-base'>
                     <FaFacebook />
                   </span>
-                  <div>Facebook</div>
-                </li> */}
+                  <Link to='https://www.facebook.com/miniloveparfum'>
+                    Facebook
+                  </Link>
+                </li>
                 {/* <li className='flex items-baseline'>
                   <span className='ltr:mr-3 rtl:ml-3 relative top-0.5 lg:top-1 text-sm lg:text-base'>
                     <IoLogoYoutube />
