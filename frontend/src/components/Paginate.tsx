@@ -41,7 +41,7 @@ const Paginate: React.FC<PaginateProps> = ({
   }
 
   return pages > 1 ? (
-    <div className='flex justify-center items-center flex-wrap mt-4'>
+    <div className='hidden flex justify-center items-center flex-wrap mt-4'>
       {currentPage > 1 && (
         <>
           <Link

@@ -5,8 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const dotenv_1 = __importDefault(require("dotenv"));
 const axios_1 = __importDefault(require("axios"));
-const fs_1 = __importDefault(require("fs"));
-const path_1 = __importDefault(require("path"));
+const storage_1 = require("@google-cloud/storage");
 const users_1 = __importDefault(require("./data/users"));
 const products_1 = require("./data/products");
 const userModel_1 = __importDefault(require("./models/userModel"));
@@ -15,26 +14,34 @@ const orderModel_1 = __importDefault(require("./models/orderModel"));
 const db_1 = __importDefault(require("./config/db"));
 dotenv_1.default.config();
 (0, db_1.default)();
-const isRunningOnServer = process.env.RUNNING_ON_SERVER === 'true';
-const imageStoragePath = isRunningOnServer
-    ? '/data/images'
-    : path_1.default.join(__dirname, '..', 'data', 'images');
-const downloadImage = async (url, filename) => {
+const storage = new storage_1.Storage({
+    keyFilename: process.env.GOOGLE_APPLICATION_CREDENTIALS,
+    projectId: process.env.GCP_PROJECT_ID,
+});
+const bucket = storage.bucket(process.env.GCS_BUCKET_NAME || '');
+const downloadImage = async (url) => {
     console.log(`Downloading image from: ${url}`);
-    const localPath = path_1.default.join(imageStoragePath, filename);
     const response = await (0, axios_1.default)({
         url,
         method: 'GET',
-        responseType: 'stream',
+        responseType: 'arraybuffer',
     });
-    const writer = fs_1.default.createWriteStream(localPath);
-    response.data.pipe(writer);
+    return Buffer.from(response.data, 'binary');
+};
+const uploadToGCS = async (buffer, filename) => {
+    const blob = bucket.file(`productimg/${filename}`);
+    const blobStream = blob.createWriteStream({
+        resumable: false,
+        gzip: true,
+    });
     return new Promise((resolve, reject) => {
-        writer.on('finish', () => {
-            console.log(`Downloaded and saved to: ${localPath}`);
-            resolve(localPath);
+        blobStream.on('error', err => reject(err));
+        blobStream.on('finish', () => {
+            const publicUrl = `https://storage.googleapis.com/${bucket.name}/${blob.name}`;
+            console.log(`Uploaded and saved to GCS: ${publicUrl}`);
+            resolve(publicUrl);
         });
-        writer.on('error', reject);
+        blobStream.end(buffer);
     });
 };
 const importData = async () => {
@@ -52,15 +59,16 @@ const importData = async () => {
             // Process images
             for (let i = 0; i < product.images.length; i++) {
                 const imageUrl = product.images[i];
+                const buffer = await downloadImage(imageUrl);
                 const filename = `image_${Date.now()}_${Math.floor(Math.random() * 1000)}.jpg`;
-                await downloadImage(imageUrl, filename);
-                product.images[i] = `/images/${filename}`;
+                const gcsUrl = await uploadToGCS(buffer, filename);
+                product.images[i] = gcsUrl;
             }
             // Process main image
-            const mainImageUrl = product.mainImage;
+            const mainImageBuffer = await downloadImage(product.mainImage);
             const mainImageFilename = `mainImage_${Date.now()}_${Math.floor(Math.random() * 1000)}.jpg`;
-            await downloadImage(mainImageUrl, mainImageFilename);
-            product.mainImage = `/images/${mainImageFilename}`;
+            const mainImageUrl = await uploadToGCS(mainImageBuffer, mainImageFilename);
+            product.mainImage = mainImageUrl;
             console.log(`Processed product: ${product.title}`);
             // Modify and insert the product
             const createdAtString = new Date().toISOString();

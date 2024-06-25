@@ -103,34 +103,8 @@ const Navigation = () => {
                 {' '}
                 Miniature{' '}
               </Link>
-              <Link
-                className='hidden xl:flex px-3 py-2 rounded-lg hover:bg-white/20 hover:text-lg'
-                to='/category/sample'
-              >
-                {' '}
-                Sample{' '}
-              </Link>
-              <Link
-                className='hidden xl:flex px-3 py-2 rounded-lg hover:bg-white/20 hover:text-lg'
-                to='/category/soapandpowder'
-              >
-                {' '}
-                Soap & Powder{' '}
-              </Link>
-              <Link
-                className='hidden xl:flex px-3 py-2 rounded-lg hover:bg-white/20 hover:text-lg'
-                to='/category/gift'
-              >
-                {' '}
-                Gifts{' '}
-              </Link>
-              <Link
-                className='hidden xl:flex px-3 py-2 rounded-lg hover:bg-white/20 hover:text-lg'
-                to='/category/gold'
-              >
-                {' '}
-                Gold{' '}
-              </Link>
+
+
               {/* Dropdown Toggle Button */}
               <button
                 className='lg:flex xl:hidden text-center items-center px-3 py-2 rounded-lg hover:bg-white/20'
@@ -156,34 +130,8 @@ const Navigation = () => {
                   >
                     Miniature
                   </Link>
-                  <Link
-                    className='px-3 py-2 rounded-lg hover:bg-white/20 hover:text-lg'
-                    to='/category/sample'
-                    onClick={() => setIsDropdownOpen(false)}
-                  >
-                    Sample
-                  </Link>
-                  <Link
-                    className='px-3 py-2 rounded-lg hover:bg-white/20 hover:text-lg'
-                    to='/category/soapandpowder'
-                    onClick={() => setIsDropdownOpen(false)}
-                  >
-                    Soap & Powder
-                  </Link>
-                  <Link
-                    className='px-3 py-2 rounded-lg hover:bg-white/20 hover:text-lg'
-                    to='/category/gift'
-                    onClick={() => setIsDropdownOpen(false)}
-                  >
-                    Gifts
-                  </Link>
-                  <Link
-                    className='px-3 py-2 rounded-lg hover:bg-white/20 hover:text-lg'
-                    to='/category/gold'
-                    onClick={() => setIsDropdownOpen(false)}
-                  >
-                    Gold
-                  </Link>
+
+
                 </div>
               )}
             </div>
@@ -260,25 +208,11 @@ const Navigation = () => {
               </>
             ) : (
               <>
-                <Link className='px-3 py-2 uppercase' to='/login'>
-                  Login
-                </Link>
-                <Link className='px-3 py-2 uppercase' to='/register'>
-                  Register
-                </Link>
+
               </>
             )}
 
-            <Link className='px-4 py-2 text-2xl text-center' to='/cart'>
-              <div className='hidden md:flex relative '>
-                <HiOutlineShoppingCart />
-                {cartItems.length > 0 && (
-                  <span className='absolute -right-2 -bottom-3 text-red-500 text-base font-medium'>
-                    {cartItems.length}
-                  </span>
-                )}
-              </div>
-            </Link>
+
           </div>
 
           {/* //mobile menu */}
@@ -294,14 +228,7 @@ const Navigation = () => {
               <HiOutlineHome />{' '}
             </Link>
             <div className='relative block'>
-              <Link to='/cart'>
-                <HiOutlineShoppingCart />
-                {cartItems.length > 0 && (
-                  <span className='absolute -right-2 -bottom-3 text-red-500 text-base font-medium'>
-                    {cartItems.length}
-                  </span>
-                )}
-              </Link>
+
             </div>
           </div>
 
@@ -325,38 +252,8 @@ const Navigation = () => {
                   {' '}
                   Miniature{' '}
                 </Link>
-                <Link
-                  className='px-3 py-4 rounded-lg text-xl'
-                  to='/category/sample'
-                  onClick={closeMobileMenu}
-                >
-                  {' '}
-                  Sample{' '}
-                </Link>
-                <Link
-                  className='px-3 py-4 rounded-lg text-xl'
-                  to='/category/soapandpowder'
-                  onClick={closeMobileMenu}
-                >
-                  {' '}
-                  Soap & Powder{' '}
-                </Link>
-                <Link
-                  className='px-3 py-4 rounded-lg text-xl'
-                  to='/category/gift'
-                  onClick={closeMobileMenu}
-                >
-                  {' '}
-                  Gifts{' '}
-                </Link>
-                <Link
-                  className='px-3 py-4 rounded-lg text-xl'
-                  to='/category/gold'
-                  onClick={closeMobileMenu}
-                >
-                  {' '}
-                  Gold{' '}
-                </Link>
+
+
                 {userInfo ? (
                   <>
                     <Link to='/'>
@@ -379,22 +276,7 @@ const Navigation = () => {
                   </>
                 ) : (
                   <>
-                    <Link
-                      className='px-3 py-4 rounded-lg text-xl'
-                      to='/login'
-                      onClick={closeMobileMenu}
-                    >
-                      {' '}
-                      Login{' '}
-                    </Link>
-                    <Link
-                      className='px-3 py-4 rounded-lg text-xl'
-                      to='/register'
-                      onClick={closeMobileMenu}
-                    >
-                      {' '}
-                      Register{' '}
-                    </Link>
+
                   </>
                 )}
                 {userInfo?.isAdmin ? (
@@ -443,14 +325,7 @@ const Navigation = () => {
                   <HiOutlineHome />{' '}
                 </Link>
                 <div className='relative block'>
-                  <Link to='/cart' onClick={closeMobileMenu}>
-                    <HiOutlineShoppingCart />
-                    {cartItems.length > 0 && (
-                      <span className='absolute -right-2 -bottom-3 text-red-500 text-base font-medium'>
-                        {cartItems.length}
-                      </span>
-                    )}
-                  </Link>
+
                 </div>
               </div>
             </div>

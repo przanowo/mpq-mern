@@ -12,16 +12,10 @@ const users = [
         isAdmin: true,
     },
     {
-        name: 'John Doe',
-        email: 'john@gmail.com',
+        name: 'Boss Gyongyi',
+        email: 'miniparfumqueen@gmail.com',
         password: bcryptjs_1.default.hashSync('123456', 10),
-        isAdmin: false,
-    },
-    {
-        name: 'Jane boe',
-        email: 'jane@gmail.com',
-        password: bcryptjs_1.default.hashSync('123456', 10),
-        isAdmin: false,
+        isAdmin: true,
     },
 ];
 exports.default = users;

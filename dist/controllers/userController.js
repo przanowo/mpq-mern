@@ -142,7 +142,9 @@ exports.updateUserProfile = updateUserProfile;
 // @route  GET /api/users
 // @access Private/Admin
 const getUsers = (0, asyncHandler_1.default)(async (req, res) => {
+    console.log('getUsers triggered');
     const users = await userModel_1.default.find({});
+    console.log(users);
     res.status(200).json(users);
 });
 exports.getUsers = getUsers;
