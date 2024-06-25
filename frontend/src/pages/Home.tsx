@@ -58,7 +58,7 @@ const Home = () => {
             {!keyword && isBaseHomePage ? (
               <div className='hidden lg:flex items-center justify-center mt-24'>
                 {/* <ProductCarousel /> */}
-                <CategoryCarousel />
+                {/* <CategoryCarousel /> */}
               </div>
             ) : (
               <Link
@@ -70,7 +70,7 @@ const Home = () => {
                 </button>
               </Link>
             )}
-            <div className='flex-col mt-16 justify-center items-center'>
+            {/* <div className='flex-col mt-16 justify-center items-center'>
               <h1 className='text-4xl text-center mb-14'>All Products</h1>
               <div className='flex p-2 items-center justify-center lg:hidden'>
                 <SearchBox isAdmin={false} />
@@ -82,7 +82,7 @@ const Home = () => {
                   </li>
                 ))}
               </ul>
-            </div>
+            </div> */}
             <div className='flex items-center justify-center my-4'>
               <Paginate
                 pages={pages}
