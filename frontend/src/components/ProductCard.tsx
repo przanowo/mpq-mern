@@ -42,10 +42,10 @@ const ProductCard = ({ product }: { product: Product }) => {
     >
       <Link to={`/product/${product._id}`} key={product._id}>
         <div className=' bg-gray-200 overflow-hidden rounded-md'>
-          <Rating
+          {/* <Rating
             value={product.rating}
             text={`${product.numReviews} reviews`}
-          />
+          /> */}
           <img
             src={product.mainImage}
             alt={product.title}
@@ -58,19 +58,19 @@ const ProductCard = ({ product }: { product: Product }) => {
             {product.title}
           </h3>
 
-          <p className='text-lg font-bold mt-2 text-gray-700'>
+          {/* <p className='text-lg font-bold mt-2 text-gray-700'>
             ${product.price}
-          </p>
+          </p> */}
         </div>
       </Link>
       <div className='mt-2'>
-        <button
+        {/* <button
           className=' bg-orange-100 text-black text-center px-2 py-1 rounded-md hover:bg-orange-200 transition duration-200'
           disabled={product.quantity === 0}
           onClick={handleAddToCart}
         >
           Add to cart
-        </button>
+        </button> */}
         {/* {user ? (
           <button
             className='hidden lg:inline-block bg-orange-100 text-black text-center px-2 py-1 rounded-md hover:bg-orange-200 transition duration-200'

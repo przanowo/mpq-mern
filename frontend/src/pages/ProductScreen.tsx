@@ -145,96 +145,15 @@ const ProductScreen = () => {
               <p className='text-gray-600 my-6'>
                 Description: {product.description}
               </p>
-              <p>Size: {product.size} ml</p>
+              {/* <p>Size: {product.size} ml</p> */}
               {/* ... other product details ... */}
-              <p className='text-xl font-bold my-4'>${product.price}</p>
+              {/* <p className='text-xl font-bold my-4'>${product.price}</p> */}
 
               {/* ... Quantity and Add to Cart ... */}
-              {product && product.quantity > 0 && (
-                <div className='flex items-center mb-4'>
-                  <p className='mr-2'>Quantity:</p>
-                  <select
-                    className='border border-gray-300 rounded-md px-2 py-1 text-sm'
-                    value={qty}
-                    onChange={(e) => setQty(Number(e.target.value))}
-                  >
-                    {quantityOptions}
-                  </select>
-                  <button
-                    className='bg-orange-100 px-4 py-2 rounded-md hover:bg-orange-200 transition duration-200 text-sm'
-                    disabled={product.quantity === 0}
-                    onClick={handleAddToCart}
-                  >
-                    Add to cart
-                  </button>
-                </div>
-              )}
-              {product && product.quantity === 0 && (
-                <div className='text-red-500'>Out of stock</div>
-              )}
+              
+
             </div>
-            <div className='flex flex-col lg:h-1/3'>
-              <h2 className='text-2xl font-bold mb-2'>Reviews</h2>
-              {product.reviews.length === 0 && (
-                <div>No reviews yet. Be the first!</div>
-              )}
-              {product.reviews.map((review) => (
-                <div
-                  key={review._id}
-                  className='flex flex-col border border-gray-300 rounded-md p-4 my-4'
-                >
-                  <div className='flex items-center'>
-                    <p className='font-semibold mr-2'>{review.name}</p>
-                    <p className='text-gray-600'>{review.createdAt}</p>
-                  </div>
-                  <p className='text-gray-600'>{review.comment}</p>
-                </div>
-              ))}
-              {userInfo ? (
-                <div className='mt-4'>
-                  <h2 className='text-2xl font-bold mb-2'>
-                    Write a customer review
-                  </h2>
-                  {loadingProductReview && <Loader />}
-                  <form className='flex flex-col' onSubmit={submitHandler}>
-                    <div className='flex items-center mb-4'>
-                      <label className='mr-2'>Rating</label>
-                      <select
-                        className='border border-gray-300 rounded-md px-2 py-1 text-sm'
-                        value={rating}
-                        onChange={(e) => setRating(Number(e.target.value))}
-                      >
-                        <option value=''>Select...</option>
-                        <option value='1'>1 - Poor</option>
-                        <option value='2'>2 - Fair</option>
-                        <option value='3'>3 - Good</option>
-                        <option value='4'>4 - Very Good</option>
-                        <option value='5'>5 - Excellent</option>
-                      </select>
-                    </div>
-                    <div className='mb-4'>
-                      <label className='mb-2'>Comment</label>
-                      <textarea
-                        className='border border-gray-300 rounded-md w-full px-2 py-1 text-sm'
-                        value={comment}
-                        onChange={(e) => setComment(e.target.value)}
-                      ></textarea>
-                    </div>
-                    <button
-                      className='bg-orange-100 px-4 py-2 rounded-md hover:bg-orange-200 transition duration-200'
-                      type='submit'
-                      disabled={loadingProductReview}
-                    >
-                      Submit
-                    </button>
-                  </form>
-                </div>
-              ) : (
-                <div>
-                  Please <a href='/login'>sign in</a> to write a review.
-                </div>
-              )}
-            </div>
+           
           </div>
           <ImageViewerModal
             isOpen={isViewerOpen}
